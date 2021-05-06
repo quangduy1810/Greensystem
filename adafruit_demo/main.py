@@ -20,11 +20,7 @@ BRIGHTNESS_THRESHOLD = 127
 # Define callback functions which will be called when certain events happen.
 def connected(client):
     print('Connected to Adafruit IO!  Listening for DemoFeed changes...')
-    client.subscribe('temperature')
-    client.subscribe('humidity')
-    client.subscribe('brightness')
-    client.subscribe('light')
-
+    
 def disconnected(client):
     print('Disconnected from Adafruit IO!')
     sys.exit(1)
