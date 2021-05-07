@@ -30,7 +30,7 @@ def message(client, feed_id, payload):
     print('Feed {0} received new value: {1}'.format(feed_id, payload))
 
 
-# Create an MQTT client instance.
+# Create an client instance.
 client = Client(ADAFRUIT_IO_USERNAME, ADAFRUIT_IO_KEY)
 
 # Setup the callback functions defined above.
