@@ -1,63 +1,68 @@
 <!DOCTYPE html>
-<html>
+<html >
 <head>
+  <style>
+    body {
+      background-image: url('1.jpg');
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
+    }
+    .transback
+    {
+      position: relative;
+      top: 300;
+    }
+    .button {
+      top: 100px;
+  
+      
+      margin: auto;
+      border-spacing: 10px;
+      background-color: blue;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      color: white;
+      padding: 10px 32px;
+      text-align: center;
+      display: inline-block;
+      font-size: 30px;
+      display: flex;
+      cursor: pointer;
+    }
+  </style>
   <!-- Site made with Mobirise Website Builder v5.3.5, https://mobirise.com -->
-
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="generator" content="Mobirise v5.3.5, mobirise.com">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
   <link rel="shortcut icon" href="assets/images/logo.png" type="image/x-icon">
   <meta name="description" content="">
   
   
-  <title>Home</title>
+  <title>Welcome </title>
   <link rel="stylesheet" href="assets/tether/tether.min.css">
   <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-grid.min.css">
   <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-reboot.min.css">
+  <link rel="stylesheet" href="assets/dropdown/css/style.css">
   <link rel="stylesheet" href="assets/formstyler/jquery.formstyler.css">
   <link rel="stylesheet" href="assets/formstyler/jquery.formstyler.theme.css">
   <link rel="stylesheet" href="assets/datepicker/jquery.datetimepicker.min.css">
-  <link rel="stylesheet" href="assets/dropdown/css/style.css">
   <link rel="stylesheet" href="assets/socicon/css/styles.css">
   <link rel="stylesheet" href="assets/theme/css/style.css">
   <link rel="preload" href="https://fonts.googleapis.com/css?family=Jost:100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jost:100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i&display=swap"></noscript>
   <link rel="preload" as="style" href="assets/mobirise/css/mbr-additional.css"><link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css" type="text/css">
   
-  
-  
-  
 </head>
-<!--=====================
-          Content
-======================-->
-               <!-- WRITE CODE HERE -->
-<style>
-  table {
-  
-  width: 90%;
-  margin: auto;
-  text-align: center;
-  
-}
-th {
-  height: 300px;
-  
-}
-th,td{
-    border: 10px solid white;
-background-color: black;
-color: white;
-}
 
-</style>
 <body>
   
-  <section class="menu menu1 cid-svLgDH6chw" once="menu" id="menu1-u">
+  <section class="menu menu1 cid-svLgDH6chw" once="menu" id="menu1-u" background-color=" transparent">
     
-
+   
     <nav class="navbar navbar-dropdown navbar-fixed-top navbar-expand-lg">
         <div class="container">
             <div class="navbar-brand">
@@ -73,29 +78,60 @@ color: white;
                 </div>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true"><li class="nav-item"><a class="nav-link link text-black display-4" href="envicondi.html">Contact</a></li><li class="nav-item"><a class="nav-link link text-black display-4" href="logIn.html">Log In</a></li>
+                <ul class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true"><li class="nav-item"><a class="nav-link link text-black display-4" href="">Contact</a></li><li class="nav-item"><a class="nav-link link text-black display-4" href="logIn.html">Log In</a></li>
                     
-                    <li class="nav-item"><a class="nav-link link text-black display-4" href="signUp.html">Sign Up</a>
+                    <li class="nav-item"><a class="nav-link link text-black display-4" href="signUp.html">Sign up</a>
                     </li></ul>
                 
                 
             </div>
         </div>
     </nav>
-</section>
-<div style="height: 50px;"></div>
-<h2 style="margin-left: 5%;" > Tinh trang moi truong</h2>
-<table>
-    <tr >
-        <th>Nhiet do</th>
-        <th>Do am</th>
-        <th>Anh sang</th>
-    </tr>
-    <tr>
-        <td>22</td>
-        <td> 1010</td>
-        <td>bat</td>
-    </tr>
-</table>
+    
+  </section>
+  {%for ors in order %}
+  <div style="text-align: center;">
+  <div style="background-color: burlywood;">
+    <div class="row">
+      <div class="column1">
+        <p> </p>
+      </div>
+    {%if ors.id%}
+    <div class="column"  >
+      <h2 style="font-size: 30px; background-color: white; ">ID</h2>
+        <ul>
+
+        {%for idd in ors.id%}
+        <li style="font-size: 25px; color: black; line-height: 40px;">{{id}}
+        {%endfor%}
+        </ul>
+    </div>
+    {%endif%}
+    {%if ors.locate%}
+    <div class="column"  >
+      <h2 style="font-size: 30px; background-color: black; color: white">Khu vực</h2>
+        <ul>
+        {%for location in ors.locate%}
+        <li style="font-size: 25px; color: black; line-height: 40px;">{{location}}
+        {%endfor%}
+        </ul>
+    </div>  
+    {%endif%}
+    {%if ors.state%}
+    <div class="column"  >
+      <h2 style="font-size: 30px; background-color: white;">Trạng thái</h2>
+        <ul>
+        {%for foodstat in ors.state%}
+        <li style="font-size: 25px; color: black; line-height: 40px;">{{foodstat}}
+        {%endfor%}
+        </ul>
+    </div>
+    {%endif%}
+  </div>
+  </div>
+</div>
 </body>
+
+{%endfor%}
+{% endblock %}
 </html>
