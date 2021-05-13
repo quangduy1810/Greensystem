@@ -16,7 +16,7 @@ def login():
 @app.route('/signup')
 def signup():
     return render_template('signUp.html')
-@app.route('/plantdata')
+@app.route('/plantdata.html')
 def plantdata():
     return render_template('plantdata.html')
 @app.route('/envicondi')
