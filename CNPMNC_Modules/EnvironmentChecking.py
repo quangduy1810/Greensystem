@@ -9,6 +9,9 @@ def humidityAlert():
 # Return True if the current environment is good,
 # False otherwise.
 def plantEnvironmentCheck(Land, environmentInfo):
+    if environmentInfo.temperature == -1 or environmentInfo.brightness == -1 or environmentInfo.brightness == -1:
+        return
+
     lowerBoundTemperature, upperBoundTemperature = Land.hazardousTemperatureRange
     lowerBoundHumidity, upperBoundHumidity = Land.hazardousHumidityRange
 
@@ -20,13 +23,11 @@ def plantEnvironmentCheck(Land, environmentInfo):
 
     if currentHumidity > lowerBoundHumidity and currentHumidity < upperBoundHumidity:
         humdityFine = True
-    else :
-        humidityAlert()
+    else :  humidityAlert()
 
     if currentTemperature > lowerBoundTemperature and currentTemperature < upperBoundTemperature:
         temperatureFine = True
-    else :
-        temperatureAlert()
+    else : temperatureAlert()
         
     return humdityFine and temperatureFine
 

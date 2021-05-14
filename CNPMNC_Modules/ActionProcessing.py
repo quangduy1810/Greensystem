@@ -7,13 +7,8 @@ def sendWaterAction(duration):
     
     # Code for sending action to
     # the server
-
     print("Watering Tree in " + str(duration) + " seconds")
-
-
     return True
-
-
 
 # This will be implemented more later
 lastWaterActionTimeStamp = -1

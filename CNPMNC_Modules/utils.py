@@ -24,7 +24,14 @@ class Land(object):
         self.hazardousTemperatureRange = hazardTempRange
         self.hazardousHumidityRange = hazardHumidRange
 
-        
+
+class IJsonable(object):
+    def ToJson():
+        pass
+
+    def FromJson():
+        pass
+
         
 class Environment(object):
     def __init__(self, humidity, temperature, brightness):
@@ -32,8 +39,6 @@ class Environment(object):
         self.temperature = temperature
         self.brightness = brightness
         # self.lightOnTime = lightOnTime
-
-
 
 class DeviceAction(object):
     def toJSON(self):
