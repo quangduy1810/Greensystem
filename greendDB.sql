@@ -216,7 +216,7 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `idUser` int NOT NULL AUTO_INCREMENT,
   `username` varchar(45) COLLATE utf8_bin NOT NULL,
-  `passwork` varchar(45) COLLATE utf8_bin NOT NULL,
+  `password` varchar(45) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`idUser`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;

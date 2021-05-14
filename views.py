@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import render_template, request, jsonify
+from flask import render_template, request, redirect, url_for, jsonify, make_response
 from flask_mysqldb import MySQL
 from Greensys import app
 import os
@@ -8,7 +8,7 @@ import webbrowser
 import json
 import glob
 mysql=MySQL(app)
-userData = {'id':None,'name':None}
+userData = {'id':None,'name':None,'land':None,''}
 @app.route('/')
 @app.route('/homepage')
 def homepage():
@@ -39,7 +39,7 @@ def signup():
     if request.method == 'POST':
         username = request.form['username']
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM account WHERE username = '"+ username +"'")
+        cur.execute("SELECT * FROM user WHERE username = '"+ username +"'")
         acc = cur.fetchone()
         if acc is not None:
             error = 'Tài khoản đã tồn tại'
@@ -51,9 +51,9 @@ def signup():
             address= request.form['address']
             cur.execute("INSERT INTO account (id, name, username, password, email) VALUES ('AUTO_INCREMENT PRIMARY KEY','"+name+"','"+username+"','"+password+"','"+email+"')")
             mysql.connection.commit()
-            return redirect(url_for('account'))
+            return redirect(url_for('/homepage'))
     return render_template('signUp.html')
-@app.route('/plantdata.html')
+@app.route('/plantdata')
 def plantdata():
     return render_template('plantdata.html')
 @app.route('/envicondi')
