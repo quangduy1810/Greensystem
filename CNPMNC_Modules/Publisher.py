@@ -1,10 +1,13 @@
 import sys
 from random import randint
 from Adafruit_IO import MQTTClient
+import json
 import time
 
-ADAFRUIT_IO_USERNAME = "mnhat81t"
-ADAFRUIT_IO_KEY = "aio_oAlJ83vRGQomqFzkDZaB2w2PwpHT"
+from Constants import ADAFRUIT_IO_USERNAME
+from Constants import ADAFRUIT_IO_KEY
+import Constants
+
 
 def connected(client):
     print("process connected successfully")
@@ -14,16 +17,42 @@ def disconnected(client):
 
 def generateFeedValue(client):
     while True:
-        temperature = randint(0,42)
-        client.publish('Temperature',temperature)
+        temperature = randint(0,100)
+        payload = {
+            "id":"7",
+            "name":"TEMP-HUMID",
+            "data": str(temperature) + "-0",
+            "unit":"*C-%"
+            }
+        client.publish(Constants.TEMP_HUMI_SENSOR_FEED_ID,json.dumps(payload))
 
-        humidity = randint(0,100)
-        client.publish('Humidity', humidity)
+        print(json.dumps(payload))
+        
+        humidity = randint(0,1023)
+        payload = {
+                "id":"9",
+                "name":"SOIL ",
+                "data": str(humidity),
+                "unit":"%"
+            }
 
-        brightness = randint(0, 255)
-        client.publish('Brightness', brightness)
+        client.publish(Constants.SOIL_SENSOR_FEED_ID, json.dumps(payload))
 
-        time.sleep(10)
+        print(json.dumps(payload))
+        
+        brightness = randint(0, 1023)
+        payload = {
+                "id":"13",
+                "name":"LIGHT",
+                "data": str(brightness),
+                "unit":""
+            }
+
+        client.publish(Constants.LIGHT_SENSOR_FEED_ID, json.dumps(payload))
+
+        print(json.dumps(payload))
+
+        time.sleep(60)
 
 def initialize_callbacks():
     client.on_connect = connected

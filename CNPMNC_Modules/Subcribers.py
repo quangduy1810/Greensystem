@@ -2,10 +2,13 @@ from Adafruit_IO import MQTTClient
 from ActionProcessing import *
 from CustomEnvironmentUpdate import *
 from utils import * 
+import json
 import sys
 
-ADAFRUIT_IO_USERNAME = "mnhat81t"
-ADAFRUIT_IO_KEY = "aio_oAlJ83vRGQomqFzkDZaB2w2PwpHT"
+from Constants import ADAFRUIT_IO_USERNAME
+from Constants import ADAFRUIT_IO_KEY
+import Constants
+
 
 CurrentEnvironment = Environment(-1, -1, -1)
 
@@ -15,23 +18,25 @@ Land = Land(
 
 
 def message(client, feed_id, payload):
-    if feed_id == "Temperature":
-        CurrentEnvironment.temperature = int(payload)
-    elif feed_id == "Humidity":
-        CurrentEnvironment.humidity = int(payload)
-    elif feed_id == "Brightness":
-        CurrentEnvironment.brightness = int(payload)
+    dct = json.loads(payload)
 
-    processAction(Land, CurrentEnvironment)
+    if dct["name"] == "TEMP-HUMID":
+        CurrentEnvironment.temperature = int(dct["data"].split("-")[0])
+    elif dct["name"] == "SOIL ":
+        CurrentEnvironment.humidity = int(dct["data"][1])
+    elif dct["name"] == "LIGHT":
+        CurrentEnvironment.brightness = int(dct["data"][0])
+
+    processAction(client, Land, CurrentEnvironment)
 
     print('Feed {0} received new value: {1}'.format(feed_id, payload))
 
 def connected(client):
     print('Connected to Adafruit IO!  Listening for changes...')
 
-    client.subscribe("Temperature")
-    client.subscribe("Humidity")
-    client.subscribe("Brightness")
+    client.subscribe(Constants.SOIL_SENSOR_FEED_ID)
+    client.subscribe(Constants.TEMP_HUMI_SENSOR_FEED_ID)
+    client.subscribe(Constants.LIGHT_SENSOR_FEED_ID)
 
 def subscribe(client, userdata, mid, granted_qos):
     print('Subscribed to {0} with QoS {1}'.format("..", granted_qos[0]))
