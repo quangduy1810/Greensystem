@@ -8,7 +8,7 @@ import webbrowser
 import json
 import glob
 mysql=MySQL(app)
-userData = {'id':None,'name':None,'land':None,''}
+userData = {'id':None,'name':None,'land':None}
 @app.route('/')
 @app.route('/homepage')
 def homepage():
