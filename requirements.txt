@@ -2,3 +2,5 @@ adafruit_io
 flask
 flask-mysql
 cx-oracle
+mysql-connector-python
+pandas
