@@ -9,10 +9,19 @@ import json
 import glob
 mysql=MySQL(app)
 userData = {'id':None,'name':None,'land':None,}
+#giả lập##############
+account=1
+data=[{'id':1,'locate':"ai biet",'plant':"xoài",'temp':23,'lighttime':8,'humidity':2000}]
+#####################
 @app.route('/')
+
 @app.route('/homepage')
 def homepage():
-    return render_template('homepage.html')
+    notify=1
+    return render_template(
+        'homepage.html',
+        notify=notify,
+        account=account)
 @app.route('/login')
 def login():
     error = None
@@ -55,10 +64,21 @@ def signup():
     return render_template('signUp.html')
 @app.route('/plantdata')
 def plantdata():
-    return render_template('plantdata.html')
+    return render_template('plantdata.html',data=data)
 @app.route('/envicondi')
 def envicondi():
     return render_template('envicondi.html')
 @app.route('/wateringhistory')
 def wateringhistory():
     return render_template('wateringhistory.html')
+@app.route('/notify<inte>')
+def notify(inte):
+    return render_template('notify.html',int=inte)
+#add function
+@app.route('/add', methods=["POST"])
+def addtocart():
+    Controller.addtoCart(cart,int(request.form['ID']))
+    return ""
+@app.route('/logout')
+def logout():
+    return render_template("homepage.html",account=None)
