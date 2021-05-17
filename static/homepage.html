@@ -31,6 +31,15 @@
       display: flex;
       cursor: pointer;
     }
+    .noti
+{position: fixed;
+bottom:20px;
+right:10px;
+font-size: 30px;
+color: red;
+background-color:white;
+padding-block: 10px;
+}
   </style>
   <!-- Site made with Mobirise Website Builder v5.3.5, https://mobirise.com -->
   <meta charset="UTF-8">
@@ -78,12 +87,16 @@
                 </div>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true"><li class="nav-item"><a class="nav-link link text-black display-4" href="">Contact</a></li><li class="nav-item"><a class="nav-link link text-black display-4" href="{{ url_for('static', filename='logIn.html') }}">Log In</a></li>
+                <ul class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true">
+                {%if account==None%}
+                    <li class="nav-item"><a class="nav-link link text-black display-4" href="/login">Log In</a></li>
                     
-                    <li class="nav-item"><a class="nav-link link text-black display-4" href="{{ url_for('static', filename='signUp.html') }}">Sign up</a>
-                    </li></ul>
-                
-                
+                    <li class="nav-item"><a class="nav-link link text-black display-4" href="/signup">Sign Up</a>
+                    </li>
+                {%else%}
+                <li class="nav-item"><a class="nav-link link text-black display-4" href="/logout">Log Out</a></li>
+                {%endif%}
+              </ul>
             </div>
         </div>
     </nav>
@@ -91,17 +104,30 @@
   </section>
 
 
+ 
+ {%if account%}
  <p style="padding-top: 8%; font-size: 40px; text-align: center;"><strong style="background-color: wheat;">Welcome {{user}}</strong></p>
  <div style="height:20px"></div>
- <a href="{{ url_for('static', filename='envicondi.html') }}" ><button class="button">Tình trạng môi trường</button></a>
+ <a href="/envicondi" ><button class="button">Tình trạng môi trường</button></a>
  <div style="height:20px"></div>
- <a  href="{{ url_for('static', filename='wateringhistory.html') }}"><button class="button">Lịch sử tưới tiêu</button></a>
+ <a  href="/wateringhistory"><button class="button">Lịch sử tưới tiêu</button></a>
  <div style="height:20px"></div>
- <a  href="{{ url_for('static', filename='plantdata.html') }}"><button class="button">Dữ liệu cây trồng</button></a>
+ <a  href="/plantdata"><button class="button">Dữ liệu cây trồng</button></a>
 
   
                   
 
-</body>
+
+{%if notify==1%}
+<a class="noti" href="/notify/<1>" >
+Thong bao ne!
+</a>
+{%endif%}
+{%else%}
+<p style="padding-top: 8%; font-size: 40px; text-align: center;"><strong style="background-color: white;">Welcome to Greensystem!!</strong></p>
+{%endif%}
 {%endblock%}
+
+
+</body>
 </html>
