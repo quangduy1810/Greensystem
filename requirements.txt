@@ -1,0 +1,4 @@
+adafruit_io
+flask
+flask-mysql
+cx-oracle

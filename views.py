@@ -1,6 +1,6 @@
 from datetime import datetime
 from flask import render_template, request, redirect, url_for, jsonify, make_response
-from flask_mysqldb import MySQL
+from flaskext.mysql import MySQL
 from Greensys import app
 import os
 #import Process
