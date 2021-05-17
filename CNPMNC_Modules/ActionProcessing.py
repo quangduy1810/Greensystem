@@ -2,22 +2,20 @@ from EnvironmentChecking import plantEnvironmentCheck
 from utils import *
 from Adafruit_IO import MQTTClient
 import time
+import Constants
 
-from Constants import PUMP_RELAY_FEED_ID
-from Constants import LIGHT_RELAY_FEED_ID
-from Constants import PUMP_DEVICE_ID
-from Constants import LIGHT_DEVICE_ID
 
 
 def sendWaterAction(client, duration):    
-    client.publish(PUMP_RELAY_FEED_ID, PumpAction(PUMP_DEVICE_ID,status=1).serialize())
+    client.publish(Constants.PUMP_RELAY_FEED_ID, PumpAction(Constants.PUMP_DEVICE_ID,status=1).serialize())
     print("Watering Tree in " + str(duration) + " seconds")
     time.sleep(duration)
-    client.publish(PUMP_RELAY_FEED_ID, PumpAction(PUMP_DEVICE_ID, status=0).serialize())
+    client.publish(Constants.PUMP_RELAY_FEED_ID, PumpAction(Constants.PUMP_DEVICE_ID, status=0).serialize())
     
     return True
 
 def sendLightAction(client, status):
+
     return True
 
 def processAction(client, Land, currentEnvironment):

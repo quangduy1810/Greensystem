@@ -1,11 +1,11 @@
 from utils import *
 
 def temperatureAlert():
-    # TODO : Send Alert To Front End
+    # TODO : Send Alert To Web Server
     print("Temperature is too high. Check your plant right now!!")
 
 def humidityAlert():
-    # TODO : Send Alert To Front End
+    # TODO : Send Alert To Web Server
     print("Humidity is too high. Check your plant right now!!")
 
 # Return True if the current environment is good,

@@ -12,4 +12,8 @@ LIGHT_SENSOR_FEED_ID = 'npnlab-bbc-slash-feeds-slash-bk-iot-light'
 TEMP_HUMI_SENSOR_FEED_ID = 'npnlab-bbc-slash-feeds-slash-bk-iot-temp-humid'
 SOIL_SENSOR_FEED_ID = 'npnlab-bbc-slash-feeds-slash-bk-iot-soil'
 
+LAST_WATERING_TIMESTAMP = None
 
+LAND_ID = 1
+
+db_cursor = None
