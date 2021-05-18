@@ -31,3 +31,5 @@ app.config['MYSQL_PASSWORD'] = '1234'
 app.config['MYSQL_DB'] = 'Greensystem'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql=MySQL(app)
+
+app.start()
