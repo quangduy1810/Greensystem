@@ -12,7 +12,7 @@ from Adafruit_IO import Client
 # password:DADN12345
 # then copy the adafruit io key and
 # username to replace these two.
-ADAFRUIT_IO_KEY = 'aio_hQyW35GKcRXnArhYbCLIsGrqF1Ep'
+ADAFRUIT_IO_KEY = 'aio_mZtb40ln1b2oQwqCuvv98r0TKFyD'
 
 ADAFRUIT_IO_USERNAME = 'mnhat71t'
 
@@ -44,19 +44,14 @@ client = Client(ADAFRUIT_IO_USERNAME, ADAFRUIT_IO_KEY)
 # client.loop_background()
 
 # Now get data from Feed
-temperature = client.data("temperature")
+temperature = client.data("light")
 temp = []
-bright = []
-humid = []
+date_time = []
 for t in temperature:
     temp += [t.value]
-brightness = client.data("brightness")
-for b in temperature:
-    bright += [t.value]
-humidity = client.data("humidity")
-for h in temperature:
-    humid += [t.value]
+    date_time += [t.created_at]
 
-df = {"Temperature":temp[:2],"Humidity":humid[:2],"Brightness":bright[:2]}
+df = {"Date time":date_time[:],"Light":temp[:]}
 log = pd.DataFrame(df)
-log.to_csv("log.csv")
+log['Date time'] = pd.to_datetime(df['Date time'])
+log.to_csv("Log_file/Device/light_log.csv")

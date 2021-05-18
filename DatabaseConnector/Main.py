@@ -14,7 +14,7 @@ import Constants
 conn = mysql.connector.connect(
     host="localhost",   #    
     user="root",    # Your Username
-    password="enlk8.",  # Your Password  
+    password="nhoxso33",  # Your Password  
     database="GreenSystem", # Your Database Name
     auth_plugin='mysql_native_password' 
 )
