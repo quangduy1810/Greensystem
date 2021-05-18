@@ -1,6 +1,5 @@
-
 ADAFRUIT_IO_USERNAME = "mnhat81t"
-ADAFRUIT_IO_KEY = "aio_zQfr39mimE8Xj1mYKWakUkaKrTTU"
+ADAFRUIT_IO_KEY = "aio_WTiF01yA979rYDYJquWCibmvOteX"
 
 PUMP_RELAY_FEED_ID = "npnlab-bbc-slash-feeds-slash-bk-iot-relay-pump"
 PUMP_DEVICE_ID = "1"
@@ -14,6 +13,13 @@ SOIL_SENSOR_FEED_ID = 'npnlab-bbc-slash-feeds-slash-bk-iot-soil'
 
 LAST_WATERING_TIMESTAMP = None
 
+COOLDOWN_TIME = None
+
 LAND_ID = 1
 
-db_cursor = None
+connectionString = {
+    "user":"root",
+    "password":"enlk8.",
+    "host": "localhost",
+    "database":"GreenSystem"
+}

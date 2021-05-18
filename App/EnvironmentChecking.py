@@ -1,11 +1,21 @@
 from utils import *
+import requests
+
 
 def temperatureAlert():
     # TODO : Send Alert To Web Server
+    url = "localhost:" + ""
+    
+    r = requests.post(url,data={"Alert":"Temperature"})
+            
     print("Temperature is too high. Check your plant right now!!")
 
 def humidityAlert():
     # TODO : Send Alert To Web Server
+    url = "localhost:" ""
+
+    requests.post(url, data={"Alert":"Humidity"})
+
     print("Humidity is too high. Check your plant right now!!")
 
 # Return True if the current environment is good,
@@ -25,11 +35,13 @@ def plantEnvironmentCheck(Land, environmentInfo):
 
     if currentHumidity > lowerBoundHumidity and currentHumidity < upperBoundHumidity:
         humdityFine = True
-    else :  humidityAlert()
+    else :  
+        humidityAlert()
 
     if currentTemperature > lowerBoundTemperature and currentTemperature < upperBoundTemperature:
         temperatureFine = True
-    else : temperatureAlert()
+    else : 
+        temperatureAlert()
         
     return humdityFine and temperatureFine
 

@@ -4,10 +4,7 @@ from Adafruit_IO import MQTTClient
 import json
 import time
 
-from Constants import ADAFRUIT_IO_USERNAME
-from Constants import ADAFRUIT_IO_KEY
 import Constants
-
 
 def connected(client):
     print("process connected successfully")
@@ -61,7 +58,7 @@ def initialize_callbacks():
     client.on_disconnect = disconnected
 
 if __name__ == '__main__':
-    client = MQTTClient(ADAFRUIT_IO_USERNAME, ADAFRUIT_IO_KEY)
+    client = MQTTClient(Constants.ADAFRUIT_IO_USERNAME, Constants.ADAFRUIT_IO_KEY)
     initialize_callbacks()
     client.connect()
     generateFeedValue(client)
