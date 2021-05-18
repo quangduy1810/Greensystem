@@ -49,7 +49,7 @@
                 <ul class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true">
                 <li class="nav-item"><a class="nav-link link text-black display-4" href="/signup">Sign Up</a>
                     </li>
-                {%endif%}
+               
               </ul>
             </div>
         </div>
@@ -67,25 +67,26 @@
         </div>
         <div class="row justify-content-center mt-4">
             <div class="col-lg-8 mx-auto mbr-form" data-form-type="formoid">
-                <form action="https://mobirise.eu/" method="POST" class="mbr-form form-with-styler mx-auto" data-form-title="Form Name"><input type="hidden" name="email" data-form-email="true" value="b1fCO07GJYYOGffuUF8C24VNe8UmbzyBquuU9tCjEOY2AXTE+w4gseReoJSoTtm7vGY00PYRZoLIthO5Of4h+zapaOQgMvCw/aekyOXs63xlI/qRmuXtCF2+jriNKKr4">
-                    <div class="row">
-                        <div hidden="hidden" data-form-alert="" class="alert alert-success col-12"></div>
-                        <div hidden="hidden" data-form-alert-danger="" class="alert alert-danger col-12">Oops...! some problem!</div>
-                    </div>
+                <form action="" method="POST" class="mbr-form form-with-styler mx-auto" data-form-title="Form Name">
+                    <!-- <input type="hidden" name="password" data-form-email="true"> -->
+                    
                     <div class="dragArea row">
                         <div class="col-lg-12">
                             
                         </div>
                         <div class="col-lg-4 col-md-12 col-sm-12 form-group" data-for="name">
-                            <input type="text" name="name" placeholder="Username" data-form-field="name" class="form-control" value="" id="name-form9-z">
+                            <input type="text" name="name" placeholder="Username" data-form-field="name" class="form-control"  value="{{request.form.username}}" id="name-form9-z">
                         </div>
-                        <div data-for="email" class="col-lg-4 col-md-12 col-sm-12 form-group">
-                            <input type="email" name="email" placeholder="Password" data-form-field="email" class="form-control" value="" id="email-form9-z">
+                        <div data-for="password" class="col-lg-4 col-md-12 col-sm-12 form-group">
+                            <input type="password" name="password" placeholder="Password" data-form-field="password" class="form-control" value="{{request.form.password}}" id="password-form9-z">
                         </div>
-                        <div class="col-lg-4 col-md-12 col-sm-12 mbr-section-btn align-center"><button type="submit" class="btn btn-black display-4">Log In</button></div>
+                        <div class="col-lg-4 col-md-12 col-sm-12 mbr-section-btn align-center"><button type="submit" class="btn btn-black display-4" href="login">Log In</button></div>
                     </div>
                 </form>
             </div>
+            {% if error %}
+            <p class="error">{{ error }}</p>
+            {% endif %}
         </div>
     </div>
 </section>
