@@ -1,54 +1,57 @@
 from datetime import datetime
-from flask import render_template, request, redirect, url_for, jsonify, make_response
+from flask import render_template, request, redirect, url_for, jsonify, make_response,session
 from flask_mysqldb import MySQL
-from Greensys import app
+from Greensys import app,conn
 import os
 #import Process
 import webbrowser
 import json
 import glob
+import Constants
 mysql=MySQL(app)
-userData = {'id':None,'name':None,'land':None,}
+
+cur = conn.cursor()
 #giả lập##############
-account=1
+
 data=[{'id':1,'locate':"ai biet",'plant':"xoài",'temp':23,'lighttime':8,'humidity':2000}]
 #####################
-@app.route('/')
 
+@app.route('/')
 @app.route('/homepage')
 def homepage():
-    notify=1
+    
+    if 'UserData' in session:
+        account=session['UserData']
+    else:
+        account=None
     return render_template(
         'homepage.html',
         notify=notify,
-        account=account)
-@app.route('/login')
+        account= account
+        )
+@app.route('/login',methods=['GET','POST'])
 def login():
     error = None
     if request.method == 'POST':
-        username = request.form['username']
-        cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM account WHERE username = '"+ username + "'")
+        username = request.form['name']
+        print(request.form['name'])
+        print(request.form['password'])
+        cur.execute("SELECT * FROM PERSON WHERE Username = '"+ username + "'")
         acc = cur.fetchone()
-        if acc is None or acc['password'] != request.form['password']:
+        session['UserData']=acc
+        if acc is None or acc[2] != request.form['password']:
             error = 'Username hoặc mật khẩu không đúng'
         else:
-            userData['id'] = acc['id']
-            userData['name'] = acc['name']
-
-            cur.execute("SELECT * FROM farm WHERE owner_id = "+ str(userData['id']))
-            acc = cur.fetchone()
-            if acc is not None:
-                userData['id'] = acc['id']
-                acc = None
+            
+            return redirect(url_for('homepage'))
+    print(error)
     return render_template('logIn.html')
 @app.route('/signup',methods=['GET','POST'])
 def signup():
     error = None
     if request.method == 'POST':
         username = request.form['username']
-        cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM user WHERE username = '"+ username +"'")
+        cur.execute("SELECT * FROM PERSON WHERE username = '"+ username +"'")
         acc = cur.fetchone()
         if acc is not None:
             error = 'Tài khoản đã tồn tại'
@@ -64,6 +67,8 @@ def signup():
     return render_template('signUp.html')
 @app.route('/plantdata')
 def plantdata():
+    cur.execute("SELECT * FROM LAND WHERE UserID = '"+ str(session['UserData'][0]) + "'")
+    data=cur.fetchall()
     return render_template('plantdata.html',data=data)
 @app.route('/envicondi')
 def envicondi():

@@ -1,2 +1,3 @@
-venv\Scripts\activate
+venv
 *.vs
+__pycache__

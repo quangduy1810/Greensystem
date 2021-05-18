@@ -88,13 +88,14 @@ padding-block: 10px;
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true">
-                {%if account==None%}
-                    <li class="nav-item"><a class="nav-link link text-black display-4" href="/login">Log In</a></li>
+                {%if account != None%}
+                <li class="nav-item"><a class="nav-link link text-black display-4" href="/logout">Log Out</a></li>
+                    
+                {%else%}
+                <li class="nav-item"><a class="nav-link link text-black display-4" href="/login">Log In</a></li>
                     
                     <li class="nav-item"><a class="nav-link link text-black display-4" href="/signup">Sign Up</a>
                     </li>
-                {%else%}
-                <li class="nav-item"><a class="nav-link link text-black display-4" href="/logout">Log Out</a></li>
                 {%endif%}
               </ul>
             </div>
@@ -105,8 +106,8 @@ padding-block: 10px;
 
 
  
- {%if account%}
- <p style="padding-top: 8%; font-size: 40px; text-align: center;"><strong style="background-color: wheat;">Welcome {{user}}</strong></p>
+ {%if account !=None%}
+ <p style="padding-top: 8%; font-size: 40px; text-align: center;"><strong style="background-color: wheat;">Welcome {{account[1]}}</strong></p>
  <div style="height:20px"></div>
  <a href="/envicondi" ><button class="button">Tình trạng môi trường</button></a>
  <div style="height:20px"></div>
