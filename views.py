@@ -83,9 +83,43 @@ def wateringhistory():
     cur.execute("SELECT * FROM LAND WHERE UserID = '"+ str(session['UserData'][0]) + "'")
     data=cur.fetchall()
     return render_template('wateringhistory.html',data=data)
-@app.route('/notify')
+
+
+notification = {
+    "temperature" : "None",
+    "humidity": "None",
+    "brightness": "None",
+    "alert": "None",
+    "date": "None",
+}
+
+@app.route('/api', methods=['GET','POST'])
+def notify_api(): 
+    
+    res =   "The temperature is : " + notification["temperature"] + "\n" + \
+            "The humidity is : " + notification["humidity"]  + "\n" + \
+            "The brightness is :  " +  notification["brightness"] + "\n" + \
+            str(notification["alert"])
+
+    notification["date"] = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+
+    if request.method == 'POST':
+        req = request.json
+
+        notification["temperature"] = req["temperature"]
+        notification["humidity"] = req['humidity']
+        notification["brightness"] = req['brightness']
+        notification["alert"] = req['alert']
+
+        return jsonify(res)
+    else :
+
+        return jsonify(notification)
+
+@app.route('/notify', methods=['GET'])
 def notify():
     return render_template('notify.html')
+
 #add function
 @app.route('/logout')
 def logout():

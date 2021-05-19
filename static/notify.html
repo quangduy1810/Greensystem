@@ -1,7 +1,49 @@
+<!DOCTYPE html>
 <html>
+
+<header>    
+</header>
+
+<body>
     <h1>
-        {%block content%}
-        TIN NGUOI VAY BAN???
-        {%endblock%}
+        <p id="datetime"></p>
+        <p id="temperature"></p>
+        <p id="humidity"></p>
+        <p id="brightness"></p>
+        <p id="alert"> The Weather Is Okay!</p>
     </h1>
+</body>
+
+
+<script>
+    function f(){
+
+        var xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var response = JSON.parse(this.responseText);
+
+                document.getElementById("humidity").innerHTML = response.humidity;
+                document.getElementById("temperature").innerHTML = response.temperature;
+                document.getElementById("brightness").innerHTML = response.brightness;
+                document.getElementById("alert").innerHTML = response.alert;
+                document.getElementById("datetime").innerHTML = response.date                    
+
+                /**
+                 * Your code goes here.
+                */
+            
+            }
+        };
+
+        xhttp.open('GET', '/api', true);
+        xhttp.send();
+
+        setTimeout(f, 2000);
+    }
+        
+    f();
+</script>
+
 </html>
