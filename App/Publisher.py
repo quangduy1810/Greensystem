@@ -51,7 +51,7 @@ def generateFeedValue(client):
 
         print(json.dumps(payload))
 
-        time.sleep(60) # 1 request per minute
+        time.sleep(20) # 1 request per minute
 
 def initialize_callbacks():
     client.on_connect = connected
