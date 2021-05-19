@@ -1,4 +1,5 @@
 from re import T
+from mysql.connector.catch23 import STRING_TYPES
 from pkg_resources import Environment
 from getconnect import Connection
 from devicestate import *
@@ -29,6 +30,12 @@ def sendTemperature(value):
         return checkValue(value)
     aio.publish('temperature',value)
 
+
+def sendPump(value):
+    aio.publish('pump',value)
+
+def sendLight(value):
+    aio.publish('light', value)
 
 def send():
     return 1
@@ -67,7 +74,7 @@ def sendOnceBright(bright):
     return data
 
 
-def realSend(*param):
+def sendInfomation(*param):
     timeout = 30
     if len(param) == 1:
         pre = getBrightness().created_at
@@ -81,7 +88,7 @@ def realSend(*param):
             timeout = timeout - 1
             if timeout == 0:
                 return  error(1)
-            # time.sleep(30)
+            time.sleep(30)
     else:
         pre1 = getTemperature().created_at
         pre2 = getHumidity().created_at
@@ -94,11 +101,33 @@ def realSend(*param):
             timeout = timeout - 1
             if timeout == 0:
                 return error(1)
-            # time.sleep(30)
+            time.sleep(30)
     return 'Send success'        
                 
 
 def message(aio, feed_id, payload):
     print('Feed {0} received new value: {1}'.format(feed_id, payload))
 
+
+def sendAction(action,feed):
+    timeout = 30
+    if type(action).__name__ != 'str' or type(feed).__name__ != 'str':
+        return error(0)
+    if feed == 'pump':
+        pre = getPumpState().created_at
+        sendPump(action)
+        while(pre == getPumpState().created_at or timeout < 0):
+            timeout = timeout - 1
+            # time.sleep(30)
+    else:
+        pre = getLightState().created_at
+        sendLight(action)
+        while(pre == getLightState().created_at or timeout < 0):
+            timeout = timeout - 1
+            # time.sleep(30)
+    if timeout < 0:
+        return 'Timeout, check your connection'
+    return 'Send success'
+
+print(sendAction('ON','light'))
 

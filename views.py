@@ -2,6 +2,8 @@ from datetime import datetime
 from flask import render_template, request, redirect, url_for, jsonify, make_response,session
 from flask_mysqldb import MySQL
 from Greensys import app,conn
+from envirstate import *
+
 import os
 #import Process
 import webbrowser
@@ -72,8 +74,11 @@ def plantdata():
     return render_template('plantdata.html',data=data)
 @app.route('/envicondi')
 def envicondi():
-    cur.execute("SELECT * FROM LAND WHERE UserID = '"+ str(session['UserData'][0]) + "'")
-    data=cur.fetchall()
+    data= {
+        "temperature" : getTemperature().value,
+        "humidity": getHumidity().value,
+        "brightness": getBrightness().value
+    }
     return render_template('envicondi.html',data=data)
 @app.route('/wateringhistory')
 def wateringhistory():
@@ -82,10 +87,13 @@ def wateringhistory():
     return render_template('wateringhistory.html',data=data)
 
 
+
+
+
 notification = {
-    "temperature" : "None",
-    "humidity": "None",
-    "brightness": "None",
+    "temperature" : getTemperature().value,
+    "humidity": getHumidity().value,
+    "brightness": getBrightness().value,
     "alert": "None",
     "date": "None",
 }
