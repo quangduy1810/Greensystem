@@ -3,17 +3,21 @@ import mysql.connector
 from utils import *
 
 def CustomEnvironmentUpdate(landId,tempRange,humidRange,hazTempRange, hazHumidRange):
-    Constants.db_cursor.execute(
+    
+    conn = mysql.connector.connect(**Constants.connectionString)
+    cursor = conn.cursor()
+
+    cursor.execute(
         "SELECT * FROM Land WHERE Id=" + str(landId)
         )
 
-    res = Constants.db_cursor.fetchall()
+    res = cursor.fetchall()
 
     if len(res) == 0:
         print("There is no such Land that equals to the given landId")
 
     try:
-        Constants.db_cursor.execute(
+        cursor.execute(
             "UPDATE Land SET " +  
             "lowerTemperature=" + str(tempRange[0]) + "," +
             "upperTemperature=" + str(tempRange[1]) + "," +
@@ -27,3 +31,16 @@ def CustomEnvironmentUpdate(landId,tempRange,humidRange,hazTempRange, hazHumidRa
         )
     except:
         raise "An exception associated with the database has occured."
+
+
+    cursor.execute(
+        "SELECT * FROM Land WHERE Id=" + str(landId)
+        )
+    
+    print(cursor.fetchall())
+    cursor.close()
+    conn.close()
+
+
+
+CustomEnvironmentUpdate(1, (20, 50), (40,80), (10, 60), (20,90))

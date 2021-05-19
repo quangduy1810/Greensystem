@@ -5,29 +5,31 @@ from utils import *
 import json
 import sys
 import mysql.connector
-
-from flask import Flask, render_template, request
-from flask_mysqldb import MySQL
-import views
 import os
-
+ 
+ ####
 
 def init():
-
-    global Land 
-
     global CurrentEnvironment 
 
-    Constants.db_cursor.execute(
+    global Land 
+    
+    conn = mysql.connector.connect(**Constants.connectionString)
+    cursor = conn.cursor()
+
+    cursor.execute(
     " SELECT * FROM Land " +
     " WHERE Land.Id = " + str(Constants.LAND_ID) +
     ";"
     )
 
-    res = Constants.db_cursor.fetchall()[0]
+    res = cursor.fetchall()[0]
 
+    cursor.close()
+    conn.close()
 
     print(res)
+
     CurrentEnvironment = Environment(-1, -1, -1)
 
     Land = Land(    
@@ -82,3 +84,5 @@ def start():
     client.loop_blocking()
 
     conn.close()
+
+start()
