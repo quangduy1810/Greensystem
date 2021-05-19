@@ -4,17 +4,17 @@ import requests
 
 def temperatureAlert():
     # TODO : Send Alert To Web Server
-    url = "localhost:" + ""
+    url = "127.0.0.1:" + "5000/notify"
     
-    r = requests.post(url,data={"Alert":"Temperature"})
+    r = requests.post(url,data={"alert":"Temperature"})
             
     print("Temperature is too high. Check your plant right now!!")
 
 def humidityAlert():
     # TODO : Send Alert To Web Server
-    url = "localhost:" ""
+    url = "127.0.0.1" + "5000/notify"
 
-    requests.post(url, data={"Alert":"Humidity"})
+    requests.post(url, data={"alert":"Humidity"})
 
     print("Humidity is too high. Check your plant right now!!")
 

@@ -7,6 +7,7 @@ import os
 import webbrowser
 import json
 import glob
+import time
 
 mysql=MySQL(app)
 
@@ -80,9 +81,24 @@ def wateringhistory():
     cur.execute("SELECT * FROM LAND WHERE UserID = '"+ str(session['UserData'][0]) + "'")
     data=cur.fetchall()
     return render_template('wateringhistory.html',data=data)
-@app.route('/notify')
+
+
+@app.route('/api', methods=['GET','POST'])
+def notify_api():
+    global message
+
+    message = "The environment status is normal. the date is : "
+
+    if request.method == 'POST':
+        message = request.form["alert"]
+        return message
+    else :
+        return message + str(time.time())
+
+@app.route('/notify', methods=['GET'])
 def notify():
     return render_template('notify.html')
+
 #add function
 @app.route('/logout')
 def logout():
