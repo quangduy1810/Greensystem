@@ -320,7 +320,29 @@ padding-block: 10px;
   
 
  <div style="height: 10px"></div>
- <button style="border-radius: 8px; margin-left: 5%; background-color: #04AA6D; font-size: 20px;" href="/add"> + </button> 
+ <button id="collap" style="border-radius: 8px; margin-left: 5%; background-color: #04AA6D; font-size: 20px;" href="/add"> + </button> 
+  <div class="content">
+    <form>
+    <label for="location">Khu vực:</label><br>
+    <input type="text" id="location" name="location" value="Khu vực"><br>
+    <label for="plant">Cây trồng:</label><br>
+    <input type="text" id="plant" name="plant" value="Cây trồng"><br>
+    <label for="plant">Nhiệt độ thích hợp:</label><br>
+    <input type="text" id="ltemp" name="ltemp" >
+    
+    &nbsp;-&nbsp;
+    <input type="text" id="utemp" name="utemp" >
+    <br>
+    <label for="plant">Thời gian chiếu sáng:</label><br>
+    <input type="text" id="light" name="light"><br>
+    <label for="plant">Độ ẩm thích hợp</label><br>
+    <input type="text" id="lhumidity" name="lhumidity"> 
+    &nbsp;-&nbsp;
+    <input type="text" id="uhumidity" name="uhumidity"><br>
+    <br>
+    <input type="submit" value="Thêm">
+    </form>
+    </div>
  <div id="noti" style="display: none;">
   <a class="noti" href="/notify"> Cảnh báo!!!
   </a>
@@ -336,6 +358,22 @@ for (i = 0; i < coll.length; i++) {
     this.classList.toggle("active");
     // var content = this.parentElement.parentElement.nextElementSibling.children[0];
     var content = this.parentElement.parentElement.parentElement.nextElementSibling;
+    if (content.style.maxHeight){
+      content.style.maxHeight = null;
+    } else {
+      content.style.maxHeight = content.scrollHeight + "px";
+    } 
+    
+  });
+
+}
+var coll = document.getElementsByID("collaP");
+var i;
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    // var content = this.parentElement.parentElement.nextElementSibling.children[0];
+    var content = this.nextElementSibling;
     if (content.style.maxHeight){
       content.style.maxHeight = null;
     } else {
