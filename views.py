@@ -69,6 +69,9 @@ def signup():
 def plantdata():
     cur.execute("SELECT * FROM LAND WHERE UserID = '"+ str(session['UserData'][0]) + "'")
     data=cur.fetchall()
+    cur.execute("SELECT * FROM DEVICE_USED_IN_LAND WHERE LandID='"+ str(data[0])+"' ")
+    data2=cur.fetchall()
+    data.append(data2)
     return render_template('plantdata.html',data=data)
 @app.route('/envicondi')
 def envicondi():

@@ -295,9 +295,10 @@ padding-block: 10px;
         <th> Trạng thái</th>
         <th>Công tắc</th>
       </tr>
+      {%for value in dt[12]%}
       <tr style="background: cyan;">
-        <td>qqewrqrw</td>
-        <td> </td>
+        <td>value[0]</td>
+        <td>value[1]</td>
         <td><label class="switch">
           <input type="checkbox">
           <span class="slider round"></span>
