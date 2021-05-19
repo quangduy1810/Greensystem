@@ -11,14 +11,23 @@ class Land(object):
         self.humidityRange = humidRange
         self.hazardousTemperatureRange = hazardTempRange
         self.hazardousHumidityRange = hazardHumidRange
-
         
 class Environment(object):
     def __init__(self, humidity, temperature, brightness):
         self.humidity = humidity
         self.temperature = temperature
         self.brightness = brightness
-        # self.lightOnTime = lightOnTime
+
+    def serialize(self):
+        payload = {
+            "humidity": self.humidity,
+            "temperature": self.temperature,
+            "brightness" : self.brightness
+        }
+
+        return json.dumps(payload)
+
+
 
 class DeviceAction(object):
     pass

@@ -1,23 +1,6 @@
 from utils import *
 import requests
 
-
-def temperatureAlert():
-    # TODO : Send Alert To Web Server
-    url = "127.0.0.1:" + "5000/notify"
-    
-    r = requests.post(url,data={"alert":"Temperature"})
-            
-    print("Temperature is too high. Check your plant right now!!")
-
-def humidityAlert():
-    # TODO : Send Alert To Web Server
-    url = "127.0.0.1" + "5000/notify"
-
-    requests.post(url, data={"alert":"Humidity"})
-
-    print("Humidity is too high. Check your plant right now!!")
-
 # Return True if the current environment is good,
 # False otherwise.
 def plantEnvironmentCheck(Land, environmentInfo):
@@ -33,15 +16,28 @@ def plantEnvironmentCheck(Land, environmentInfo):
 
     humdityFine, temperatureFine = False, False
 
+    payload = {
+        "temperature": str(environmentInfo.temperature),
+        "humidity": str(environmentInfo.humidity),
+        "brightness": str(environmentInfo.brightness),
+        "alert" : "Weather is Normal."
+    }
+
     if currentHumidity > lowerBoundHumidity and currentHumidity < upperBoundHumidity:
         humdityFine = True
     else :  
-        humidityAlert()
+        payload["alert"] = "Humidity is Hazardous!"
 
     if currentTemperature > lowerBoundTemperature and currentTemperature < upperBoundTemperature:
         temperatureFine = True
     else : 
-        temperatureAlert()
+        payload["alert"] = "Temperature is Hazardous!"
         
+    url = "http://127.0.0.1:5000/api"
+
+    requests.post(url,json=payload)
+
+    print(requests)
+
     return humdityFine and temperatureFine
 

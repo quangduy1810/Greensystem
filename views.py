@@ -7,7 +7,6 @@ import os
 import webbrowser
 import json
 import glob
-import time
 
 mysql=MySQL(app)
 
@@ -83,17 +82,36 @@ def wateringhistory():
     return render_template('wateringhistory.html',data=data)
 
 
-@app.route('/api', methods=['GET','POST'])
-def notify_api():
-    global message
+notification = {
+    "temperature" : "None",
+    "humidity": "None",
+    "brightness": "None",
+    "alert": "None",
+    "date": "None",
+}
 
-    message = "The environment status is normal. the date is : "
+@app.route('/api', methods=['GET','POST'])
+def notify_api(): 
+    
+    res =   "The temperature is : " + notification["temperature"] + "\n" + \
+            "The humidity is : " + notification["humidity"]  + "\n" + \
+            "The brightness is :  " +  notification["brightness"] + "\n" + \
+            str(notification["alert"])
+
+    notification["date"] = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
 
     if request.method == 'POST':
-        message = request.form["alert"]
-        return message
+        req = request.json
+
+        notification["temperature"] = req["temperature"]
+        notification["humidity"] = req['humidity']
+        notification["brightness"] = req['brightness']
+        notification["alert"] = req['alert']
+
+        return jsonify(res)
     else :
-        return message + str(time.time())
+
+        return jsonify(notification)
 
 @app.route('/notify', methods=['GET'])
 def notify():
