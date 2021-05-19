@@ -7,7 +7,7 @@ import os
 import webbrowser
 import json
 import glob
-import Constants
+
 mysql=MySQL(app)
 
 cur = conn.cursor()
@@ -72,18 +72,19 @@ def plantdata():
     return render_template('plantdata.html',data=data)
 @app.route('/envicondi')
 def envicondi():
-    return render_template('envicondi.html')
+    cur.execute("SELECT * FROM LAND WHERE UserID = '"+ str(session['UserData'][0]) + "'")
+    data=cur.fetchall()
+    return render_template('envicondi.html',data=data)
 @app.route('/wateringhistory')
 def wateringhistory():
-    return render_template('wateringhistory.html')
-@app.route('/notify<inte>')
-def notify(inte):
-    return render_template('notify.html',int=inte)
+    cur.execute("SELECT * FROM LAND WHERE UserID = '"+ str(session['UserData'][0]) + "'")
+    data=cur.fetchall()
+    return render_template('wateringhistory.html',data=data)
+@app.route('/notify')
+def notify():
+    return render_template('notify.html')
 #add function
-@app.route('/add', methods=["POST"])
-def addtocart():
-    Controller.addtoCart(cart,int(request.form['ID']))
-    return ""
 @app.route('/logout')
 def logout():
-    return render_template("homepage.html",account=None)
+    session.pop('UserData', None)
+    return redirect(url_for('homepage'))

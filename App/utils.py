@@ -5,22 +5,10 @@ class PlantType(object):
         self.id = id
         self.name = name
 
-class Device(object):
-    def __init__(self, id, type):
-        self.id = id
-        self.type = type
-
-# Is this the same as UserFarm in the Implementation View Diagram??
 class Land(object):
     def __init__(self, tempRange, humidRange, hazardTempRange, hazardHumidRange):
-        # self.plantType = plantType
-        # self.deviceList = deviceList
-        # self.startTime = startTime
-        # self.endTime = endTime
-        # self.lightOnTime = lightOnTime
         self.temperatureRange = tempRange
         self.humidityRange = humidRange
-        # Nhiet do khac nghiet, Do am khac nghiet
         self.hazardousTemperatureRange = hazardTempRange
         self.hazardousHumidityRange = hazardHumidRange
 

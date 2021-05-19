@@ -41,16 +41,54 @@
   text-align: center;
   
 }
-th {
-  height: 300px;
-  
-}
 th,td{
-    border: 10px solid white;
-background-color: black;
+border: 10px solid white;
+background-color: rgb(187, 187, 48);
 color: white;
 }
+.collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
 
+.active, .collapsible:hover {
+  background-color: #555;
+}
+
+.collapsible:after {
+  content: '\002B';
+  color: white;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2212";
+}
+
+.content {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  
+}
+.noti
+{position: fixed;
+bottom:20px;
+right:10px;
+font-size: 30px;
+color: red;
+background-color:white;
+padding-block: 10px;
+}
 </style>
 <body>
   
@@ -81,6 +119,9 @@ color: white;
 </section>
 <div style="height: 50px;"></div>
 <h2 style="margin-left: 5%;" > Tinh trang moi truong</h2>
+{%for value in data%}
+<p type="button" class="collapsible" style="margin-left: 5%; margin-right: 5%;"> {{value[2]}}</p>
+<div class="content" style="margin-left: 5%; margin-right: 5%;">
 <table>
     <tr >
         <th>Nhiet do</th>
@@ -92,6 +133,44 @@ color: white;
         <td> 1010</td>
         <td>bat</td>
     </tr>
-</table>
+  </table>
+  </div>
+{%endfor%}
+<div id="noti" style="display: none;">
+  <a class="noti" href="/notify"> Cảnh báo!!!
+  </a>
+  </div>
+  <script>
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    
+    async function f(){
+      await sleep(2000);
+      var x=document.getElementById("noti");
+      
+      x.style.display="block";
+    }
+    f()
+  </script>
 </body>
+<script>
+
+  var coll = document.getElementsByClassName("collapsible");
+  var i;
+  for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      // var content = this.parentElement.parentElement.nextElementSibling.children[0];
+      var content = this.nextElementSibling;
+      if (content.style.maxHeight){
+        content.style.maxHeight = null;
+      } else {
+        content.style.maxHeight = content.scrollHeight + "px";
+      } 
+      
+    });
+  
+  }
+    </script>
 </html>

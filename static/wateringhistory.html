@@ -105,6 +105,49 @@
 td{
   border: 5px solid white;
     background-color: rgb(184, 201, 201);
+}
+.collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.active, .collapsible:hover {
+  background-color: #555;
+}
+
+.collapsible:after {
+  content: '\002B';
+  color: white;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2212";
+}
+
+.content {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  
+}
+.noti
+{position: fixed;
+bottom:20px;
+right:10px;
+font-size: 30px;
+color: red;
+background-color:white;
+padding-block: 10px;
 } 
   </style>
   <!-- Site made with Mobirise Website Builder v5.3.5, https://mobirise.com -->
@@ -163,29 +206,69 @@ td{
   </section>
   <div style="height: 30px;"></div>
   <h2 style="margin-left: 5%;" > Lịch sử tưới tiêu</h2>
-<table>
-  <tr>
-    <th>Ngày</th>
-    <th>Khu vực</th>
-    <th>Cây trồng</th>
-    <th>Lượng nước(l)</th>
-    <th>Thời gian xả</th>
-    <th>Thời gian bật đèn</th>
-   
-  </tr>
+
+  
   {%for dt in data%}
-  <tr>
-    <td>{{dt.date}}</td>
-    <td>{{dt.locate}}</td>
-    <td>{{dt.plant}}</td>
-    <td>{{dt.water}}</td>
-    <td>{{dt.pumptime}}</td>
-    <td>{{dt.lighttime}}</td>
+<p type="button" class="collapsible" style="margin-left: 5%; margin-right: 5%;"> {{dt[2]}}</p>
+<div class="content" >
+  <table>
+    <tr>
+      <th>Ngày</th>
+      <th>Khu vực</th>
+      <th>Cây trồng</th>
+      <th>Lượng nước(l)</th>
+      <th>Thời gian xả</th>
+      <th>Thời gian bật đèn</th>
+     
+    </tr>
+    <tr>
+      <td>{{dt.date}}</td>
+      <td>{{dt.locate}}</td>
+      <td>{{dt.plant}}</td>
+      <td>{{dt.water}}</td>
+      <td>{{dt.pumptime}}</td>
+      <td>{{dt.lighttime}}</td>
+      
+    </tr>
+  </table>
+  </div>
+{%endfor%}
+<div id="noti" style="display: none;">
+  <a class="noti" href="/notify"> Cảnh báo!!!
+  </a>
+  </div>
+  <script>
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
     
-  </tr>
-  {%endfor%}
-</table>
+    async function f(){
+      await sleep(2000);
+      var x=document.getElementById("noti");
+      x.style.display="block";
+    }
+    f()
+  </script>
   
 {% endblock %} 
 </body>
+<script>
+
+  var coll = document.getElementsByClassName("collapsible");
+  var i;
+  for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      // var content = this.parentElement.parentElement.nextElementSibling.children[0];
+      var content = this.nextElementSibling;
+      if (content.style.maxHeight){
+        content.style.maxHeight = null;
+      } else {
+        content.style.maxHeight = content.scrollHeight + "px";
+      } 
+      
+    });
+  
+  }
+    </script>
 </html>
