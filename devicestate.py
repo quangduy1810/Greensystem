@@ -6,7 +6,6 @@ aio = Connection.getconnectClient()
 
 def getPumpState():
     data = aio.data('pump')
-    print(data)
     if raiseErr(data) == None :
         return None
     return data[0]
