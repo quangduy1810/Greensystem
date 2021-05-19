@@ -63,7 +63,7 @@ def signup():
             email = request.form['email']
             phonenumber = request.form['phonenumber']
             address= request.form['address']
-            cur.execute("INSERT INTO account (id, name, username, password, email) VALUES ('AUTO_INCREMENT PRIMARY KEY','"+name+"','"+username+"','"+password+"','"+email+"')")
+            cur.execute("INSERT INTO PERSON (id, username, password, address) VALUES ('AUTO_INCREMENT PRIMARY KEY','"+name+"','"+password+"','"+address+"')")
             mysql.connection.commit()
             return redirect(url_for('/homepage'))
     return render_template('signUp.html')
