@@ -19,7 +19,7 @@ LAND_ID = 1
 
 connectionString = {
     "user":"root",
-    "password":"enlk8.",
+    "password":"nhoxso33",
     "host": "localhost",
-    "database":"GreenSystem"
+    "database":"greensystem"
 }
