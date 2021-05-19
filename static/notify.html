@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <html>
 
-<header>    
-</header>
+<head>    
+</head>
 
 <body>
+
+    <header>
+        
+    </header>
+
+    <main>
     <h1>
         <p id="datetime"></p>
         <p id="temperature"></p>
@@ -12,6 +18,7 @@
         <p id="brightness"></p>
         <p id="alert"> The Weather Is Okay!</p>
     </h1>
+    </main>    
 </body>
 
 
@@ -34,13 +41,15 @@
                  * Your code goes here.
                 */
             
+            } else {
+                return;
             }
         };
 
         xhttp.open('GET', '/api', true);
         xhttp.send();
-
-        setTimeout(f, 2000);
+        
+        setTimeout(f, 1000);
     }
         
     f();
