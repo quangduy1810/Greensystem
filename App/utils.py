@@ -1,10 +1,5 @@
 import json
 
-class PlantType(object):
-    def __init__(self, id, name):
-        self.id = id
-        self.name = name
-
 class Land(object):
     def __init__(self, tempRange, humidRange, hazardTempRange, hazardHumidRange):
         self.temperatureRange = tempRange
@@ -40,7 +35,7 @@ class PumpAction(DeviceAction):
     def serialize(self):
         payload = {
             "id": str(self.deviceId),
-            "name": "PUMP",
+            "name": "RELAY",
             "data": str(self.status),
             "unit": "",
             }
@@ -55,7 +50,7 @@ class LightAction(DeviceAction):
     def serialize(self):
         payload = {
             "id": str(self.deviceId),
-            "name":"LIGHT",
+            "name":"RELAY",
             "data" : str(self.value),
             "unit" : ""
             }

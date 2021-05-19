@@ -12,7 +12,6 @@ def plantEnvironmentCheck(Land, environmentInfo):
 
     # Unpacking environment data
     currentHumidity, currentTemperature = environmentInfo.humidity, environmentInfo.temperature
-    # brightness = environmentInfo.brightness
 
     humdityFine, temperatureFine = False, False
 
@@ -36,8 +35,6 @@ def plantEnvironmentCheck(Land, environmentInfo):
     url = "http://127.0.0.1:5000/api"
 
     requests.post(url,json=payload)
-
-    print(requests)
 
     return humdityFine and temperatureFine
 
