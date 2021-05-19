@@ -69,9 +69,12 @@ def signup():
 def plantdata():
     cur.execute("SELECT * FROM LAND WHERE UserID = '"+ str(session['UserData'][0]) + "'")
     data=cur.fetchall()
-    cur.execute("SELECT * FROM DEVICE_USED_IN_LAND WHERE LandID='"+ str(data[0])+"' ")
-    data2=cur.fetchall()
-    data.append(data2)
+    print (data);
+    data2=[]
+    for value in data:
+        cur.execute("SELECT * FROM DEVICE_USED_IN_LAND WHERE LandID='"+ str(value[1])+"' ")
+        data2.append(cur.fetchall())
+    print (data2);
     return render_template('plantdata.html',data=data)
 @app.route('/envicondi')
 def envicondi():
@@ -125,3 +128,24 @@ def notify():
 def logout():
     session.pop('UserData', None)
     return redirect(url_for('homepage'))
+@app.route('/delete<id><type>', methods=['GET'])
+def delete(id,type):
+    if type == 'l': #stand for land
+        cur.execute("DELETE FROM LAND WHERE ID = '"+ str(id) + "' AND  UserID = '"+ str(session['UserData'][0]) + "'" );
+        cur.execute("SELECT * FROM LAND WHERE UserID = '"+ str(session['UserData'][0]) + "'")
+        data=cur.fetchall()
+        return render_template('plantdata.html',data=data)
+    else:
+        return "this is" + type
+@app.route('/edit<data>', methods=['GET']) 
+def edit(data):
+    if session['UserData']== data:
+        return render_template('plantdata.html',data=data)
+    else:
+        cur.execute("DELETE FROM LAND WHERE UserID = '"+ str(session['UserData'][0]) + "'");
+        cur.execute("UPDATE Land SET " +  
+            "lowerTemperature=" + str(data[4]) + "," +
+            "upperTemperature=" + str(data[5]) + "," +
+            "lowerHumidity=" + str(data[6]) + "," +
+            "upperHumidity=" + str(data[7]) + "," +
+            "WHERE Id=" + str() +"")           

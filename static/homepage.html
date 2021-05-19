@@ -157,12 +157,12 @@ padding-block: 10px;
               document.getElementById("temperature").innerHTML = response.temperature;
               document.getElementById("brightness").innerHTML = response.brightness;
               document.getElementById("alert").innerHTML = response.alert;
-              document.getElementById("datetime").innerHTML = response.date                    
+              document.getElementById("datetime").innerHTML = response.date;                   
 
               /**
                * Your code goes here.
               */
-          
+              document.getElementById("noti").style.display=block;
           } else {
               return;
           }

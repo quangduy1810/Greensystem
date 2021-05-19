@@ -266,7 +266,7 @@ padding-block: 10px;
   </section>
   <div style="height: 30px;"></div>
   <h2 style="margin-left: 5%;" > Quan ly dat dai</h2>
-<table >
+<table  >
   <tr>
     <th>ID</th>
     <th>Khu vực</th>
@@ -275,22 +275,28 @@ padding-block: 10px;
     <th>Thời gian chiếu sáng</th>
     <th>Độ ẩm thích hợp(%)</th>
     <th></th>
+    <th></th>
+    <th type="button" style="padding: 5px; background-color: thistle;" onclick="edit()" >Sửa</th>
+    <th type="button" style="padding: 5px;" onclick="confirm()"><a href="/edit{{data}}" id="confirm"></a></th>
   </tr>
   {%for dt in data%}
-  <tr>
+  <tr id="land">
   
     <td>{{dt[0]}}</td>
     <td>{{dt[2]}}</td>
     <td></td>
     <td>{{dt[4]}} - {{dt[5]}}</td>
+
     <td></td>
     <td>{{dt[6]}}-{{dt[7]}}</td>
-    <td type="button" class="collapsible" >...</td>
+    <td type="button" style="padding: 5px;" class="collapsible" contenteditable="false" >...</td>
+    <td type="button"  style="padding: 5px; background: red;"  contenteditable="false"><a href="/delete{{dt[0]}}{{ 'l' }}">X</a></td>
+    
   </tr>
 </table>
-<div class="content">
+<div class="content" style="background: darkgrey; width: 90%; margin-left: 5%;">
     <table style="background-color: cadetblue; text-align: center;">
-      <tr style="background: cyan; border: 5px solid white;">
+      <tr style=" border: 5px solid white;">
         <th>Thiết bị</th>
         <th> Trạng thái</th>
         <th>Công tắc</th>
@@ -304,30 +310,22 @@ padding-block: 10px;
           <span class="slider round"></span>
         </label></td>
         </tr>
+        {%endfor%}
     </table>
+    <div style="height: 10px"></div>
+    <button style="border-radius: 8px; margin-left: 5%; background-color: #04AA6D; font-size: 20px;" href="/add"> + </button> 
 </div>
 </div> 
 {%endfor%}
   
 
  <div style="height: 10px"></div>
- <button style="border-radius: 8px; margin-left: 5%; background-color: #04AA6D; font-size: 20px;"> + </button> 
+ <button style="border-radius: 8px; margin-left: 5%; background-color: #04AA6D; font-size: 20px;" href="/add"> + </button> 
  <div id="noti" style="display: none;">
   <a class="noti" href="/notify"> Cảnh báo!!!
   </a>
   </div>
-  <script>
-    function sleep(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    }
-    
-    async function f(){
-      await sleep(2000);
-      var x=document.getElementById("noti");
-      x.style.display="block";
-    }
-    f()
-  </script>
+ 
 {% endblock %}
 <script>
 
@@ -347,6 +345,27 @@ for (i = 0; i < coll.length; i++) {
   });
 
 }
+function edit()
+{
+  document.getElementById("land").contentEditable= true;
+  document.getElementById("confirm").innerHTML="Xác nhận";
+  document.getElementById("confirm").style.display=block;
+  document.getElementById("confirm").style.backgroundColor= yellow;
+
+}
+function confirm()
+{
+  if (document.getElementById("confirm").innerHTML == "Xác nhận")
+  {
+  alert("Đã thay đổi thông số.");
+  
+  document.getElementById("land").contentEditable= false;
+  document.getElementById("confirm").innerHTML="";
+  }
+}
+
+
+	
   </script>
 </body>
 </html>
