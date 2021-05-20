@@ -58,14 +58,17 @@ def signup():
         if acc is not None:
             error = 'Tài khoản đã tồn tại'
         else:
-            name = request.form['name']
+            
             password = request.form['password']
             email = request.form['email']
             phonenumber = request.form['phonenumber']
             address= request.form['address']
-            cur.execute("INSERT INTO PERSON (id, username, password, address) VALUES ('AUTO_INCREMENT PRIMARY KEY','"+name+"','"+password+"','"+address+"')")
+            cur.execute("INSERT INTO PERSON ( username, password, address) VALUES ('"+username+"','"+password+"','"+address+"')")
+            cur.execute("SELECT * FROM PERSON WHERE id=(SELECT max(id) FROM PERSON);")
+            data= cur.fetchone()
+            session['UserData']=data
             mysql.connection.commit()
-            return redirect(url_for('/homepage'))
+            return redirect(url_for('homepage'))
     return render_template('signUp.html')
 @app.route('/plantdata')
 def plantdata():
@@ -145,15 +148,45 @@ def delete(id,type):
         return render_template('plantdata.html',data=data)
     else:
         return "this is" + type
-@app.route('/edit<data>', methods=['GET']) 
-def edit(data):
-    if session['UserData']== data:
-        return render_template('plantdata.html',data=data)
-    else:
-        cur.execute("DELETE FROM LAND WHERE UserID = '"+ str(session['UserData'][0]) + "'");
-        cur.execute("UPDATE Land SET " +  
-            "lowerTemperature=" + str(data[4]) + "," +
-            "upperTemperature=" + str(data[5]) + "," +
-            "lowerHumidity=" + str(data[6]) + "," +
-            "upperHumidity=" + str(data[7]) + "," +
-            "WHERE Id=" + str() +"")           
+@app.route('/edit<id><type>', methods=['GET','POST']) 
+def edit(id,type):
+    data=None
+    if type=='f':
+        cur.execute("SELECT * FROM LAND WHERE ID = '"+ str(id) + "'AND  UserID = '"+ str(session['UserData'][0]) + "'")
+        data=cur.fetchone();
+    if request.method == 'POST':
+        location = request.form['location']
+        ltemp=request.form['ltemp']
+        utemp=request.form['utemp']
+        lhumid= request.form['lhumidity']
+        uhumid=request.form['uhumidity']
+        lhtemp=request.form['lhtemp']
+        uhtemp=request.form['uhtemp']
+        lhhumid= request.form['lhhumidity']
+        uhhumid=request.form['uhhumidity']
+        if type == 'f': #fix
+            cur.execute("UPDATE LAND SET landName= '" + location + 
+            "',lowerTemperature='" + ltemp + 
+            "',upperTemperature='" + utemp + 
+            "',lowerHumidity='" + lhumid + 
+            "',upperHumidity='" + uhumid + 
+            "',lowerHazardousTemperature='" + lhtemp +
+            "',upperHazardousTemperature='" + uhtemp + 
+            "',lowerHazardousHumidity='" + lhhumid + 
+            "',upperHazardousHumidity='" + uhhumid + 
+                "'WHERE Id='" + str(id) +"'")
+            
+        else:
+            cur.execute("INSERT INTO Land landName= '" + location + 
+            "',lowerTemperature='" + ltemp + 
+            "',upperTemperature='" + utemp + 
+            "',lowerHumidity='" + lhumid + 
+            "',upperHumidity='" + uhumid + 
+            "',lowerHazardousTemperature='" + lhtemp +
+            "',upperHazardousTemperature='" + uhtemp + 
+            "',lowerHazardousHumidity='" + lhhumid + 
+            "',upperHazardousHumidity='" + uhhumid + 
+                "'WHERE UserId='" + str(id) +"'")
+        return redirect(url_for('plantdata'))
+    return render_template('edit.html',data=data)
+               
