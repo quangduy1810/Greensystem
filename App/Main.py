@@ -46,9 +46,9 @@ def message(client, feed_id, payload):
     if dct["name"] == "TEMP-HUMID":
         CurrentEnvironment.temperature = int(dct["data"].split("-")[0])
     elif dct["name"] == "SOIL ":
-        CurrentEnvironment.humidity = int(dct["data"][1])
+        CurrentEnvironment.humidity = int(dct["data"])
     elif dct["name"] == "LIGHT":
-        CurrentEnvironment.brightness = int(dct["data"][0])
+        CurrentEnvironment.brightness = int(dct["data"])
 
     processAction(client, Land, CurrentEnvironment)
 
