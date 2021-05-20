@@ -72,8 +72,10 @@ def plantdata():
     return render_template('plantdata.html',data=data)
 @app.route('/envicondi')
 def envicondi():
-    cur.execute("SELECT * FROM LAND WHERE UserID = '"+ str(session['UserData'][0]) + "'")
+    cur.execute("SELECT Id,UserId,LandName,DeviceId,GROUP_CONCAT(measurementUnit) as \"measurementUnit\",GROUP_CONCAT(measurementValue) as \"measurementValue\" FROM Land INNER JOIN device_acted_in_land ON Land.Id = device_acted_in_land.LandId WHERE UserID= '"+ str(session['UserData'][0]) + "GROUP BY Id'")
     data=cur.fetchall()
+    #print(type(data[0][5]))
+    #data = [(),(),(),...]
     return render_template('envicondi.html',data=data)
 @app.route('/wateringhistory')
 def wateringhistory():
