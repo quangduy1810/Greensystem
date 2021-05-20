@@ -2,7 +2,7 @@ from Adafruit_IO import *
 import sys
 
 ADAFRUIT_IO_USERNAME = "mnhat71t"
-ADAFRUIT_IO_KEY = "aio_QDXp42hzVzSjY4zOATNmbhVjcgqc"
+ADAFRUIT_IO_KEY = "aio_uqtX01lbNKuS65i6gTTWCv8WpbZG"
 
 def connected(aio):
     print('Connected to {0}'.format('humidity'))

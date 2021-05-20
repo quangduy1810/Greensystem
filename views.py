@@ -177,16 +177,7 @@ def edit(id,type):
                 "'WHERE Id='" + str(id) +"'")
             
         else:
-            cur.execute("INSERT INTO Land landName= '" + location + 
-            "',lowerTemperature='" + ltemp + 
-            "',upperTemperature='" + utemp + 
-            "',lowerHumidity='" + lhumid + 
-            "',upperHumidity='" + uhumid + 
-            "',lowerHazardousTemperature='" + lhtemp +
-            "',upperHazardousTemperature='" + uhtemp + 
-            "',lowerHazardousHumidity='" + lhhumid + 
-            "',upperHazardousHumidity='" + uhhumid + 
-                "'WHERE UserId='" + str(id) +"'")
+            cur.execute("INSERT INTO LAND (landName ,lowerTemperature,upperTemperature,lowerHumidity,upperHumidity,lowerHazardousTemperature,upperHazardousTemperature,lowerHazardousHumidity,upperHazardousHumidity) VALUES('" + location + "','" + ltemp + "','" + utemp + "','" + lhumid + "','" + uhumid + "','" + lhtemp +"','" + uhtemp + "','" + lhhumid + "','" + uhhumid +"')WHERE UserId='" + str(id) +"'")
         return redirect(url_for('plantdata'))
     return render_template('edit.html',data=data)
                

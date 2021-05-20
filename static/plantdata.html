@@ -276,11 +276,11 @@ padding-block: 10px;
     <th>Độ ẩm thích hợp(%)</th>
     <th></th>
     <th></th>
-    <th type="button" style="padding: 5px; background-color: thistle;" onclick="edit()" >Sửa</th>
+    
     <th type="button" style="padding: 5px;" onclick="confirm()"><a href="/edit{{data}}" id="confirm"></a></th>
   </tr>
   {%for dt in data%}
-  <tr id="land">
+  <tr >
   
     <td>{{dt[0]}}</td>
     <td>{{dt[2]}}</td>
@@ -290,8 +290,8 @@ padding-block: 10px;
     <td></td>
     <td>{{dt[6]}}-{{dt[7]}}</td>
     <td type="button" style="padding: 5px;" class="collapsible" contenteditable="false" >...</td>
-    <td type="button"  style="padding: 5px; background: red;"  contenteditable="false"><a href="/delete{{dt[0]}}{{ 'l' }}">X</a></td>
-    
+    <td type="button"  style="padding: 5px; background: red;"  contenteditable="false"><a href="/delete{{dt[0]}}{{'l'}}">X</a></td>
+    <td type="button" style="padding: 5px; background-color: thistle;" onclick="edit()" ><a href="/edit{{dt[1]}}{{'f'}}">Sửa </a></td>
   </tr>
 </table>
 <div class="content" style="background: darkgrey; width: 90%; margin-left: 5%;">
@@ -312,41 +312,17 @@ padding-block: 10px;
         </tr>
         {%endfor%}
     </table>
-    <div style="height: 10px"></div>
-    <button style="border-radius: 8px; margin-left: 5%; background-color: #04AA6D; font-size: 20px;" href="/add"> + </button> 
 </div>
 </div> 
 {%endfor%}
   
 
  <div style="height: 10px"></div>
- <button id="collap" style="border-radius: 8px; margin-left: 5%; background-color: #04AA6D; font-size: 20px;" href="/add"> + </button> 
-  <div class="content">
-    <form>
-    <label for="location">Khu vực:</label><br>
-    <input type="text" id="location" name="location" value="Khu vực"><br>
-    <label for="plant">Cây trồng:</label><br>
-    <input type="text" id="plant" name="plant" value="Cây trồng"><br>
-    <label for="plant">Nhiệt độ thích hợp:</label><br>
-    <input type="text" id="ltemp" name="ltemp" >
-    
-    &nbsp;-&nbsp;
-    <input type="text" id="utemp" name="utemp" >
-    <br>
-    <label for="plant">Thời gian chiếu sáng:</label><br>
-    <input type="text" id="light" name="light"><br>
-    <label for="plant">Độ ẩm thích hợp</label><br>
-    <input type="text" id="lhumidity" name="lhumidity"> 
-    &nbsp;-&nbsp;
-    <input type="text" id="uhumidity" name="uhumidity"><br>
-    <br>
-    <input type="submit" value="Thêm">
-    </form>
-    </div>
- <div id="noti" style="display: none;">
-  <a class="noti" href="/notify"> Cảnh báo!!!
+ <button id="collap" style="border-radius: 8px; margin-left: 5%; background-color: #04AA6D; font-size: 20px;"><a href="/edit{{0}}{{'a'}}"> +</a> </button> 
+ 
+  <a class="noti" href="/notify"> Cảnh báo
   </a>
-  </div>
+
  
 {% endblock %}
 <script>
@@ -367,7 +343,7 @@ for (i = 0; i < coll.length; i++) {
   });
 
 }
-var coll = document.getElementsByID("collaP");
+var coll = document.getElementsByID("collap");
 var i;
 for (i = 0; i < coll.length; i++) {
   coll[i].addEventListener("click", function() {

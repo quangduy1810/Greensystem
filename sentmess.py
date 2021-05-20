@@ -129,5 +129,5 @@ def sendAction(action,feed):
         return 'Timeout, check your connection'
     return 'Send success'
 
-print(sendAction('ON','light'))
+
 
