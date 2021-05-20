@@ -2,6 +2,8 @@ from datetime import datetime
 from flask import render_template, request, redirect, url_for, jsonify, make_response,session
 from flask_mysqldb import MySQL
 from Greensys import app,conn
+from envirstate import *
+
 import os
 #import Process
 import webbrowser
@@ -61,7 +63,7 @@ def signup():
             email = request.form['email']
             phonenumber = request.form['phonenumber']
             address= request.form['address']
-            cur.execute("INSERT INTO account (id, name, username, password, email) VALUES ('AUTO_INCREMENT PRIMARY KEY','"+name+"','"+username+"','"+password+"','"+email+"')")
+            cur.execute("INSERT INTO PERSON (id, username, password, address) VALUES ('AUTO_INCREMENT PRIMARY KEY','"+name+"','"+password+"','"+address+"')")
             mysql.connection.commit()
             return redirect(url_for('/homepage'))
     return render_template('signUp.html')
@@ -69,13 +71,20 @@ def signup():
 def plantdata():
     cur.execute("SELECT * FROM LAND WHERE UserID = '"+ str(session['UserData'][0]) + "'")
     data=cur.fetchall()
+    print (data);
+    data2=[]
+    for value in data:
+        cur.execute("SELECT * FROM DEVICE_USED_IN_LAND WHERE LandID='"+ str(value[1])+"' ")
+        data2.append(cur.fetchall())
+    print (data2);
     return render_template('plantdata.html',data=data)
 @app.route('/envicondi')
 def envicondi():
-    cur.execute("SELECT Id,UserId,LandName,DeviceId,GROUP_CONCAT(measurementUnit) as \"measurementUnit\",GROUP_CONCAT(measurementValue) as \"measurementValue\" FROM Land INNER JOIN device_acted_in_land ON Land.Id = device_acted_in_land.LandId WHERE UserID= '"+ str(session['UserData'][0]) + "GROUP BY Id'")
-    data=cur.fetchall()
-    #print(type(data[0][5]))
-    #data = [(),(),(),...]
+    data= {
+        "temperature" : getTemperature().value,
+        "humidity": getHumidity().value,
+        "brightness": getBrightness().value
+    }
     return render_template('envicondi.html',data=data)
 @app.route('/wateringhistory')
 def wateringhistory():
@@ -84,10 +93,13 @@ def wateringhistory():
     return render_template('wateringhistory.html',data=data)
 
 
+
+
+
 notification = {
-    "temperature" : "None",
-    "humidity": "None",
-    "brightness": "None",
+    "temperature" : getTemperature().value,
+    "humidity": getHumidity().value,
+    "brightness": getBrightness().value,
     "alert": "None",
     "date": "None",
 }
@@ -124,3 +136,24 @@ def notify():
 def logout():
     session.pop('UserData', None)
     return redirect(url_for('homepage'))
+@app.route('/delete<id><type>', methods=['GET'])
+def delete(id,type):
+    if type == 'l': #stand for land
+        cur.execute("DELETE FROM LAND WHERE ID = '"+ str(id) + "' AND  UserID = '"+ str(session['UserData'][0]) + "'" );
+        cur.execute("SELECT * FROM LAND WHERE UserID = '"+ str(session['UserData'][0]) + "'")
+        data=cur.fetchall()
+        return render_template('plantdata.html',data=data)
+    else:
+        return "this is" + type
+@app.route('/edit<data>', methods=['GET']) 
+def edit(data):
+    if session['UserData']== data:
+        return render_template('plantdata.html',data=data)
+    else:
+        cur.execute("DELETE FROM LAND WHERE UserID = '"+ str(session['UserData'][0]) + "'");
+        cur.execute("UPDATE Land SET " +  
+            "lowerTemperature=" + str(data[4]) + "," +
+            "upperTemperature=" + str(data[5]) + "," +
+            "lowerHumidity=" + str(data[6]) + "," +
+            "upperHumidity=" + str(data[7]) + "," +
+            "WHERE Id=" + str() +"")           
