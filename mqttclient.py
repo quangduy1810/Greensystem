@@ -3,7 +3,7 @@ import sys
 import time
 import random
 IO_USERNAME=  "mnhat71t"
-IO_KEY=    "aio_dUnx06UqejE8m373P0rbKRmxBvYG"
+IO_KEY=    "aio_uqtX01lbNKuS65i6gTTWCv8WpbZG"
 
 def connected(client):
     print('Connected to {0}'.format('Light'))
