@@ -1,6 +1,6 @@
 from Adafruit_IO import *
 import sys
-
+from App.Constants import *
 
 def connected(aio):
     print('Connected to {0}'.format('humidity'))
