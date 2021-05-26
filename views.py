@@ -86,6 +86,13 @@ def plantdata():
     print (data2)
     return render_template('plantdata.html',data=data)
 
+@app.route('/envicondi')
+def envicondi():
+    cur.execute("SELECT * FROM environment ORDER BY Id DESC LIMIT 0,1")
+    data=cur.fetchall()
+    #print(type(data[0][5]))
+    #data = [(),(),(),...]
+    return render_template('envicondi.html',data=data)
 
 @app.route('/wateringhistory')
 def wateringhistory():

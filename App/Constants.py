@@ -1,5 +1,5 @@
 ADAFRUIT_IO_USERNAME = "mnhat81t"
-ADAFRUIT_IO_KEY = "aio_JfmZ38lkaB3Nu1Oi4vUrykWvVnix"
+ADAFRUIT_IO_KEY = "aio_RFoJ510dmWdkd29rQS5UtGlULVfB"
 
 PUMP_RELAY_FEED_ID = "npnlab-bbc-slash-feeds-slash-bk-iot-relay-pump"
 PUMP_DEVICE_ID = "1"
@@ -19,7 +19,7 @@ LAND_ID = 1
 
 connectionString = {
     "user":"root",
-    "password":"enlk8.",
+    "password":"nhoxso33",
     "host": "localhost",
-    "database":"GreenSystem"
+    "database":"greenSystem"
 }

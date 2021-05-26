@@ -16,7 +16,7 @@ def sendWaterAction(client, duration):
     return True
 
 def sendLightAction(client, status):
-    client.publish(Constants.LIGHT_RELAY_FEED_ID, LightAction(Constants.LIGHT_DEVICE_ID, status))
+    client.publish(Constants.LIGHT_RELAY_FEED_ID, LightAction(Constants.LIGHT_DEVICE_ID, status).serialize())
     print("Turn the Light " + ("ON" if status == 1 else "OFF"))
     return True
 

@@ -16,7 +16,8 @@ def generateFeedValue(client):
     client.loop_background()
 
     while True:
-        temperature = randint(0,100)
+        # Đổi chỗ này nè
+        temperature = randint(0,50)
         payload = {
             "id":"7",
             "name":"TEMP-HUMID",
@@ -26,8 +27,8 @@ def generateFeedValue(client):
         client.publish(Constants.TEMP_HUMI_SENSOR_FEED_ID,json.dumps(payload))
 
         print(json.dumps(payload))
-        
-        humidity = randint(0,1023)
+        #
+        humidity = randint(0,100)
         payload = {
                 "id":"9",
                 "name":"SOIL ",
@@ -38,7 +39,7 @@ def generateFeedValue(client):
         client.publish(Constants.SOIL_SENSOR_FEED_ID, json.dumps(payload))
 
         print(json.dumps(payload))
-        
+        #
         brightness = randint(0, 1023)
         payload = {
                 "id":"13",
