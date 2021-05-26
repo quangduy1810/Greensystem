@@ -24,8 +24,8 @@ def processAction(client, Land, currentEnvironment):
     if plantEnvironmentCheck(Land, currentEnvironment) is False:
         return
 
-    if time.time() - Constants.LAST_WATERING_TIMESTAMP < Constants.COOLDOWN_TIME:
-        return
+    # if time.time() - Constants.LAST_WATERING_TIMESTAMP < Constants.COOLDOWN_TIME:
+    #     return
 
     temperature, humidity = currentEnvironment.temperature, currentEnvironment.humidity
 

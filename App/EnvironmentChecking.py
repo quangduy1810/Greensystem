@@ -1,6 +1,8 @@
 from utils import *
 import requests
-
+import mysql.connector
+import datetime
+import Constants
 # Return True if the current environment is good,
 # False otherwise.
 def plantEnvironmentCheck(Land, environmentInfo):
@@ -39,6 +41,27 @@ def plantEnvironmentCheck(Land, environmentInfo):
     if humdityFine and temperatureFine:
         payload["alert"] = "The Weather is Normal!"
         payload["code"] = 0
+
+
+    conn = mysql.connector.connect(**Constants.connectionString)
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "INSERT INTO ENVIRONMENT(LandId,Humidity,Temperature,Brightness,CurrentTime) " +
+        "VALUES (" + 
+            str(Constants.LAND_ID) + "," +
+            str(payload["humidity"]) + "," + 
+            str(payload["temperature"]) + "," + 
+            str(payload["brightness"]) + "," + 
+            "\"" + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + "\"" +
+        ");" 
+    )
+
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+    
 
     url = "http://127.0.0.1:5000/api"
 

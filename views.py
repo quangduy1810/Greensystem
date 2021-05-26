@@ -2,7 +2,6 @@ from datetime import datetime
 from flask import render_template, request, redirect, url_for, jsonify, make_response,session
 from flask_mysqldb import MySQL
 from Greensys import app,conn
-from envirstate import *
 
 import os
 #import Process
@@ -31,6 +30,8 @@ def homepage():
         notify=notify,
         account= account
         )
+
+        
 @app.route('/login',methods=['GET','POST'])
 def login():
     error = None
@@ -48,6 +49,8 @@ def login():
             return redirect(url_for('homepage'))
     print(error)
     return render_template('logIn.html')
+
+
 @app.route('/signup',methods=['GET','POST'])
 def signup():
     error = None
@@ -70,25 +73,20 @@ def signup():
             mysql.connection.commit()
             return redirect(url_for('homepage'))
     return render_template('signUp.html')
+
 @app.route('/plantdata')
 def plantdata():
     cur.execute("SELECT * FROM LAND WHERE UserID = '"+ str(session['UserData'][0]) + "'")
     data=cur.fetchall()
-    print (data);
+    print (data)
     data2=[]
     for value in data:
         cur.execute("SELECT * FROM DEVICE_USED_IN_LAND WHERE LandID='"+ str(value[1])+"' ")
         data2.append(cur.fetchall())
-    print (data2);
+    print (data2)
     return render_template('plantdata.html',data=data)
-@app.route('/envicondi')
-def envicondi():
-    data= {
-        "temperature" : getTemperature().value,
-        "humidity": getHumidity().value,
-        "brightness": getBrightness().value
-    }
-    return render_template('envicondi.html',data=data)
+
+
 @app.route('/wateringhistory')
 def wateringhistory():
     cur.execute("SELECT * FROM LAND WHERE UserID = '"+ str(session['UserData'][0]) + "'")
@@ -96,13 +94,10 @@ def wateringhistory():
     return render_template('wateringhistory.html',data=data)
 
 
-
-
-
 notification = {
-    "temperature" : getTemperature().value,
-    "humidity": getHumidity().value,
-    "brightness": getBrightness().value,
+    "temperature" : "None",
+    "humidity": "None",
+    "brightness": "None",
     "alert": "None",
     "date": "None",
 }

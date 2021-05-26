@@ -1,5 +1,5 @@
 ADAFRUIT_IO_USERNAME = "mnhat81t"
-ADAFRUIT_IO_KEY = "aio_UZMw12DFNgFDexFmDbn3hJcxxwMf"
+ADAFRUIT_IO_KEY = "aio_JfmZ38lkaB3Nu1Oi4vUrykWvVnix"
 
 PUMP_RELAY_FEED_ID = "npnlab-bbc-slash-feeds-slash-bk-iot-relay-pump"
 PUMP_DEVICE_ID = "1"
