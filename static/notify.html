@@ -3,7 +3,7 @@
 <head>
   <style>
     body {
-      background-image: url('static/1.jpg');
+      background-image: none;
       background-repeat: no-repeat;
       background-attachment: fixed;
       background-size: cover;
@@ -102,16 +102,16 @@ padding-block: 10px;
         </div>
     </nav>
     
+  {% endblock content %}
+
   </section>
-  <div style="height: 30px;"></div>
-  <h2 style="margin-left: 5%;" > Thông báo</h2>
-    <main>
-    <h1>
-        <p id="datetime"></p>
-        <p id="temperature"></p>
-        <p id="humidity"></p>
-        <p id="brightness"></p>
-        <p id="alert"> The Weather Is Okay!</p>
+    <main style="display: flex;align-items: center;justify-content: center;margin: 10%;">
+    <h1">
+        <h1 style="color: black" id="datetime"> The time now is : None</h1>
+        <h1 style="color: black" id="temperature"> The temperature is : None</h1>
+        <h1 style="color: black" id="humidity">The humidity is : None</h1>
+        <h1 style="color:black" id="brightness">The brightness is : None</h1>
+        <h1 style="color: black" id="alert"> The Weather Is Okay!</h1>
     </h1>
     </main>    
 </body>
@@ -126,11 +126,11 @@ padding-block: 10px;
             if (this.readyState == 4 && this.status == 200) {
                 var response = JSON.parse(this.responseText);
 
-                document.getElementById("humidity").innerHTML = response.humidity;
-                document.getElementById("temperature").innerHTML = response.temperature;
-                document.getElementById("brightness").innerHTML = response.brightness;
-                document.getElementById("alert").innerHTML = response.alert;
-                document.getElementById("datetime").innerHTML = response.date                    
+                document.getElementById("humidity").innerHTML = "The humidity is :" + response.humidity;
+                document.getElementById("temperature").innerHTML = "The temperature is : " + response.temperature;
+                document.getElementById("brightness").innerHTML = "The brightness is : " + response.brightness;
+                document.getElementById("alert").innerHTML = "Alert message : " + response.alert;
+                document.getElementById("datetime").innerHTML = "The time now is : " + response.date                    
 
                 /**
                  * Your code goes here.

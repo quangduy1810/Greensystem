@@ -18,8 +18,8 @@ def plantEnvironmentCheck(Land, environmentInfo):
     humdityFine, temperatureFine = False, False
     
     payload = {
-        "temperature": str(currentHumidity),
-        "humidity": str(currentTemperature),
+        "temperature": str(currentTemperature),
+        "humidity": str(currentHumidity),
         "brightness": str(environmentInfo.brightness),
         "alert" : "Weather is Normal.",
         "code" : 0

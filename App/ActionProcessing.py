@@ -10,13 +10,14 @@ def sendWaterAction(client, duration):
     time.sleep(duration)
     client.publish(Constants.PUMP_RELAY_FEED_ID, PumpAction(Constants.PUMP_DEVICE_ID,0).serialize())
 
-    Constants.COOLDOWN_TIME = 100
-    Constants.LAST_WATERING_TIMESTAMP = time.time()
+    Constants.COOLDOWN_TIME = 60
+    print("Cool Down Time is " + str(Constants.COOLDOWN_TIME))
+    Constants.LAST_WATERING_TIMESTAMP = float(time.time())
 
     return True
 
 def sendLightAction(client, status):
-    client.publish(Constants.LIGHT_RELAY_FEED_ID, LightAction(Constants.LIGHT_DEVICE_ID, status))
+    client.publish(Constants.LIGHT_RELAY_FEED_ID, LightAction(Constants.LIGHT_DEVICE_ID, status).serialize())
     print("Turn the Light " + ("ON" if status == 1 else "OFF"))
     return True
 
@@ -24,13 +25,19 @@ def processAction(client, Land, currentEnvironment):
     if plantEnvironmentCheck(Land, currentEnvironment) is False:
         return
 
-    # if time.time() - Constants.LAST_WATERING_TIMESTAMP < Constants.COOLDOWN_TIME:
-    #     return
+    if float(time.time()) - Constants.LAST_WATERING_TIMESTAMP < Constants.COOLDOWN_TIME:
+        return
 
     temperature, humidity = currentEnvironment.temperature, currentEnvironment.humidity
 
     lowerBoundTemp, upperBoundTemp = Land.temperatureRange
     lowerBoundHumid, upperBoundHumid = Land.humidityRange
+    
+    
+    if currentEnvironment.brightness >= 100:
+        sendLightAction(client, 0)
+    else :
+        sendLightAction(client, 1)
 
     if temperature < lowerBoundTemp and humidity > upperBoundHumid:
         sendWaterAction(client,20) # thirty second
@@ -39,12 +46,8 @@ def processAction(client, Land, currentEnvironment):
     if temperature > upperBoundTemp and humidity > upperBoundHumid:
         sendWaterAction(client,5)
     if temperature > upperBoundTemp and humidity < lowerBoundHumid:
-        sendWaterAction(client,30)
+        sendWaterAction(client,25)
 
-    if currentEnvironment.brightness >= 100:
-        sendLightAction(client, 0)
-    else :
-        sendLightAction(client, 1)
 
     return
 

@@ -35,7 +35,7 @@ class PumpAction(DeviceAction):
     def serialize(self):
         payload = {
             "id": str(self.deviceId),
-            "name": "RELAY",
+            "name": "LED",
             "data": str(self.status),
             "unit": "",
             }
