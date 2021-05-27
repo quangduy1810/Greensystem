@@ -1,8 +1,7 @@
 from Adafruit_IO import *
 import sys
+from App.Constants import *
 
-ADAFRUIT_IO_USERNAME=  "mnhat81t"
-ADAFRUIT_IO_KEY=    "aio_JfmZ38lkaB3Nu1Oi4vUrykWvVnix"
 def connected(aio):
     print('Connected to {0}'.format('humidity'))
     aio.subscribe('temperature')
