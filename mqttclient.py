@@ -2,8 +2,8 @@ from Adafruit_IO import *
 import sys
 import time
 import random
-IO_USERNAME=  "mnhat71t"
-IO_KEY=    "aio_uqtX01lbNKuS65i6gTTWCv8WpbZG"
+IO_USERNAME=  "mnhat81t"
+IO_KEY=    "aio_JfmZ38lkaB3Nu1Oi4vUrykWvVnix"
 
 def connected(client):
     print('Connected to {0}'.format('Light'))

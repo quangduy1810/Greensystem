@@ -3,7 +3,7 @@
 <head>
   <style>
     body {
-      background-image: url('static/1.jpg');
+      
       background-repeat: no-repeat;
       background-attachment: fixed;
       background-size: cover;
@@ -88,15 +88,10 @@ padding-block: 10px;
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true">
-                {%if account != None%}
+        
                 <li class="nav-item"><a class="nav-link link text-black display-4" href="/logout">Log Out</a></li>
                     
-                {%else%}
-                <li class="nav-item"><a class="nav-link link text-black display-4" href="/login">Log In</a></li>
-                    
-                    <li class="nav-item"><a class="nav-link link text-black display-4" href="/signup">Sign Up</a>
-                    </li>
-                {%endif%}
+                
               </ul>
             </div>
         </div>
@@ -115,6 +110,7 @@ padding-block: 10px;
     </h1>
     </main>    
 </body>
+{%endblock%}
 
 
 <script>

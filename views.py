@@ -67,7 +67,7 @@ def signup():
             cur.execute("SELECT * FROM PERSON WHERE id=(SELECT max(id) FROM PERSON);")
             data= cur.fetchone()
             session['UserData']=data
-            mysql.connection.commit()
+            conn.commit()
             return redirect(url_for('homepage'))
     return render_template('signUp.html')
 @app.route('/plantdata')
@@ -88,7 +88,9 @@ def envicondi():
         "humidity": getHumidity().value,
         "brightness": getBrightness().value
     }
-    return render_template('envicondi.html',data=data)
+    cur.execute("SELECT * FROM LAND WHERE UserID = '"+ str(session['UserData'][0]) + "'")
+    data2=cur.fetchall()
+    return render_template('envicondi.html',data=data,data2=data2)
 @app.route('/wateringhistory')
 def wateringhistory():
     cur.execute("SELECT * FROM LAND WHERE UserID = '"+ str(session['UserData'][0]) + "'")
@@ -100,9 +102,9 @@ def wateringhistory():
 
 
 notification = {
-    "temperature" : getTemperature().value,
-    "humidity": getHumidity().value,
-    "brightness": getBrightness().value,
+    "temperature" :"None",
+    "humidity": "None",
+    "brightness": "None",
     "alert": "None",
     "date": "None",
 }
@@ -143,6 +145,7 @@ def logout():
 def delete(id,type):
     if type == 'l': #stand for land
         cur.execute("DELETE FROM LAND WHERE ID = '"+ str(id) + "' AND  UserID = '"+ str(session['UserData'][0]) + "'" );
+        conn.commit();
         cur.execute("SELECT * FROM LAND WHERE UserID = '"+ str(session['UserData'][0]) + "'")
         data=cur.fetchall()
         return render_template('plantdata.html',data=data)
@@ -175,9 +178,10 @@ def edit(id,type):
             "',lowerHazardousHumidity='" + lhhumid + 
             "',upperHazardousHumidity='" + uhhumid + 
                 "'WHERE Id='" + str(id) +"'")
+            conn.commit()
             
         else:
-            cur.execute("INSERT INTO LAND (landName ,lowerTemperature,upperTemperature,lowerHumidity,upperHumidity,lowerHazardousTemperature,upperHazardousTemperature,lowerHazardousHumidity,upperHazardousHumidity) VALUES('" + location + "','" + ltemp + "','" + utemp + "','" + lhumid + "','" + uhumid + "','" + lhtemp +"','" + uhtemp + "','" + lhhumid + "','" + uhhumid +"')WHERE UserId='" + str(id) +"'")
+            cur.execute("INSERT INTO LAND (landName,UserId ,lowerTemperature,upperTemperature,lowerHumidity,upperHumidity,lowerHazardousTemperature,upperHazardousTemperature,lowerHazardousHumidity,upperHazardousHumidity) VALUES('" + location + "','" + str(session['UserData'][0]) +"','" + ltemp + "','" + utemp + "','" + lhumid + "','" + uhumid + "','" + lhtemp +"','" + uhtemp + "','" + lhhumid + "','" + uhhumid +"')")
         return redirect(url_for('plantdata'))
     return render_template('edit.html',data=data)
                

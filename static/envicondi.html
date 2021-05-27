@@ -119,7 +119,7 @@ padding-block: 10px;
 </section>
 <div style="height: 50px;"></div>
 <h2 style="margin-left: 5%;" > Tinh trang moi truong</h2>
-{%for value in data%}
+{%for value in data2%}
 <p type="button" class="collapsible" style="margin-left: 5%; margin-right: 5%;"> {{value[2]}}</p>
 <div class="content" style="margin-left: 5%; margin-right: 5%;">
 <table>
@@ -129,17 +129,16 @@ padding-block: 10px;
         <th>Anh sang</th>
     </tr>
     <tr>
-        <td>22</td>
-        <td> 1010</td>
-        <td>bat</td>
+        <td>data[0]</td>
+        <td> data[1]</td>
+        <td>data[2]</td>
     </tr>
   </table>
   </div>
 {%endfor%}
-<div id="noti" style="display: none;">
-  <a class="noti" href="/notify"> Cảnh báo!!!
+
+  <a class="noti" href="/notify"> Cảnh báo
   </a>
-  </div>
   <script>
     function sleep(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
