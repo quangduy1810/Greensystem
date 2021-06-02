@@ -208,48 +208,30 @@ padding-block: 10px;
   <h2 style="margin-left: 5%;" > Lịch sử tưới tiêu</h2>
 
   
-  {%for dt in data%}
-<p type="button" class="collapsible" style="margin-left: 5%; margin-right: 5%;"> {{dt[2]}}</p>
+  {% for land in lands %}
+  <p type="button" class="collapsible" style="margin-left: 5%; margin-right: 5%;">{{land[0]}}</p>
 <div class="content" >
   <table>
-    <tr>
-      <th>Ngày</th>
-      <th>Khu vực</th>
-      <th>Cây trồng</th>
-      <th>Lượng nước(l)</th>
-      <th>Thời gian xả</th>
-      <th>Thời gian bật đèn</th>
-     
-    </tr>
-    <tr>
-      <td>{{dt.date}}</td>
-      <td>{{dt.locate}}</td>
-      <td>{{dt.plant}}</td>
-      <td>{{dt.water}}</td>
-      <td>{{dt.pumptime}}</td>
-      <td>{{dt.lighttime}}</td>
-      
-    </tr>
+    {% for dt in data %}
+      {% if dt[0] == land[0] %}    
+      <tr>
+        <th>Id Thiết Bị</th>
+        <th>Loại Thiết Bị</th>
+        <th>Trạng Thái Thiết Bị</th>
+        <th>Thời Gian</th>
+      </tr>
+      <tr>
+        <td>{{dt[1]}}</td>
+        <td>{{dt[2]}}</td>
+        <td>{{dt[3]}}</td>
+        <td>{{dt[4]}}</td>
+      </tr>
+      {%endif%}
+    {%endfor%}
+
   </table>
   </div>
-{%endfor%}
-<div id="noti" style="display: none;">
-  <a class="noti" href="/notify"> Cảnh báo!!!
-  </a>
-  </div>
-  <script>
-    function sleep(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    }
-    
-    async function f(){
-      await sleep(2000);
-      var x=document.getElementById("noti");
-      x.style.display="block";
-    }
-    f()
-  </script>
-  
+  {%endfor%}
 {% endblock %} 
 </body>
 <script>

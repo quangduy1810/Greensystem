@@ -89,9 +89,22 @@ def plantdata():
 
 @app.route('/wateringhistory')
 def wateringhistory():
-    cur.execute("SELECT * FROM LAND WHERE UserID = '"+ str(session['UserData'][0]) + "'")
+    cur.execute(
+        "SELECT LandName From LAND " + 
+        "WHERE UserId=" + str(session["UserData"][0]) + ";"
+        )
+
+    lands = cur.fetchall()
+
+    query = "SELECT Land.LandName, Device.Id, Device.DeviceType, State, RealTime " + \
+            "FROM DEVICE_ACTED_IN_LAND JOIN LAND ON (Land.Id = device_acted_in_land.LandId) " + \
+            "JOIN DEVICE ON (Device.Id = Device_acted_in_land.deviceId) " + \
+            "WHERE Land.UserId = '" + str(session['UserData'][0]) + "'" 
+
+    cur.execute(query)
     data=cur.fetchall()
-    return render_template('wateringhistory.html',data=data)
+
+    return render_template('wateringhistory.html',lands = lands ,data=data)
 
 
 notification = {
@@ -104,26 +117,28 @@ notification = {
 
 @app.route('/api', methods=['GET','POST'])
 def notify_api(): 
-    
-    res =   "The temperature is : " + notification["temperature"] + "\n" + \
-            "The humidity is : " + notification["humidity"]  + "\n" + \
-            "The brightness is :  " +  notification["brightness"] + "\n" + \
-            str(notification["alert"])
-
     notification["date"] = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
 
     if request.method == 'POST':
         req = request.json
+
+        print(req)
 
         notification["temperature"] = req["temperature"]
         notification["humidity"] = req['humidity']
         notification["brightness"] = req['brightness']
         notification["alert"] = req['alert']
 
-        return jsonify(res)
-    else :
-
         return jsonify(notification)
+    else :
+        return jsonify(notification)
+
+@app.route('/getLandId', methods=['GET'])
+def getLandId():
+    if request.method == 'GET':
+        return jsonify({'landId' : 1})
+
+
 
 @app.route('/notify', methods=['GET'])
 def notify():
@@ -143,6 +158,7 @@ def delete(id,type):
         return render_template('plantdata.html',data=data)
     else:
         return "this is" + type
+
 @app.route('/edit<id><type>', methods=['GET','POST']) 
 def edit(id,type):
     data=None

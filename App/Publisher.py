@@ -16,21 +16,21 @@ def generateFeedValue(client):
     client.loop_background()
 
     while True:
-        temperature = randint(20,40)
+        temperature = randint(15,50)
         payload = {
             "id":"7",
             "name":"TEMP-HUMID",
             "data": str(temperature) + "-0",
             "unit":"*C-%"
             }
-        client.publish(Constants.TEMP_HUMI_SENSOR_FEED_ID,json.dumps(payload))
+        client.publish(Constants.TEMP_HUMID_SENSOR_FEED_ID,json.dumps(payload))
 
         print(json.dumps(payload))
         
-        humidity = randint(50,80)
+        humidity = randint(30,90)
         payload = {
                 "id":"9",
-                "name":"SOIL ",
+                "name":"SOIL",
                 "data": str(humidity),
                 "unit":"%"
             }
@@ -39,7 +39,7 @@ def generateFeedValue(client):
 
         print(json.dumps(payload))
         
-        brightness = randint(0, 200)
+        brightness = randint(50, 150)
         payload = {
                 "id":"13",
                 "name":"LIGHT",
@@ -51,7 +51,7 @@ def generateFeedValue(client):
 
         print(json.dumps(payload))
 
-        time.sleep(40) # 1 request per 2/3 minutes
+        time.sleep(40) # 1 request per 2/3 minute
 
 def initialize_callbacks():
     client.on_connect = connected

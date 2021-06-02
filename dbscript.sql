@@ -2,11 +2,12 @@ DROP TABLE IF EXISTS plant_planted_in_land;
 DROP TABLE IF EXISTS device_acted_in_land;
 DROP TABLE IF EXISTS device_used_in_land;
 DROP TABLE IF EXISTS plant_history;
+DROP TABLE IF EXISTS environment_log;
 DROP TABLE IF EXISTS land;
 DROP TABLE IF EXISTS device;
 DROP TABLE IF EXISTS person;
 DROP TABLE IF EXISTS plant;
-DROP TABLE IF EXISTS Environment;
+
 
 # Người dùng 
 CREATE TABLE PERSON (
@@ -76,19 +77,14 @@ CREATE TABLE DEVICE_USED_IN_LAND (
 # các hoạt động tưới tiêu đã được xảy
 # ra cho đến hiện tại.
 CREATE TABLE DEVICE_ACTED_IN_LAND (
+	Id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	DeviceId INT NOT NULL,
     LandId INT NOT NULL,
     RealTime DATETIME NOT NULL,
+	State VARCHAR(20) NOT NULL,
     
-    measurementUnit VARCHAR(20) NOT NULL,
-    measurementValue FLOAT NOT NULL,
-    
-    FOREIGN KEY (DeviceId) REFERENCES Device(Id)
-		ON DELETE CASCADE,
+    FOREIGN KEY (DeviceId) REFERENCES Device(Id),
     FOREIGN KEY (LandId) REFERENCES Land(Id)
-		ON DELETE CASCADE
-    ,    
-    PRIMARY KEY (DeviceId, LandId)
 );
 
 # Bảng này dùng để lưu trữ file log về 
@@ -126,13 +122,12 @@ CREATE TABLE PLANT_HISTORY(
 # môi trường của cây tại một thời điểm
 # trong quá khứ. Hiện thực của file log
 # khi nhận được dữ liệu từ sensor 
-CREATE TABLE ENVIRONMENT (
+CREATE TABLE ENVIRONMENT_LOG (
 	# Use auto-increment for primary key is always a good choice =))
 	Id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     LandId INT NOT NULL,
-    Temperature FLOAT NOT NULL,
-    Humidity FLOAT NOT NULL,
-    Brightness FLOAT NOT NULL,
+    measureValue INT NOT NULL,
+    measureType VARCHAR(50) NOT NULL,
     CurrentTime DATETIME NOT NULL,
     FOREIGN KEY(LandId) REFERENCES Land(Id)
 );
@@ -146,16 +141,17 @@ INSERT IGNORE INTO Person(Username, Password, Address, Name, Phone) VALUES
 ;
 
 INSERT IGNORE INTO Device(deviceType, UserId) VALUES 
-	('LightSensor', 1),
-    ('TemperatureSensor', 1),
-    ('Pump', 1),
-    ('HumiditySensor', 1),
-    ('Pump', 1),
-	('LightSensor', 2),
-    ('TemperatureSensor', 2),
-    ('Pump', 2),
-    ('HumiditySensor', 2),
-    ('Pump', 3)
+	('Light', 1), -- 1 
+    ('Pump', 1),-- 2
+    ('Pump', 1),-- 3
+    ('Light', 1),-- 4
+    ('Light', 1),-- 5
+	('Pump', 2),-- 6
+    ('Light', 2),-- 7
+    ('Pump', 2),-- 8
+    ('Pump', 2),-- 9
+    ('Pump', 3), -- 10
+    ('Pump', 1) -- 11
 ;
 
 INSERT IGNORE INTO device_used_in_land(DeviceId, LandId) VALUES
@@ -183,3 +179,7 @@ INSERT IGNORE INTO LAND(UserId, LandName, PlantId,lowerTemperature,upperTemperat
     (3, "land3", 2, 25, 40, 50, 75, 10, 50, 20, 90),
 	(4, "land4", 2, 25, 40, 50, 75, 10, 50, 20, 90)
 ;
+
+SELECT * FROM DEVICE_ACTED_IN_LAND;
+
+SELECT * FROM ENVIRONMENT_LOG;
