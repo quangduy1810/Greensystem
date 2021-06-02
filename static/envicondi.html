@@ -33,7 +33,8 @@
   <link rel="preload" as="style" href="static/mobirise/css/mbr-additional.css">
   <link rel="stylesheet" href="static/mobirise/css/mbr-additional.css" type="text/css">
 
-
+  <!-- Add Chart.js-->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
 <!--=====================
@@ -134,23 +135,15 @@
   </section>
   <div style="height: 50px;"></div>
   <h2 style="margin-left: 5%;"> Tinh trang moi truong</h2>
-  {%for value in data%}
-  <p type="button" class="collapsible" style="margin-left: 5%; margin-right: 5%;"> {{value[1]}}</p>
+  <p type="button" class="collapsible" style="margin-left: 5%; margin-right: 5%;"> {{land}}</p>
   <div class="content" style="margin-left: 5%; margin-right: 5%;">
-    <table>
-      <tr>
-        <th>Nhiet do</th>
-        <th>Do am</th>
-        <th>Anh sang</th>
-      </tr>
-      <tr>
-        <td id="temperature">{{value[2]}}</td>
-        <td id="humidity">{{value[3]}}</td>
-        <td id="brightness">{{value[4]}}</td>
-      </tr>
-    </table>
+    <!--Draw chart with chart.js-->
+
+    <canvas id="TemperatureChart" width="900" height="400"> </canvas>
+    <canvas id="HumidityChart" width="900" height="400"> </canvas>
+    <canvas id="BrightnessChart" width="900" height="400"> </canvas>
+    <!---->
   </div>
-  {%endfor%}
   <div id="noti" style="display: none;">
     <a class="noti" href="/notify"> Cảnh báo!!!
     </a>
@@ -169,54 +162,124 @@
     }
     f()
   </script>
+
+
 </body>
+
 <script>
 
-  var coll = document.getElementsByClassName("collapsible");
-  var i;
-  for (i = 0; i < coll.length; i++) {
-    coll[i].addEventListener("click", function () {
-      this.classList.toggle("active");
-      // var content = this.parentElement.parentElement.nextElementSibling.children[0];
-      var content = this.nextElementSibling;
-      if (content.style.maxHeight) {
-        content.style.maxHeight = null;
-      } else {
-        content.style.maxHeight = content.scrollHeight + "px";
+var coll = document.getElementsByClassName("collapsible");
+var i;
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    // var content = this.parentElement.parentElement.nextElementSibling.children[0];
+    var content = this.nextElementSibling;
+    if (content.style.maxHeight){
+      content.style.maxHeight = null;
+    } else {
+      content.style.maxHeight = content.scrollHeight + "px";
+    } 
+    
+  });
+
+}
+  </script>
+
+<script>
+  var temperatureCanvas = document.getElementById("TemperatureChart").getContext("2d");
+  var temperature_chart = new Chart(temperatureCanvas, {
+    animationEnabled: true,
+    zoomEnabled: true,
+    title: {
+     text: "Temperature Chart"
+    },
+    axisX: {
+     title: "Date time"
+    },
+    axisY: {
+     title: "Temperature"
+    },
+    data: {
+        labels: {{ current_time | safe }},
+        datasets: [
+          {
+            label: "Temperature",
+            data: {{ temperature | safe}},
+            fill: false,
+            borderColor: "rgb(255,0,0)",
+            lineTension: 0.1,
+            type: "line"
+          }
+        ]
+      },
+      options: {
+        responsive: true
       }
+  });
 
-    });
 
-  }
-
-  function getdata() {
-
-    var xhttp = new XMLHttpRequest();
-
-    xhttp.onreadystatechange = function () {
-      if (this.readyState == 4 && this.status == 200) {
-        var response = JSON.parse(this.responseText);
-
-        document.getElementById("humidity").innerHTML = response.humidity;
-        document.getElementById("temperature").innerHTML = response.temperature;
-        document.getElementById("brightness").innerHTML = response.brightness;
-
-        /**
-         * Your code goes here.
-        */
-
-      } else {
-        return;
+  var humidityCanvas = document.getElementById("HumidityChart").getContext("2d");
+  var humidity_chart = new Chart(humidityCanvas, {
+    animationEnabled: true,
+    zoomEnabled: true,
+    title: {
+     text: "Humidity Chart"
+    },
+    axisX: {
+     title: "Date time"
+    },
+    axisY: {
+     title: "Humidity"
+    },
+    data: {
+        labels: {{ current_time | safe }},
+        datasets: [
+          {
+            label: "Humidity",
+            data: {{ humidity | safe}},
+            fill: false,
+            borderColor: "rgb(0,0,255)",
+            lineTension: 0.1,
+            type: "line"
+          }
+        ]
+      },
+      options: {
+        responsive: true
       }
-    };
+  });
 
-    xhttp.open('GET', '/api', true);
-    xhttp.send();
-
-    setTimeout(f, 1000);
-  }
-
-  //getdata();
-</script>
+  var brightnessCanvas = document.getElementById("BrightnessChart").getContext("2d");
+  var brightness_chart = new Chart(brightnessCanvas, {
+    animationEnabled: true,
+    zoomEnabled: true,
+    title: {
+     text: "Brightness Chart"
+    },
+    axisX: {
+     title: "Date time"
+    },
+    axisY: {
+     title: "Brightness"
+    },
+    data: {
+        labels: {{ current_time | safe }},
+        datasets: [
+          {
+            label: "Brightness",
+            data: {{ brightness | safe}},
+            fill: false,
+            borderColor: "rgb(210,180,140)",
+            lineTension: 0.1,
+            type: "line"
+          }
+        ]
+      },
+      options: {
+        responsive: true
+      }
+  });
+  </script>
 
 </html>

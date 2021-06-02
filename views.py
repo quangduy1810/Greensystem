@@ -88,12 +88,27 @@ def plantdata():
 
 @app.route('/envicondi')
 def envicondi():
-    cur.execute("SELECT * FROM environment ORDER BY Id DESC LIMIT 0,1")
+    cur.execute("SELECT environment.id,LandName,Temperature,Humidity,Brightness,CurrentTime,UserID FROM environment,land WHERE USERID = '"+ str(session['UserData'][0]) +"' ")
     data=cur.fetchall()
-    #print(type(data[0][5]))
     #data = [(),(),(),...]
-    return render_template('envicondi.html',data=data)
+    land = data[1][1]
+    print("Land:" + str(land))
+    temperature = []
+    humidity = []
+    brightness = []
+    current_time = []
+    for value in data:
+        temperature.append(value[2])
+        humidity.append(value[3])
+        brightness.append(value[4])
+        current_time.append(str(value[5]))
+    
+    print("Temperature: "+ str(temperature))
+    print("Humidity: "+ str(humidity))
+    print("Brightness:"+ str(brightness))
+    print("CurrentTime"+ str(current_time))
 
+    return render_template('envicondi.html',land=land, temperature=temperature, humidity=humidity, brightness=brightness,current_time=current_time)
 @app.route('/wateringhistory')
 def wateringhistory():
     cur.execute("SELECT * FROM LAND WHERE UserID = '"+ str(session['UserData'][0]) + "'")

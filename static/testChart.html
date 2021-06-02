@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Sample chart</title>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script> 
+</head>
+
+<body>
+    <div id="TemperatureChart" width="900" height="400"> </div>
+    <script>
+        //var temperatureCanvas = document.getElementById("TemperatureChart").getContext("2d");
+        var chart = new CanvasJS.Chart("TemperatureChart", {
+            type: line,
+          animationEnabled: true,
+          zoomEnabled: true,
+          title: {
+           text: "Temperature"
+          },
+          axisX: {
+           title: "Date time"
+          },
+          axisY: {
+           title: "Temperature"
+          },
+          data: {
+              labels: {{ current_time | safe }},
+              datasets: [
+                {
+                  label: "Temperature",
+                  data: {{ temperature | safe}},
+                  fill: false,
+                  borderColor: "rgb(255,0,0)",
+                  lineTension: 0.1,
+                }
+              ]
+            },
+            options: {
+              responsive: true
+            }
+        });
+        chart.render();
+    </script>
+</body>
+</html>
