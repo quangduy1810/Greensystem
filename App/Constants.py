@@ -1,25 +1,28 @@
 ADAFRUIT_IO_USERNAME = "mnhat81t"
-ADAFRUIT_IO_KEY = "aio_KIrU06szx7SzCsADIJ0we4ecrrvZ"
+ADAFRUIT_IO_KEY = "aio_PutS25wO9betR2KP9DhN5ejWd6xv"
 
-PUMP_RELAY_FEED_ID = "npnlab-bbc-slash-feeds-slash-bk-iot-relay-pump"
-PUMP_DEVICE_ID = "1"
+PUMP_RELAY_FEED_ID = "bk-iot-relay"
+PUMP_DEVICE_ID = "11"
 
-LIGHT_RELAY_FEED_ID = "npnlab-bbc-slash-feeds-slash-bk-iot-relay-light"
-LIGHT_DEVICE_ID = "2"
+LIGHT_RELAY_FEED_ID = "bk-iot-led"
+LIGHT_DEVICE_ID = "1"
 
-LIGHT_SENSOR_FEED_ID = 'npnlab-bbc-slash-feeds-slash-bk-iot-light'
-TEMP_HUMI_SENSOR_FEED_ID = 'npnlab-bbc-slash-feeds-slash-bk-iot-temp-humid'
-SOIL_SENSOR_FEED_ID = 'npnlab-bbc-slash-feeds-slash-bk-iot-soil'
+LIGHT_SENSOR_FEED_ID = 'bk-iot-light'
+TEMP_HUMID_SENSOR_FEED_ID = 'bk-iot-temp-humid'
+SOIL_SENSOR_FEED_ID = 'bk-iot-soil'
 
-LAST_WATERING_TIMESTAMP = None
+LAST_WATERING_TIMESTAMP = 0
 
-COOLDOWN_TIME = None
+COOLDOWN_TIME = 0
 
 LAND_ID = 1
+
+WEB_SERVER_API_URL = "http://127.0.0.1:5000/api"
+WEB_SERVER_GET_LAND_ID_URL = "http://127.0.0.1:5000/getLandId"
 
 connectionString = {
     "user":"root",
     "password":"nhoxso33",
     "host": "localhost",
-    "database":"greenSystem"
+    "database":"greensystem"
 }

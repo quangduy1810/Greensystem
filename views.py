@@ -88,7 +88,7 @@ def plantdata():
 
 @app.route('/envicondi')
 def envicondi():
-    cur.execute("SELECT environment.id,LandName,Temperature,Humidity,Brightness,CurrentTime,UserID FROM environment,land WHERE USERID = '"+ str(session['UserData'][0]) +"' ")
+    cur.execute("SELECT environment_log.id,LandName,measureValue,measureType,CurrentTime,UserID FROM environment_log,land WHERE USERID = '"+ str(session['UserData'][0]) +"' ")
     data=cur.fetchall()
     #data = [(),(),(),...]
     land = data[1][1]
@@ -98,22 +98,45 @@ def envicondi():
     brightness = []
     current_time = []
     for value in data:
-        temperature.append(value[2])
-        humidity.append(value[3])
-        brightness.append(value[4])
-        current_time.append(str(value[5]))
+        if str(value[3]) == 'Temperature':
+            temperature.append(value[2])
+        if str(value[3]) == 'Humidity':
+            humidity.append(value[2])
+        if str(value[3]) == 'Brightness':
+            brightness.append(value[2])
+        if str(value[4]) not in current_time:
+            current_time.append(str(value[4]))
     
+    print("Temperature length: "+ str(len(temperature)))
+    print("Humidity length: "+ str(len(humidity)))
+    print("Brightness length: "+ str(len(brightness)))
+    print("Current_time length: "+ str(len(current_time)))
+
     print("Temperature: "+ str(temperature))
     print("Humidity: "+ str(humidity))
     print("Brightness:"+ str(brightness))
     print("CurrentTime"+ str(current_time))
 
     return render_template('envicondi.html',land=land, temperature=temperature, humidity=humidity, brightness=brightness,current_time=current_time)
+
 @app.route('/wateringhistory')
 def wateringhistory():
-    cur.execute("SELECT * FROM LAND WHERE UserID = '"+ str(session['UserData'][0]) + "'")
+    cur.execute(
+        "SELECT LandName From LAND " + 
+        "WHERE UserId=" + str(session["UserData"][0]) + ";"
+        )
+
+    lands = cur.fetchall()
+
+    query = "SELECT Land.LandName, Device.Id, Device.DeviceType, State, RealTime " + \
+            "FROM DEVICE_ACTED_IN_LAND JOIN LAND ON (Land.Id = device_acted_in_land.LandId) " + \
+            "JOIN DEVICE ON (Device.Id = Device_acted_in_land.deviceId) " + \
+            "WHERE Land.UserId = '" + str(session['UserData'][0]) + "'" 
+
+    cur.execute(query)
     data=cur.fetchall()
-    return render_template('wateringhistory.html',data=data)
+
+    return render_template('wateringhistory.html',lands = lands ,data=data)
 
 
 notification = {
@@ -126,26 +149,29 @@ notification = {
 
 @app.route('/api', methods=['GET','POST'])
 def notify_api(): 
-    
-    res =   "The temperature is : " + notification["temperature"] + "\n" + \
-            "The humidity is : " + notification["humidity"]  + "\n" + \
-            "The brightness is :  " +  notification["brightness"] + "\n" + \
-            str(notification["alert"])
-
     notification["date"] = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
 
     if request.method == 'POST':
         req = request.json
+
+        print(req)
 
         notification["temperature"] = req["temperature"]
         notification["humidity"] = req['humidity']
         notification["brightness"] = req['brightness']
         notification["alert"] = req['alert']
 
-        return jsonify(res)
-    else :
-
         return jsonify(notification)
+    else :
+        return jsonify(notification)
+
+@app.route('/getLandId', methods=['GET'])
+def getLandId():
+    if request.method == 'GET':
+        # Gen cho land khác thì thay id ở đây
+        return jsonify({'landId' : 1})
+
+
 
 @app.route('/notify', methods=['GET'])
 def notify():
@@ -165,6 +191,7 @@ def delete(id,type):
         return render_template('plantdata.html',data=data)
     else:
         return "this is" + type
+
 @app.route('/edit<id><type>', methods=['GET','POST']) 
 def edit(id,type):
     data=None

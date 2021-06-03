@@ -1,10 +1,10 @@
 from Adafruit_IO import MQTTClient
 from ActionProcessing import *
-from CustomEnvironmentUpdate import *
 from utils import * 
 import json
 import sys
 import mysql.connector
+import requests
 import os
  
  ####
@@ -14,6 +14,15 @@ def init():
 
     global Land 
     
+    # Get request 
+
+
+    request = requests.get(Constants.WEB_SERVER_GET_LAND_ID_URL)
+
+    payload = request.json()
+
+    Constants.LAND_ID = int(payload["landId"])
+
     conn = mysql.connector.connect(**Constants.connectionString)
     cursor = conn.cursor()
 
@@ -28,7 +37,7 @@ def init():
     cursor.close()
     conn.close()
 
-    print(res)
+    print("Land records associated with landId are: " + str(res))
 
     CurrentEnvironment = Environment(-1, -1, -1)
 
@@ -39,18 +48,40 @@ def init():
             hazardHumidRange=(res[10],res[11])
             )
 
-
 def message(client, feed_id, payload):
     dct = json.loads(payload)
 
+    measureValue = None
+    measureType = "None"
+
     if dct["name"] == "TEMP-HUMID":
-        CurrentEnvironment.temperature = int(dct["data"].split("-")[0])
-    elif dct["name"] == "SOIL ":
-        CurrentEnvironment.humidity = int(dct["data"])
+        measureValue = CurrentEnvironment.temperature = int(dct["data"].split("-")[0])
+        measureType = "Temperature"
+    elif dct["name"] == "SOIL":
+        measureValue = CurrentEnvironment.humidity = int(dct["data"])
+        measureType = "Humidity"
     elif dct["name"] == "LIGHT":
-        CurrentEnvironment.brightness = int(dct["data"])
+        measureValue = CurrentEnvironment.brightness = int(dct["data"])
+        measureType = "Brightness"
 
     processAction(client, Land, CurrentEnvironment)
+
+    conn = mysql.connector.connect(**Constants.connectionString)
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "INSERT INTO ENVIRONMENT_LOG(LandId,MeasureValue,MeasureType,CurrentTime) " +
+        "VALUES (" + 
+            str(Constants.LAND_ID) + "," +
+            str(measureValue) + "," + 
+            "\"" + str(measureType) + "\"" + "," +  
+            "\"" + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + "\"" +
+        ");" 
+    )
+
+    conn.commit()
+    cursor.close()
+    conn.close()
 
     print('Feed {0} received new value: {1}'.format(feed_id, payload))
 
@@ -58,7 +89,7 @@ def connected(client):
     print('Connected to Adafruit IO!  Listening for changes...')
 
     client.subscribe(Constants.SOIL_SENSOR_FEED_ID)
-    client.subscribe(Constants.TEMP_HUMI_SENSOR_FEED_ID)
+    client.subscribe(Constants.TEMP_HUMID_SENSOR_FEED_ID)
     client.subscribe(Constants.LIGHT_SENSOR_FEED_ID)
 
 def subscribe(client, userdata, mid, granted_qos):
@@ -68,6 +99,9 @@ def disconnected(client):
     print('Disconnected from Adafruit IO!')
     sys.exit(1)
 
+
+def connected_():
+    client.subscribe(Constants.LIGHT_SENSOR_FEED_ID)
 
 def start():
     init()
@@ -83,6 +117,5 @@ def start():
 
     client.loop_blocking()
 
-    conn.close()
 
 start()
