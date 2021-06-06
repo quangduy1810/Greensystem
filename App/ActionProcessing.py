@@ -100,4 +100,70 @@ def processAction(client, Land, currentEnvironment):
 
 
 
+aio = Client(ADAFRUIT_IO_USERNAME, ADAFRUIT_IO_KEY)
+
+def getPumpState():
+    data = aio.data(Constants.PUMP_RELAY_FEED_ID)
+    return data[0]
+
+def getLightState():
+    data = aio.data(Constants.LIGHT_RELAY_FEED_ID)
+    return data[0]
+
+def waterAction(client,status):
+    if status > 1:
+        return 'Wrong action'
+    if status == 0:
+        pumpAction = PumpAction(Constants.PUMP_DEVICE_ID, OFF, "")
+    else:
+        pumpAction = PumpAction(Constants.PUMP_DEVICE_ID, ON, "")
+
+    timeout = 31
+    pre = getPumpState().created_at
+    client.publish(Constants.PUMP_RELAY_FEED_ID, pumpAction.serialize())
+    while(timeout > 0):
+        if pre != getPumpState().created_at:
+            break
+        timeout = timeout - 1  
+        if timeout <= 0:
+            return 'Timeout, check your connection'
+        time.sleep(30)
+        aio.publish(Constants.PUMP_RELAY_FEED_ID, pumpAction.serialize()) 
+    pumpTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    insertActionToDatabase(pumpAction, pumpTime)
+    return 'Send success'
+
+def lightAction(client,status):
+    if status > 1:
+        return 'Wrong action'
+        
+    lightAction = LightAction(Constants.LIGHT_RELAY_FEED_ID, status, "")
+
+    timeout = 31
+    pre = getLightState().created_at
+    
+    client.publish(Constants.LIGHT_RELAY_FEED_ID, lightAction.serialize())
+    while(timeout > 0):
+        if pre != getLightState().created_at:
+            break
+        timeout = timeout - 1  
+        if timeout <= 0:
+            return 'Timeout, check your connection'
+        time.sleep(30)
+        client.publish(Constants.LIGHT_RELAY_FEED_ID, lightAction.serialize())
+    pumpTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    insertActionToDatabase(lightAction, pumpTime)
+    return 'Send success'
+
+def buttonLight(client):
+    lightAction(client,1)
+    time.sleep(120)
+    lightAction(client,0)
+    return 'Light off'
+    
+def buttonPump(client):
+    waterAction(client,1)
+    time.sleep(120)
+    waterAction(client,0)
+    return 'Pump off'
 
