@@ -43,7 +43,6 @@ CREATE TABLE LAND (
     UserId INT NOT NULL,
 	LandName VARCHAR(50) NOT NULL,
 	PlantId INT NOT NULL,
-
     #LightonTime INTEGER NOT NULL, # In seconds
 	lowerTemperature FLOAT NOT NULL,
     upperTemperature FLOAT NOT NULL,
@@ -159,7 +158,9 @@ INSERT IGNORE INTO device_used_in_land(DeviceId, LandId) VALUES
 	(2, 1),
 	(3, 1),
 	(4, 2),
-	(5, 2)
+	(5, 2),
+    (11,1),
+    (6,1)
 ;
 
 INSERT IGNORE INTO PLANT (plantName) VALUES
@@ -177,9 +178,15 @@ INSERT IGNORE INTO LAND(UserId, LandName, PlantId,lowerTemperature,upperTemperat
 	(1, "land1", 1, 20, 40, 50, 80, 10, 50, 20, 100),
 	(2, "land2", 1, 20, 40, 50, 80, 10, 50, 20, 100),
     (3, "land3", 2, 25, 40, 50, 75, 10, 50, 20, 90),
-	(4, "land4", 2, 25, 40, 50, 75, 10, 50, 20, 90)
+	(4, "land4", 2, 25, 40, 50, 75, 10, 50, 20, 90),
+    (1, "land5", 1, 20, 40, 50, 80, 10, 50, 20, 100)
 ;
+
 
 SELECT * FROM DEVICE_ACTED_IN_LAND;
 
-SELECT * FROM ENVIRONMENT_LOG;
+SELECT LandName FROM LAND WHERE UserId = 1;
+
+SELECT * FROM ENVIRONMENT_LOG ORDER BY CurrentTIme DESC;
+
+SELECT * FROM LAND;
