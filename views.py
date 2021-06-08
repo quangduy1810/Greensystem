@@ -1,7 +1,11 @@
 from datetime import datetime
+from Adafruit_IO import client
+from Adafruit_IO.client import Client
 from flask import render_template, request, redirect, url_for, jsonify, make_response,session
 from flask_mysqldb import MySQL
 from Greensys import app,conn
+from App.ActionProcessing import *
+
 
 import os
 #import Process
@@ -191,4 +195,11 @@ def edit(id,type):
             cur.execute("INSERT INTO LAND (landName ,lowerTemperature,upperTemperature,lowerHumidity,upperHumidity,lowerHazardousTemperature,upperHazardousTemperature,lowerHazardousHumidity,upperHazardousHumidity) VALUES('" + location + "','" + ltemp + "','" + utemp + "','" + lhumid + "','" + uhumid + "','" + lhtemp +"','" + uhtemp + "','" + lhhumid + "','" + uhhumid +"')WHERE UserId='" + str(id) +"'")
         return redirect(url_for('plantdata'))
     return render_template('edit.html',data=data)
-               
+
+@app.route('/planthistory')
+def devicedata():
+    cur.execute("SELECT PlantId, plantName ,StartTime,EndTime,Comment FROM plant_history join plant on PlantId = Id where LandId = (select Id from LAND where  UserId = "+ str(session['UserData'][0]) + ")")
+    data=cur.fetchall()
+
+    return render_template('planthistory.html',data=data)
+
