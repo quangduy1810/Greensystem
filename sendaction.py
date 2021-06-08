@@ -68,7 +68,7 @@ def lightAction(status):
     if status > 1:
         return 'Wrong action'
         
-    lightAction = LightAction(LIGHT_RELAY_FEED_ID, status, "")
+    lightAction = LightAction(LIGHT_DEVICE_ID, status, "")
 
     timeout = 31
     pre = getLightState().created_at
