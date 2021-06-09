@@ -208,7 +208,6 @@ padding-block: 10px;
   <h2 style="margin-left: 5%;" > Lịch sử trồng cây</h2>
 
   <table>
-    {% for dt in data %}
       <tr>
         <th>Mã Số Cây</th>
         <th>Tên Cây</th>
@@ -216,6 +215,7 @@ padding-block: 10px;
         <th>Ngày Kết Thúc</th>
         <th>Ghi Chú</th>
       </tr>
+    {% for dt in data %}
       <tr>
         <td>{{dt[0]}}</td>
         <td>{{dt[1]}}</td>
