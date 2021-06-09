@@ -176,7 +176,8 @@
             timepicker: true,
             datepicker: true,
             format: 'Y-m-d h:m:s',
-            value: '2021-6-10 2:38:00'
+            value: '2021-6-10 2:38:00',
+            weeks: true
           });
       });
 
@@ -185,13 +186,100 @@
             timepicker: true,
             datepicker: true,
             format: 'Y-m-d h:m:s',
-            value: '2021-6-10 2:38:00'
+            value: '2021-6-10 2:00:00',
+            weeks: true
         });
       });
     </script>
 
     <canvas id="HumidityChart" width="900" height="400"> </canvas>
+
+    <form action="#" method="POST" enctype="multipart/form-data">
+      <div class="form-group">
+        <input type='text' class="form-control" placeholder="Start Time" name="start_time" id="datetimepicker3">
+
+        <input type='text' class="form-control" placeholder="End Time" name="end_time" id="datetimepicker4">
+
+        <select class="form-select form-select-lg mb-3" aria-label="Default select example" name="option">
+          <option selected>Choose your data option</option>
+          <option value="second">Second</option>
+          <option value="minute">Minute</option>
+          <option value="hour">Hour</option>
+          <option value="day">Day</option>
+          <option value="month">Month</option>
+          <option value="year">Year</option>
+        </select>
+
+        <button name="btnGetData" type="submit" class="btn btn-primary btn-block"> Get Graph Data</button>
+      </div>
+    </form>
+    <script type="text/javascript">
+      $(function () {
+          $('#datetimepicker3').datetimepicker({
+            timepicker: true,
+            datepicker: true,
+            format: 'Y-m-d h:m:s',
+            value: '2021-6-10 2:38:00',
+            weeks: true
+          });
+      });
+
+      $(function () {
+        $('#datetimepicker4').datetimepicker({
+            timepicker: true,
+            datepicker: true,
+            format: 'Y-m-d h:m:s',
+            value: '2021-6-10 2:00:00',
+            weeks: true
+        });
+      });
+    </script>
+
+
     <canvas id="BrightnessChart" width="900" height="400"> </canvas>
+
+    <form action="#" method="POST" enctype="multipart/form-data">
+      <div class="form-group">
+        <input type='text' class="form-control" placeholder="Start Time" name="start_time" id="datetimepicker5">
+
+        <input type='text' class="form-control" placeholder="End Time" name="end_time" id="datetimepicker6">
+
+        <select class="form-select form-select-lg mb-3" aria-label="Default select example" name="option">
+          <option selected>Choose your data option</option>
+          <option value="second">Second</option>
+          <option value="minute">Minute</option>
+          <option value="hour">Hour</option>
+          <option value="day">Day</option>
+          <option value="month">Month</option>
+          <option value="year">Year</option>
+        </select>
+
+        <button name="btnGetData" type="submit" class="btn btn-primary btn-block"> Get Graph Data</button>
+      </div>
+    </form>
+    <script type="text/javascript">
+      $(function () {
+          $('#datetimepicker5').datetimepicker({
+            timepicker: true,
+            datepicker: true,
+            format: 'Y-m-d h:m:s',
+            value: '2021-6-10 2:38:00',
+            weeks: true
+          });
+      });
+
+      $(function () {
+        $('#datetimepicker6').datetimepicker({
+            timepicker: true,
+            datepicker: true,
+            format: 'Y-m-d h:m:s',
+            value: '2021-6-10 2:00:00',
+            weeks: true
+        });
+      });
+    </script>
+
+
     <!---->
   </div>
   <div id="noti" style="display: none;">
