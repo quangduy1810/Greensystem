@@ -23,6 +23,8 @@
   <link rel="stylesheet" href="static/dropdown/css/style.css">
   <link rel="stylesheet" href="static/socicon/css/styles.css">
   <link rel="stylesheet" href="static/theme/css/style.css">
+  <link rel="stylesheet" href="static/datepicker/jquery.datetimepicker.min.css">
+
   <link rel="preload"
     href="https://fonts.googleapis.com/css?family=Jost:100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i&display=swap"
     as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -33,8 +35,17 @@
   <link rel="preload" as="style" href="static/mobirise/css/mbr-additional.css">
   <link rel="stylesheet" href="static/mobirise/css/mbr-additional.css" type="text/css">
 
+
+
+
   <!-- Add Chart.js-->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Add JQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <!-- Datepicker -->
+  <script src="static/datepicker/jquery.datetimepicker.full.js"></script>
+  <script src= "static/bootstrap/js/bootstrap.min.js"></script>
 
 </head>
 <!--=====================
@@ -140,6 +151,45 @@
     <!--Draw chart with chart.js-->
 
     <canvas id="TemperatureChart" width="900" height="400"> </canvas>
+    <form action="#" method="POST" enctype="multipart/form-data">
+      <div class="form-group">
+        <input type='text' class="form-control" placeholder="Start Time" name="start_time" id="datetimepicker1">
+
+        <input type='text' class="form-control" placeholder="End Time" name="end_time" id="datetimepicker2">
+
+        <select class="form-select form-select-lg mb-3" aria-label="Default select example" name="option">
+          <option selected>Choose your data option</option>
+          <option value="second">Second</option>
+          <option value="minute">Minute</option>
+          <option value="hour">Hour</option>
+          <option value="day">Day</option>
+          <option value="month">Month</option>
+          <option value="year">Year</option>
+        </select>
+
+        <button name="btnGetData" type="submit" class="btn btn-primary btn-block"> Get Graph Data</button>
+      </div>
+    </form>
+    <script type="text/javascript">
+      $(function () {
+          $('#datetimepicker1').datetimepicker({
+            timepicker: true,
+            datepicker: true,
+            format: 'Y-m-d h:m:s',
+            value: '2021-6-10 2:38:00'
+          });
+      });
+
+      $(function () {
+        $('#datetimepicker2').datetimepicker({
+            timepicker: true,
+            datepicker: true,
+            format: 'Y-m-d h:m:s',
+            value: '2021-6-10 2:38:00'
+        });
+      });
+    </script>
+
     <canvas id="HumidityChart" width="900" height="400"> </canvas>
     <canvas id="BrightnessChart" width="900" height="400"> </canvas>
     <!---->
@@ -186,7 +236,7 @@ for (i = 0; i < coll.length; i++) {
 }
   </script>
 
-<script>
+ <script>
   var temperatureCanvas = document.getElementById("TemperatureChart").getContext("2d");
   var temperature_chart = new Chart(temperatureCanvas, {
     animationEnabled: true,

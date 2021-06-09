@@ -1,4 +1,4 @@
-from utils import *
+from App.utils import *
 import requests
 
 # Return True if the current environment is good,
