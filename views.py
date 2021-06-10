@@ -86,18 +86,65 @@ def plantdata():
     print (data2)
     return render_template('plantdata.html',data=data)
 
-@app.route('/envicondi')
+@app.route('/envicondi', methods=['GET'])
 def envicondi():
+    if request.method == 'GET':
+        cur.execute("SELECT environment_log.id,LandName,measureValue,measureType,CurrentTime,UserID FROM environment_log,land WHERE USERID = '"+ str(session['UserData'][0]) +"' ")
+        data=cur.fetchall()
+        #data = [(),(),(),...]
+        land = data[1][1]
+        print("Land:" + str(land))
+        temperature = []
+        humidity = []
+        brightness = []
+        current_time = []
+        for value in data:
+            if str(value[3]) == 'Temperature':
+                temperature.append(value[2])
+            if str(value[3]) == 'Humidity':
+                humidity.append(value[2])
+            if str(value[3]) == 'Brightness':
+                brightness.append(value[2])
+            if str(value[4]) not in current_time:
+                current_time.append(str(value[4]))
+        
+        print("Temperature length: "+ str(len(temperature)))
+        print("Humidity length: "+ str(len(humidity)))
+        print("Brightness length: "+ str(len(brightness)))
+        print("Current_time length: "+ str(len(current_time)))
+
+        print("Temperature: "+ str(temperature))
+        print("Humidity: "+ str(humidity))
+        print("Brightness:"+ str(brightness))
+        print("CurrentTime"+ str(current_time))
+
+        return render_template('envicondi.html',land=land, temperature=temperature, humidity=humidity, brightness=brightness,current_time=current_time)
+        
+
+@app.route('/envicondi2', methods=["POST"])
+def envicondi2():
+    #Data to be sent back
+    temp_label = []
+    temp_data = []
+
+    humid_label = []
+    humid_data = []
+
+    brightness_label = []
+    brightness_data = []
+
+    #Get data from database
     cur.execute("SELECT environment_log.id,LandName,measureValue,measureType,CurrentTime,UserID FROM environment_log,land WHERE USERID = '"+ str(session['UserData'][0]) +"' ")
     data=cur.fetchall()
     #data = [(),(),(),...]
-    land = data[1][1]
-    print("Land:" + str(land))
     temperature = []
     humidity = []
     brightness = []
     current_time = []
+    index_list = []
+    index = 0
     for value in data:
+        index_list.append(index)
         if str(value[3]) == 'Temperature':
             temperature.append(value[2])
         if str(value[3]) == 'Humidity':
@@ -105,19 +152,54 @@ def envicondi():
         if str(value[3]) == 'Brightness':
             brightness.append(value[2])
         if str(value[4]) not in current_time:
-            current_time.append(str(value[4]))
+            current_time.append((value[4]))
+        index += 1
+    #
+
+    #Process Temperature submit
+    if (request.form.get('form_type') == 'Temperature' ):
+        #They are all text data
+        if (request.form.get('start_temp_date')):
+            start_temp_date = request.form['start_temp_date']
+            #Convert to datetime
+            start_temp_date = datetime.strptime(start_temp_date, '%y-%m-%d %H:%M:%S')
+        if (request.form.get('end_temp_date')):
+            end_temp_date = request.form['end_temp_date']
+            #Convert to datetime
+            end_temp_date = datetime.strptime(end_temp_date, '%y-%m-%d %H:%M:%S')
+        #Get Option data
+        if (request.form.get('option_temp')):
+            option_temp = request.form['option_temp']
     
-    print("Temperature length: "+ str(len(temperature)))
-    print("Humidity length: "+ str(len(humidity)))
-    print("Brightness length: "+ str(len(brightness)))
-    print("Current_time length: "+ str(len(current_time)))
+    #Process Humidity submit
+    if (request.form.get('form_type') == 'Humidity'):
+        if (request.form['start_humid_date']):
+            start_humid_date = request.form['start_humid_date']
+            #Convert to datetime
+            start_humid_date = datetime.strptime(start_humid_date, '%y-%m-%d %H:%M:%S')
+        if (request.form['end_humid_date']):
+            end_humid_date = request.form['end_humid_date']
+            #Convert to datetime
+            end_humid_date = datetime.strptime(end_humid_date, '%y-%m-%d %H:%M:%S')
+        if (request.form['option_humid']):
+            option_humid = request.form['option_humid']
+    
+    #Process Brightness submit
+    if (request.form.get('form_type') == 'Brightness'):
+        if (request.form['start_bright_date']):
+            start_bright_date = request.form['start_bright_date']
+            #Convert to datetime
+            start_bright_date = datetime.strptime(start_bright_date, '%y-%m-%d %H:%M:%S')
+        if (request.form['end_bright_date']):
+            end_bright_date = request.form['end_bright_date']
+            #Convert to datetime
+            end_bright_date = datetime.strptime(end_bright_date, '%y-%m-%d %H:%M:%S')    
+        if (request.form['option_bright']):
+            option_bright = request.form['option_bright']
+    
+    #return
+    return jsonify({'temp_label': temp_label, 'temp_data': temp_data, 'humid_label': humid_label, 'humid_data': humid_data, 'brightness_label': brightness_label, 'brightness_data': brightness_data})
 
-    print("Temperature: "+ str(temperature))
-    print("Humidity: "+ str(humidity))
-    print("Brightness:"+ str(brightness))
-    print("CurrentTime"+ str(current_time))
-
-    return render_template('envicondi.html',land=land, temperature=temperature, humidity=humidity, brightness=brightness,current_time=current_time)
 
 @app.route('/wateringhistory')
 def wateringhistory():

@@ -11,6 +11,8 @@
   <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
   <meta name="description" content="">
 
+  <!-- Add JQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
   <title>Environment Status</title>
   <link rel="stylesheet" href="static/tether/tether.min.css">
@@ -40,12 +42,13 @@
 
   <!-- Add Chart.js-->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- Add JQuery -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
   <!-- Datepicker -->
   <script src="static/datepicker/jquery.datetimepicker.full.js"></script>
   <script src= "static/bootstrap/js/bootstrap.min.js"></script>
+
+  <!-- envicondi.js-->
+  <script src="{{ url_for('static', filename='envicondi.js') }}"></script>
 
 </head>
 <!--=====================
@@ -151,15 +154,13 @@
     <!--Draw chart with chart.js-->
 
     <canvas id="TemperatureChart" width="900" height="400"> </canvas>
-    <form action="#" method="POST" enctype="multipart/form-data">
-      <div class="form-group">
-        <input type='text' class="form-control" placeholder="Start Time" name="start_time" id="datetimepicker1">
+    <form id="form_temperature">
+        <input type='text' class="form-control" placeholder="Start Time" name="start_temp_date" id="datetimepicker1">
 
-        <input type='text' class="form-control" placeholder="End Time" name="end_time" id="datetimepicker2">
+        <input type='text' class="form-control" placeholder="End Time" name="end_temp_date" id="datetimepicker2">
 
-        <select class="form-select form-select-lg mb-3" aria-label="Default select example" name="option">
-          <option selected>Choose your data option</option>
-          <option value="second">Second</option>
+        <select class="form-select form-select-lg mb-3" aria-label="Default select example" name="option_temp" id="option_temperature">
+          <option value="second" selected="selected">Second</option>
           <option value="minute">Minute</option>
           <option value="hour">Hour</option>
           <option value="day">Day</option>
@@ -167,16 +168,14 @@
           <option value="year">Year</option>
         </select>
 
-        <button name="btnGetData" type="submit" class="btn btn-primary btn-block"> Get Graph Data</button>
-      </div>
+        <button name="btnGetTempData" type="submit" class="btn btn-primary btn-block"> Get Graph Data</button>
     </form>
     <script type="text/javascript">
       $(function () {
           $('#datetimepicker1').datetimepicker({
             timepicker: true,
             datepicker: true,
-            format: 'Y-m-d h:m:s',
-            value: '2021-6-10 2:38:00',
+            format: 'Y-m-d h:i',
             weeks: true
           });
       });
@@ -185,8 +184,7 @@
         $('#datetimepicker2').datetimepicker({
             timepicker: true,
             datepicker: true,
-            format: 'Y-m-d h:m:s',
-            value: '2021-6-10 2:00:00',
+            format: 'Y-m-d h:i',
             weeks: true
         });
       });
@@ -194,15 +192,14 @@
 
     <canvas id="HumidityChart" width="900" height="400"> </canvas>
 
-    <form action="#" method="POST" enctype="multipart/form-data">
+    <form id="form_humidity">
       <div class="form-group">
         <input type='text' class="form-control" placeholder="Start Time" name="start_time" id="datetimepicker3">
 
         <input type='text' class="form-control" placeholder="End Time" name="end_time" id="datetimepicker4">
 
-        <select class="form-select form-select-lg mb-3" aria-label="Default select example" name="option">
-          <option selected>Choose your data option</option>
-          <option value="second">Second</option>
+        <select class="form-select form-select-lg mb-3" aria-label="Default select example" name="option_humid" id="option_humidity">
+          <option value="second" selected="selected">Second</option>
           <option value="minute">Minute</option>
           <option value="hour">Hour</option>
           <option value="day">Day</option>
@@ -210,7 +207,7 @@
           <option value="year">Year</option>
         </select>
 
-        <button name="btnGetData" type="submit" class="btn btn-primary btn-block"> Get Graph Data</button>
+        <button name="btnGetHumData" type="submit" class="btn btn-primary btn-block"> Get Graph Data</button>
       </div>
     </form>
     <script type="text/javascript">
@@ -218,8 +215,7 @@
           $('#datetimepicker3').datetimepicker({
             timepicker: true,
             datepicker: true,
-            format: 'Y-m-d h:m:s',
-            value: '2021-6-10 2:38:00',
+            format: 'Y-m-d h:i',
             weeks: true
           });
       });
@@ -228,8 +224,7 @@
         $('#datetimepicker4').datetimepicker({
             timepicker: true,
             datepicker: true,
-            format: 'Y-m-d h:m:s',
-            value: '2021-6-10 2:00:00',
+            format: 'Y-m-d h:i',
             weeks: true
         });
       });
@@ -238,15 +233,14 @@
 
     <canvas id="BrightnessChart" width="900" height="400"> </canvas>
 
-    <form action="#" method="POST" enctype="multipart/form-data">
+    <form id="form_brightness">
       <div class="form-group">
         <input type='text' class="form-control" placeholder="Start Time" name="start_time" id="datetimepicker5">
 
         <input type='text' class="form-control" placeholder="End Time" name="end_time" id="datetimepicker6">
 
-        <select class="form-select form-select-lg mb-3" aria-label="Default select example" name="option">
-          <option selected>Choose your data option</option>
-          <option value="second">Second</option>
+        <select class="form-select form-select-lg mb-3" aria-label="Default select example" name="option_bright" id="option_brightness">
+          <option value="second" selected="selected">Second</option>
           <option value="minute">Minute</option>
           <option value="hour">Hour</option>
           <option value="day">Day</option>
@@ -254,7 +248,7 @@
           <option value="year">Year</option>
         </select>
 
-        <button name="btnGetData" type="submit" class="btn btn-primary btn-block"> Get Graph Data</button>
+        <button name="btnGetBrightData" type="submit" class="btn btn-primary btn-block"> Get Graph Data</button>
       </div>
     </form>
     <script type="text/javascript">
@@ -262,8 +256,7 @@
           $('#datetimepicker5').datetimepicker({
             timepicker: true,
             datepicker: true,
-            format: 'Y-m-d h:m:s',
-            value: '2021-6-10 2:38:00',
+            format: 'Y-m-d h:i',
             weeks: true
           });
       });
@@ -272,8 +265,7 @@
         $('#datetimepicker6').datetimepicker({
             timepicker: true,
             datepicker: true,
-            format: 'Y-m-d h:m:s',
-            value: '2021-6-10 2:00:00',
+            format: 'Y-m-d h:i',
             weeks: true
         });
       });
@@ -325,6 +317,7 @@ for (i = 0; i < coll.length; i++) {
   </script>
 
  <script>
+function drawTemperatureChart(labels, data) {
   var temperatureCanvas = document.getElementById("TemperatureChart").getContext("2d");
   var temperature_chart = new Chart(temperatureCanvas, {
     animationEnabled: true,
@@ -339,11 +332,11 @@ for (i = 0; i < coll.length; i++) {
      title: "Temperature"
     },
     data: {
-        labels: {{ current_time | safe }},
+        labels: labels,
         datasets: [
           {
             label: "Temperature",
-            data: {{ temperature | safe}},
+            data: data,
             fill: false,
             borderColor: "rgb(255,0,0)",
             lineTension: 0.1,
@@ -355,8 +348,10 @@ for (i = 0; i < coll.length; i++) {
         responsive: true
       }
   });
+}
+drawTemperatureChart({{ current_time | safe }} , {{ temperature | safe}});
 
-
+function drawHumidityChart(labels, data) {
   var humidityCanvas = document.getElementById("HumidityChart").getContext("2d");
   var humidity_chart = new Chart(humidityCanvas, {
     animationEnabled: true,
@@ -371,11 +366,11 @@ for (i = 0; i < coll.length; i++) {
      title: "Humidity"
     },
     data: {
-        labels: {{ current_time | safe }},
+        labels: labels,
         datasets: [
           {
             label: "Humidity",
-            data: {{ humidity | safe}},
+            data: data,
             fill: false,
             borderColor: "rgb(0,0,255)",
             lineTension: 0.1,
@@ -387,7 +382,10 @@ for (i = 0; i < coll.length; i++) {
         responsive: true
       }
   });
+}
+drawHumidityChart({{ current_time | safe }} , {{ humidity | safe}});
 
+  function drawBrightnessChart(labels,data) {
   var brightnessCanvas = document.getElementById("BrightnessChart").getContext("2d");
   var brightness_chart = new Chart(brightnessCanvas, {
     animationEnabled: true,
@@ -402,11 +400,11 @@ for (i = 0; i < coll.length; i++) {
      title: "Brightness"
     },
     data: {
-        labels: {{ current_time | safe }},
+        labels: labels,
         datasets: [
           {
             label: "Brightness",
-            data: {{ brightness | safe}},
+            data: data,
             fill: false,
             borderColor: "rgb(210,180,140)",
             lineTension: 0.1,
@@ -418,6 +416,10 @@ for (i = 0; i < coll.length; i++) {
         responsive: true
       }
   });
+}
+drawBrightnessChart({{ current_time | safe }} , {{ brightness | safe}})
+
   </script>
+
 
 </html>
