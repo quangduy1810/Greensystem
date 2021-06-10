@@ -14,7 +14,7 @@ mysql=MySQL(app)
 cur = conn.cursor()
 #giả lập##############
 
-data=[{'id':1,'locate':"ai biet",'plant':"xoài",'temp':23,'lighttime':8,'humidity':2000}]
+data=[{'id':1,'locate':"ai biet",'plant':"xoài",'temp':23,'lighttime':8,'humidity_data':2000}]
 #####################
 
 @app.route('/')
@@ -94,32 +94,38 @@ def envicondi():
         #data = [(),(),(),...]
         land = data[1][1]
         # print("Land:" + str(land))
-        temperature = []
-        humidity = []
-        brightness = []
+        temperature_label = []
+        temperature_data = []
+        humidity_label = []
+        humidity_data = []
+        brightness_label = []
+        brightness_data = []
         current_time = []
         for value in data:
             #print(value)
             if str(value[3]) == 'Temperature':
-                temperature.append(value[2])
+                temperature_data.append(value[2])
+                temperature_label.append(str(value[4]))
             if str(value[3]) == 'Humidity':
-                humidity.append(value[2])
+                humidity_data.append(value[2])
+                humidity_label.append(str(value[4]))
             if str(value[3]) == 'Brightness':
-                brightness.append(value[2])
+                brightness_data.append(value[2])
+                brightness_label.append(str(value[4]))
             if str(value[4]) not in current_time:
                 current_time.append(str(value[4]))
         
-        # print("Temperature length: "+ str(len(temperature)))
-        # print("Humidity length: "+ str(len(humidity)))
-        # print("Brightness length: "+ str(len(brightness)))
+        # print("Temperature length: "+ str(len(temperature_data)))
+        # print("Humidity length: "+ str(len(humidity_data)))
+        # print("Brightness length: "+ str(len(brightness_data)))
         # print("Current_time length: "+ str(len(current_time)))
 
-        # print("Temperature: "+ str(temperature))
-        # print("Humidity: "+ str(humidity))
-        # print("Brightness:"+ str(brightness))
+        # print("Temperature: "+ str(temperature_data))
+        # print("Humidity: "+ str(humidity_data))
+        # print("Brightness:"+ str(brightness_data))
         # print("CurrentTime"+ str(current_time))
 
-        return render_template('envicondi.html',land=land, temperature=temperature, humidity=humidity, brightness=brightness,current_time=current_time)
+        return render_template('envicondi.html',land=land, temperature_label=temperature_label , temperature_data=temperature_data, humidity_label=humidity_label , humidity_data=humidity_data, brightness_label=brightness_label , brightness_data=brightness_data, current_time=current_time)
 
 def average_data(label,data,option):
     process_label = []
@@ -268,22 +274,22 @@ def envicondi2():
     cur.execute("SELECT environment_log.id,LandName,measureValue,measureType,CurrentTime,UserID FROM environment_log,land WHERE USERID = '"+ str(session['UserData'][0]) +"' ")
     data=cur.fetchall()
     #data = [(),(),(),...]
-    temperature = [[],[]]
-    humidity = [[],[]]
-    brightness = [[],[]]
+    temperature_data = [[],[]]
+    humidity_data = [[],[]]
+    brightness_data = [[],[]]
     for value in data:
         if str(value[3]) == 'Temperature':
-            temperature[0].append(value[2])
-            temperature[1].append(value[4])
+            temperature_data[0].append(value[2])
+            temperature_data[1].append(value[4])
         if str(value[3]) == 'Humidity':
-            humidity[0].append(value[2])
-            humidity[1].append(value[4])
+            humidity_data[0].append(value[2])
+            humidity_data[1].append(value[4])
         if str(value[3]) == 'Brightness':
-            brightness[0].append(value[2])
-            brightness[1].append(value[4])
+            brightness_data[0].append(value[2])
+            brightness_data[1].append(value[4])
     #
     #Testing purpose
-    #print("temperature[[],[]] length :" + str(len(temperature[0])) + " , " + str(len(temperature[1])))
+    #print("temperature_data[[],[]] length :" + str(len(temperature_data[0])) + " , " + str(len(temperature_data[1])))
 
     #Process Temperature submit
     if (request.form.get('form_type') == 'Temperature' ):
@@ -304,7 +310,7 @@ def envicondi2():
             option_temp = request.form['option_temp']
         
         #Process data
-        temp_label,temp_data = process_data(temperature[1],temperature[0],start_temp_date,end_temp_date,option_temp)
+        temp_label,temp_data = process_data(temperature_data[1],temperature_data[0],start_temp_date,end_temp_date,option_temp)
     
     #Process Humidity submit
     if (request.form.get('form_type') == 'Humidity'):
@@ -320,7 +326,7 @@ def envicondi2():
             option_humid = request.form['option_humid']
         
         #Process data
-        humid_label,humid_data = process_data(humidity[1],humidity[0],start_humid_date,end_humid_date,option_humid)
+        humid_label,humid_data = process_data(humidity_data[1],humidity_data[0],start_humid_date,end_humid_date,option_humid)
     
     #Process Brightness submit
     if (request.form.get('form_type') == 'Brightness'):
@@ -336,7 +342,7 @@ def envicondi2():
             option_bright = request.form['option_bright']
 
         #Process data
-        brightness_label,brightness_data = process_data(brightness[1],brightness[0],start_bright_date,end_bright_date,option_bright)
+        brightness_label,brightness_data = process_data(brightness_data[1],brightness_data[0],start_bright_date,end_bright_date,option_bright)
     #return
     return jsonify({'temp_label': temp_label, 'temp_data': temp_data, 'humid_label': humid_label, 'humid_data': humid_data, 'brightness_label': brightness_label, 'brightness_data': brightness_data})
 
@@ -362,9 +368,9 @@ def wateringhistory():
 
 
 notification = {
-    "temperature" : "None",
-    "humidity": "None",
-    "brightness": "None",
+    "temperature_data" : "None",
+    "humidity_data": "None",
+    "brightness_data": "None",
     "alert": "None",
     "date": "None",
 }
@@ -378,9 +384,9 @@ def notify_api():
 
         print(req)
 
-        notification["temperature"] = req["temperature"]
-        notification["humidity"] = req['humidity']
-        notification["brightness"] = req['brightness']
+        notification["temperature_data"] = req["temperature_data"]
+        notification["humidity_data"] = req['humidity_data']
+        notification["brightness_data"] = req['brightness_data']
         notification["alert"] = req['alert']
 
         return jsonify(notification)

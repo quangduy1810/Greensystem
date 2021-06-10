@@ -323,11 +323,11 @@ for (i = 0; i < coll.length; i++) {
   </script>
 
  <script>
-drawTemperatureChart({{ current_time | safe }} , {{ temperature | safe}});
+drawTemperatureChart({{ temperature_label | safe }} , {{ temperature_data | safe}});
 
-drawHumidityChart({{ current_time | safe }} , {{ humidity | safe}});
+drawHumidityChart({{ humidity_label | safe }} , {{ humidity_data | safe}});
 
-drawBrightnessChart({{ current_time | safe }} , {{ brightness | safe}})
+drawBrightnessChart({{ brightness_label | safe }} , {{ brightness_data | safe}})
 
   </script>
 
