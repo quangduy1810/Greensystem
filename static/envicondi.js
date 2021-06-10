@@ -1,5 +1,5 @@
 //Draw Chart.js
-function drawTemperatureChart(labels, data, isAjax) {
+function drawTemperatureChart(labels, data) {
     var temperatureCanvas = document.getElementById("TemperatureChart").getContext("2d");
     globalThis.temperature_chart;
     if (typeof temperature_chart == "undefined") {
@@ -220,7 +220,7 @@ $(document).ready(function() {
         url : '/envicondi2'
       })
       .done(function(data) {
-        drawTemperatureChart(data.temp_label,data.temp_data,true);
+        drawTemperatureChart(data.temp_label,data.temp_data);
       });
 
     });
