@@ -31,6 +31,7 @@ CREATE TABLE DEVICE (
 # Loại cây 
 CREATE TABLE PLANT (
 	Id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+<<<<<<< HEAD
     PlantName VARCHAR(50) NOT NULL,
     lowerTemperature FLOAT NOT NULL,
     upperTemperature FLOAT NOT NULL,
@@ -41,6 +42,9 @@ CREATE TABLE PLANT (
     upperHazardousTemperature FLOAT NOT NULL,  
 	lowerHazardousHumidity FLOAT NOT NULL, 
     upperHazardousHumidity FLOAT NOT NULL 
+=======
+    PlantName VARCHAR(50) NOT NULL
+>>>>>>> fb9426eb7580d8470c5e7617d079411f13ec9f04
 );
 
 # Bảng này lưu trữ thông tin về 
@@ -152,9 +156,15 @@ INSERT IGNORE INTO Device(deviceType, UserId) VALUES
 	('Light', 1), -- 1 
     ('Pump', 1),-- 2
     ('Pump', 1),-- 3
+<<<<<<< HEAD
     ('Light', 2),-- 4
     ('Light', 2),-- 5
 	('Pump', 1),-- 6
+=======
+    ('Light', 1),-- 4
+    ('Light', 1),-- 5
+	('Pump', 2),-- 6
+>>>>>>> fb9426eb7580d8470c5e7617d079411f13ec9f04
     ('Light', 2),-- 7
     ('Pump', 2),-- 8
     ('Pump', 2),-- 9
@@ -162,6 +172,7 @@ INSERT IGNORE INTO Device(deviceType, UserId) VALUES
     ('Pump', 1) -- 11
 ;
 
+<<<<<<< HEAD
 
 
 INSERT IGNORE INTO PLANT (plantName,lowerTemperature,upperTemperature,lowerHumidity,upperHumidity,
@@ -173,6 +184,26 @@ INSERT IGNORE INTO PLANT (plantName,lowerTemperature,upperTemperature,lowerHumid
     ("Melon",24, 40, 50, 80, 10, 50, 20, 100),
     ("Pumpkin",25, 40, 50, 80, 10, 50, 20, 100),
     ("Cauliflower",26, 40, 50, 80, 10, 50, 20, 100)
+=======
+INSERT IGNORE INTO device_used_in_land(DeviceId, LandId) VALUES
+	(1, 1),
+	(2, 1),
+	(3, 1),
+	(4, 2),
+	(5, 2),
+    (11,1),
+    (6,1)
+;
+
+INSERT IGNORE INTO PLANT (plantName) VALUES
+	("Rice"),
+    ("Corn"),
+    ("Strawberry"),
+    ("Raspberry"),
+    ("Melon"),
+    ("Pumpkin"),
+    ("Cauliflower")
+>>>>>>> fb9426eb7580d8470c5e7617d079411f13ec9f04
 ;
 
 INSERT IGNORE INTO LAND(UserId, LandName, PlantId,lowerTemperature,upperTemperature,lowerHumidity,upperHumidity,
@@ -183,6 +214,7 @@ INSERT IGNORE INTO LAND(UserId, LandName, PlantId,lowerTemperature,upperTemperat
 	(4, "land4", 2, 25, 40, 50, 75, 10, 50, 20, 90),
     (1, "land5", 1, 20, 40, 50, 80, 10, 50, 20, 100)
 ;
+<<<<<<< HEAD
 INSERT IGNORE INTO device_used_in_land(DeviceId, LandId) VALUES
 	(1, 1),
 	(2, 1),
@@ -193,11 +225,15 @@ INSERT IGNORE INTO device_used_in_land(DeviceId, LandId) VALUES
     (6,5),
     (1, 5)
 ;
+=======
+
+>>>>>>> fb9426eb7580d8470c5e7617d079411f13ec9f04
 
 SELECT * FROM DEVICE_ACTED_IN_LAND;
 
 SELECT LandName FROM LAND WHERE UserId = 1;
 
+<<<<<<< HEAD
 SELECT device.deviceType, device.Id ,device.UserId, device_used_in_land.LandId FROM device INNER JOIN device_used_in_land ON device.ID = device_used_in_land.DeviceId WHERE UserId =1 and device_used_in_land.LandId<>5 ;
 SELECT * 
 FROM person 
@@ -214,3 +250,8 @@ SELECT * FROM ENVIRONMENT_LOG ORDER BY CurrentTIme DESC;
 
 SELECT * FROM (device INNER JOIN device_used_in_land ON device.ID = device_used_in_land.DeviceId) inner join person On device.userid = person.id where UserId=1 ;
 SELECT * FROM device INNER JOIN device_used_in_land ON device.ID = device_used_in_land.DeviceId where device_used_in_land.LandId=5;
+=======
+SELECT * FROM ENVIRONMENT_LOG ORDER BY CurrentTIme DESC;
+
+SELECT * FROM LAND;
+>>>>>>> fb9426eb7580d8470c5e7617d079411f13ec9f04
