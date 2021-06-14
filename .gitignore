@@ -3,3 +3,4 @@ venv
 __pycache__
 GreenSystem/
 gitlog.txt
+log.txt
