@@ -62,7 +62,9 @@
 
 <section class="form5 cid-svLhAvnHwC" id="form5-v">
     
-    
+    {% if error %}
+            <p style="text-align: center; color: red; font-size: 30px;">{{ error }}</p>
+        {% endif %}
     <div class="container">
         <div class="mbr-section-head">
             <h3 class="mbr-section-title mbr-fonts-style align-center mb-0 display-2">
@@ -95,6 +97,7 @@
             </div>
         </div>
     </div>
+    
 </section>
   
 </body>

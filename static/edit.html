@@ -2,6 +2,19 @@
 <html >
 <head>
   <style>
+    td{
+  
+  border: 5px solid white;
+  background-color: rgb(184, 201, 201);
+}
+
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
     body {
       background-image: url('static/1.jpg');
       background-repeat: no-repeat;
@@ -98,37 +111,136 @@ padding-block: 10px;
     
   </section>
   <div style="height: 30px;"></div>
-  <h2 style="margin-left: 5%;" > Chỉnh sửa</h2>
-  <form style="background-color: white;" method="POST">
+  <h2 style="margin-left: 5%;" > {{title}}</h2>
+  <div class="row" >
+    <div class="column" style="width: 50%;" >
+    <form style="background-color: white;" method="POST">
+    <p style="font-size: 25px;">Thông tin</p>
     <label for="location">Khu vực:</label><br>
     <input type="text" id="location" name="location" value={{data[2]}}><br>
     <label for="plant">Cây trồng:</label><br>
-    <input type="text" id="plant" name="plant" value="Cây trồng"><br>
-    <label for="plant">Nhiệt độ thích hợp:</label><br>
+    {%if title == "Thêm"%}
+    <input list="pllist" id="plant" name="plant"  value="{{data[13]}}">
+      
+      <datalist id="pllist">
+      {%for value in data4%}
+      <option value={{value[1]}}>{{value[1]}}</option>
+      {%endfor%}
+      </datalist>
+      <br>
+      <br>
+      <input type ="submit" value="Xác nhận">  
+    {%else%}
+    <input type="text" list="pllist" id="plant" name="plant"  value="{{data[13]}}">
+      
+      <datalist id="pllist">
+      {%for value in data4%}
+      <option value={{value[1]}}>{{value[1]}}</option>
+      {%endfor%}
+      </datalist>  
+    <br>
+    <label >Nhiệt độ thích hợp:</label><br>
     <input type="text" id="ltemp" name="ltemp" value={{data[4]}} >
     &nbsp;-&nbsp;
     <input type="text" id="utemp" name="utemp" value={{data[5]}} >
     <br>
-    <label for="plant">Nhiệt độ nguy hiểm:</label><br>
+    <label >Nhiệt độ nguy hiểm:</label><br>
     <input type="text" id="lhtemp" name="lhtemp" value={{data[8]}} >
     &nbsp;<>&nbsp;
     <input type="text" id="uhtemp" name="uhtemp" value={{data[9]}} >
     <br>
-    <label for="plant">Thời gian chiếu sáng:</label><br>
-    <input type="text" id="light" name="light"><br>
-    <label for="plant">Độ ẩm thích hợp</label><br>
+    
+    <label >Độ ẩm thích hợp</label><br>
     <input type="text" id="lhumidity" name="lhumidity" value={{data[6]}}> 
     &nbsp;-&nbsp;
     <input type="text" id="uhumidity" name="uhumidity" value={{data[7]}}><br>
     <br>
-    <label for="plant">Độ ẩm nguy hiểm</label><br>
+    <label >Độ ẩm nguy hiểm</label><br>
     <input type="text" id="lhhumidity" name="lhhumidity" value={{data[10]}}> 
     &nbsp;<>&nbsp;
     <input type="text" id="uhhumidity" name="uhhumidity" value={{data[11]}}><br>
     <br>
     <input type="submit" value="Xác nhận" href="edit{{data[1]}}{{'f'}}">
+    <input type="submit" value="Xóa" href="delete{{data[1]}}{{'l'}}">
+    <br>
+    <div style="height: 20px;"></div>
     </form>
-
+    {%if data%}
+    <div style="background-color: white;">
+      <p style="font-size: 25px;">Thiết bị</p>
+      <p style="font-size: 20px;" >Đang sử dụng</p>
+      {%if data3%}
+      <table style="width: 90%;border: 5px solid white; text-align: center;">
+      <tr style="background-color: cadetblue; text-align: center; ">
+        <th>ID</th>
+        <th>Thiết bị</th>
+        <th style="width: 30px;"></th>
+      </tr>
+      
+      {%for value in data3%}
+      <tr style="background: cyan;">
+        <td>{{value[0]}}</td>
+        <td>{{value[1]}}</td>
+        <td  style="padding: 5px; background: red;text-align: center;" ><a href="/delete{{value[0]}}{{data[0]}}" style="color:white;">X</a></td>
+      </tr>
+      {%endfor%}
+      {%endif%}
+      </table>
+      <p style="font-size: 20px;" >Có thể dùng</p>
+      {%if data2%}
+      <table style="width: 90%;border: 5px solid white; text-align: center">
+        <tr style="background-color: cadetblue; text-align: center; ">
+          <th>ID</th>
+          <th>Thiết bị</th>
+          <th style="width: 30px;"></th>
+        </tr>
+        
+        {%for value in data2%}
+        <tr style="background: cyan;">
+          <td>{{value[0]}}</td>
+          <td>{{value[1]}}</td>
+          <td style="border-radius: 8px; margin-left: 5%; background-color: #04AA6D; font-size: 20px;"><a href="/add{{value[0]}}{{data[0]}}" style="color: white"> +</a> </td>
+        </tr>
+        {%endfor%}
+        {%endif%}
+      </table>
+    <div style="height: 20px;"></div>
+    </div>
+    {%endif%}
+  </div>
+  {%if data5%}
+    <div class="column" style="width: 20%;"></div>
+    <div class="column" style="background-color: white; width: 30%; height: 500px;">
+      <p style="font-size: 25px;">Thông số tiêu chuẩn</p>
+      <label for="plant">Cây trồng:</label><br>
+      
+      <input value="{{data5[1]}}">   
+      <br>
+      <label >Nhiệt độ thích hợp:</label><br>
+      <input  value={{data5[2]}} >
+      &nbsp;-&nbsp;
+      <input value={{data5[3]}} >
+      <br>
+      <label >Nhiệt độ nguy hiểm:</label><br>
+      <input  value={{data5[6]}} >
+      &nbsp;<>&nbsp;
+      <input  value={{data[7]}} >
+      <br>
+      
+      <label >Độ ẩm thích hợp</label><br>
+      <input  value={{data5[4]}}> 
+      &nbsp;-&nbsp;
+      <input value={{data5[5]}}><br>
+      <br>
+      <label >Độ ẩm nguy hiểm</label><br>
+      <input  value={{data5[8]}}> 
+      &nbsp;<>&nbsp;
+      <input value={{data5[9]}}><br>
+      <br>
+    </div>
+    </div>
+  {%endif%}
+  {%endif%}
 
 
 {%endblock%}

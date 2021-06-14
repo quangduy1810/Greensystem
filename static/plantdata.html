@@ -117,13 +117,13 @@ td{
   height: 300px; /* Should be removed. Only for demonstration */
 }
 .collapsible {
-  
+  background-color: #777;
+  color: white;
   cursor: pointer;
-  padding: auto;
-  
-  
+  padding: 18px;
+  border: none;
   text-align: left;
-  
+  outline: none;
   font-size: 15px;
 }
 
@@ -131,13 +131,26 @@ td{
   background-color: #555;
 }
 
+.collapsible:after {
+  content: '\002B';
+  color: white;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2212";
+}
+
 .content {
-  
+  padding: 0 18px;
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.2s ease-out;
   
-} 
+}
+
 .switch {
   position: relative;
   display: inline-block;
@@ -265,85 +278,69 @@ padding-block: 10px;
     
   </section>
   <div style="height: 30px;"></div>
-  <h2 style="margin-left: 5%;" > Quan ly dat dai</h2>
-<table  >
-  <tr>
-    <th>ID</th>
-    <th>Khu vực</th>
-    <th>Cây trồng</th>
-    <th>Nhiệt độ thích hợp (°C)</th>
-    <th>Thời gian chiếu sáng</th>
-    <th>Độ ẩm thích hợp(%)</th>
-    <th></th>
-    <th></th>
+  <h2 style="margin-left: 5%;" > Quản lý đất đai</h2>
+ <div style="height: 10px"></div>
+ 
+ {%for dt in data%}
+ <p type="button" class="collapsible" style="margin-left: 5%; margin-right: 5%;"> {{dt[2]}}</p>
+ <div class="content" style="margin-left: 5%; margin-right: 5%;">
+  <table  >
+    <tr>
+      <th>ID</th>
+      <th>Khu vực</th>
+      <th>Cây trồng</th>
+      <th>Nhiệt độ thích hợp (°C)</th>
+      
+      <th>Độ ẩm thích hợp(%)</th>
+      <th></th>
+      <th></th>
+    </tr>
+    <tr >
     
-    <th type="button" style="padding: 5px;" onclick="confirm()"><a href="/edit{{data}}" id="confirm"></a></th>
-  </tr>
-  {%for dt in data%}
-  <tr >
+      <td>{{dt[0]}}</td>
+      <td>{{dt[2]}}</td>
+      <td>{{dt[13]}}</td>
+      <td>{{dt[4]}} - {{dt[5]}}</td>
   
-    <td>{{dt[0]}}</td>
-    <td>{{dt[2]}}</td>
-    <td></td>
-    <td>{{dt[4]}} - {{dt[5]}}</td>
-
-    <td></td>
-    <td>{{dt[6]}}-{{dt[7]}}</td>
-    <td type="button" style="padding: 5px;" class="collapsible" contenteditable="false" >...</td>
-    <td type="button"  style="padding: 5px; background: red;"  contenteditable="false"><a href="/delete{{dt[0]}}{{'l'}}">X</a></td>
-    <td type="button" style="padding: 5px; background-color: thistle;" onclick="edit()" ><a href="/edit{{dt[1]}}{{'f'}}">Sửa </a></td>
-  </tr>
-</table>
-<div class="content" style="background: darkgrey; width: 90%; margin-left: 5%;">
+     
+      <td>{{dt[6]}}-{{dt[7]}}</td>
+      <td  style="padding: 5px; background: red;text-align: center;" ><a href="/delete{{dt[0]}}{{'l'}}" style="color:white;">X</a></td>
+      <td style="padding: 5px; background-color: thistle;text-align: center;" ><a href="/edit{{dt[0]}}{{'f'}}" style="color:black;">Sửa </a></td>
+    </tr>
+  {%if data2%}
+  </table>  
     <table style="background-color: cadetblue; text-align: center;">
-      <tr style=" border: 5px solid white;">
-        <th>Thiết bị</th>
-        <th> Trạng thái</th>
-        <th>Công tắc</th>
-      </tr>
-      {%for value in dt[12]%}
-      <tr style="background: cyan;">
-        <td>value[0]</td>
-        <td>value[1]</td>
-        <td><label class="switch">
-          <input type="checkbox">
-          <span class="slider round"></span>
-        </label></td>
+        <tr style=" border: 5px solid white;">
+          <th>ID</th>
+          <th>Thiết bị</th>
+  
+          <th>Công tắc</th>
         </tr>
+        {%for value in data2%}
+        {%if value[2]== dt[0]%}
+        <tr style="background: cyan;">
+          <td>{{value[1]}}</td>
+          <td>{{value[0]}}</td>
+          <td><label class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+          </label></td>
+          </tr>
+        {%endif%}
         {%endfor%}
     </table>
-</div>
-</div> 
-{%endfor%}
-  
-
- <div style="height: 10px"></div>
- <button style="border-radius: 8px; margin-left: 5%; background-color: #04AA6D; font-size: 20px;"><a href="/edit{{0}}{{'a'}}"> +</a> </button> 
- 
-  <a class="noti" href="/notify"> Cảnh báo
-  </a>
+    
+  {%endif%}
+   </div>
+ {%endfor%}
+ <button style="border-radius: 8px; margin-left: 5%; background-color: #04AA6D; font-size: 20px;"><a href="/edit{{0}}{{'a'}}" style="color: white;"> +</a> </button>  
+  <a class="noti" href="/notify"> Cảnh báo</a>
 
  
 {% endblock %}
 <script>
 
 var coll = document.getElementsByClassName("collapsible");
-var i;
-for (i = 0; i < coll.length; i++) {
-  coll[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    // var content = this.parentElement.parentElement.nextElementSibling.children[0];
-    var content = this.parentElement.parentElement.parentElement.nextElementSibling;
-    if (content.style.maxHeight){
-      content.style.maxHeight = null;
-    } else {
-      content.style.maxHeight = content.scrollHeight + "px";
-    } 
-    
-  });
-
-}
-var coll = document.getElementsByID("collap");
 var i;
 for (i = 0; i < coll.length; i++) {
   coll[i].addEventListener("click", function() {
@@ -357,26 +354,9 @@ for (i = 0; i < coll.length; i++) {
     } 
     
   });
+}
 
-}
-function edit()
-{
-  document.getElementById("land").contentEditable= true;
-  document.getElementById("confirm").innerHTML="Xác nhận";
-  document.getElementById("confirm").style.display=block;
-  document.getElementById("confirm").style.backgroundColor= yellow;
 
-}
-function confirm()
-{
-  if (document.getElementById("confirm").innerHTML == "Xác nhận")
-  {
-  alert("Đã thay đổi thông số.");
-  
-  document.getElementById("land").contentEditable= false;
-  document.getElementById("confirm").innerHTML="";
-  }
-}
 
 
 	

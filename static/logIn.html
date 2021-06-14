@@ -84,10 +84,11 @@
                     </div>
                 </form>
             </div>
-            {% if error %}
-            <p class="error">{{ error }}</p>
-            {% endif %}
+            
         </div>
+        {% if error %}
+            <p style="text-align: center; color: red;font-size: 30px;">{{ error }}</p>
+        {% endif %}
     </div>
 </section>
 
