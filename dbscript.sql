@@ -31,7 +31,6 @@ CREATE TABLE DEVICE (
 # Loại cây 
 CREATE TABLE PLANT (
 	Id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-<<<<<<< HEAD
     PlantName VARCHAR(50) NOT NULL,
     lowerTemperature FLOAT NOT NULL,
     upperTemperature FLOAT NOT NULL,
@@ -42,9 +41,6 @@ CREATE TABLE PLANT (
     upperHazardousTemperature FLOAT NOT NULL,  
 	lowerHazardousHumidity FLOAT NOT NULL, 
     upperHazardousHumidity FLOAT NOT NULL 
-=======
-    PlantName VARCHAR(50) NOT NULL
->>>>>>> fb9426eb7580d8470c5e7617d079411f13ec9f04
 );
 
 # Bảng này lưu trữ thông tin về 
