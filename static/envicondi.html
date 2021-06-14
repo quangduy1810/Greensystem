@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <!-- Site made with Mobirise Website Builder v5.3.5, https://mobirise.com -->
 
@@ -9,8 +10,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
   <meta name="description" content="">
-  
-  
+
+  <!-- Add JQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
   <title>Environment Status</title>
   <link rel="stylesheet" href="static/tether/tether.min.css">
   <link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
@@ -22,154 +25,311 @@
   <link rel="stylesheet" href="static/dropdown/css/style.css">
   <link rel="stylesheet" href="static/socicon/css/styles.css">
   <link rel="stylesheet" href="static/theme/css/style.css">
-  <link rel="preload" href="https://fonts.googleapis.com/css?family=Jost:100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jost:100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i&display=swap"></noscript>
-  <link rel="preload" as="style" href="static/mobirise/css/mbr-additional.css"><link rel="stylesheet" href="static/mobirise/css/mbr-additional.css" type="text/css">
-  
-  
-  
+  <link rel="stylesheet" href="static/datepicker/jquery.datetimepicker.min.css">
+
+  <link rel="preload"
+    href="https://fonts.googleapis.com/css?family=Jost:100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i&display=swap"
+    as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Jost:100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i&display=swap">
+  </noscript>
+  <link rel="preload" as="style" href="static/mobirise/css/mbr-additional.css">
+  <link rel="stylesheet" href="static/mobirise/css/mbr-additional.css" type="text/css">
+
+
+
+
+  <!-- Add Chart.js-->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Datepicker -->
+  <script src="static/datepicker/jquery.datetimepicker.full.js"></script>
+  <script src= "static/bootstrap/js/bootstrap.min.js"></script>
+
+  <!-- envicondi.js-->
+  <script src="{{ url_for('static', filename='envicondi.js') }}"></script>
+
 </head>
 <!--=====================
           Content
 ======================-->
-               <!-- WRITE CODE HERE -->
+<!-- WRITE CODE HERE -->
 <style>
   table {
-  
-  width: 90%;
-  margin: auto;
-  text-align: center;
-  
-}
-th,td{
-border: 10px solid white;
-background-color: rgb(187, 187, 48);
-color: white;
-}
-.collapsible {
-  background-color: #777;
-  color: white;
-  cursor: pointer;
-  padding: 18px;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: 15px;
-}
 
-.active, .collapsible:hover {
-  background-color: #555;
-}
+    width: 90%;
+    margin: auto;
+    text-align: center;
 
-.collapsible:after {
-  content: '\002B';
-  color: white;
-  font-weight: bold;
-  float: right;
-  margin-left: 5px;
-}
+  }
 
-.active:after {
-  content: "\2212";
-}
+  th,
+  td {
+    border: 10px solid white;
+    background-color: rgb(187, 187, 48);
+    color: white;
+  }
 
-.content {
-  padding: 0 18px;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.2s ease-out;
-  
-}
-.noti
-{position: fixed;
-bottom:20px;
-right:10px;
-font-size: 30px;
-color: red;
-background-color:white;
-padding-block: 10px;
-}
+  .collapsible {
+    background-color: #777;
+    color: white;
+    cursor: pointer;
+    padding: 18px;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+  }
+
+  .active,
+  .collapsible:hover {
+    background-color: #555;
+  }
+
+  .collapsible:after {
+    content: '\002B';
+    color: white;
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
+  }
+
+  .active:after {
+    content: "\2212";
+  }
+
+  .content {
+    padding: 0 18px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+
+  }
+
+  .noti {
+    position: fixed;
+    bottom: 20px;
+    right: 10px;
+    font-size: 30px;
+    color: red;
+    background-color: white;
+    padding-block: 10px;
+  }
 </style>
+
 <body>
-  
+
   <section class="menu menu1 cid-svLgDH6chw" once="menu" id="menu1-u">
-    
+
 
     <nav class="navbar navbar-dropdown navbar-fixed-top navbar-expand-lg">
-        <div class="container">
-            <div class="navbar-brand">
-                
-                <span class="navbar-caption-wrap"><a class="navbar-caption text-black display-7" href="/homepage">Green System</a></span>
-            </div>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <div class="hamburger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true">
-                <li class="nav-item"><a class="nav-link link text-black display-4" href="/logout">Log Out</a></li>
-              </ul>
-            </div>
-        </div>
-    </nav>
-</section>
-<div style="height: 50px;"></div>
-<h2 style="margin-left: 5%;" > Tinh trang moi truong</h2>
-{%for value in data2%}
-<p type="button" class="collapsible" style="margin-left: 5%; margin-right: 5%;"> {{value[2]}}</p>
-<div class="content" style="margin-left: 5%; margin-right: 5%;">
-<table>
-    <tr >
-        <th>Nhiet do</th>
-        <th>Do am</th>
-        <th>Anh sang</th>
-    </tr>
-    <tr>
-        <td>data[0]</td>
-        <td> data[1]</td>
-        <td>data[2]</td>
-    </tr>
-  </table>
-  </div>
-{%endfor%}
+      <div class="container">
+        <div class="navbar-brand">
 
-  <a class="noti" href="/notify"> Cảnh báo
-  </a>
+          <span class="navbar-caption-wrap"><a class="navbar-caption text-black display-7" href="/homepage">Green
+              System</a></span>
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true">
+            <li class="nav-item"><a class="nav-link link text-black display-4" href="/logout">Log Out</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </section>
+  <div style="height: 50px;"></div>
+  <h2 style="margin-left: 5%;"> Tinh trang moi truong</h2>
+  <p type="button" class="collapsible" style="margin-left: 5%; margin-right: 5%;"> {{land}}</p>
+  <div class="content" style="margin-left: 5%; margin-right: 5%;">
+    <!--Draw chart with chart.js-->
+
+    <canvas id="TemperatureChart" width="900" height="400"> </canvas>
+    <form id="form_temperature">
+        <input type='text' class="form-control" placeholder="Start Time" name="start_temp_date" id="datetimepicker1">
+
+        <input type='text' class="form-control" placeholder="End Time" name="end_temp_date" id="datetimepicker2">
+
+        <select class="form-select form-select-lg mb-3" aria-label="Default select example" name="option_temp" id="option_temperature">
+          <option value="seconds" selected="selected">Second</option>
+          <option value="minutes">Minute</option>
+          <option value="hours">Hour</option>
+          <option value="days">Day</option>
+          <option value="months">Month</option>
+          <option value="years">Year</option>
+        </select>
+
+        <button name="btnGetTempData" type="submit" class="btn btn-primary btn-block"> Get Graph Data</button>
+    </form>
+    <script type="text/javascript">
+      $(function () {
+          $('#datetimepicker1').datetimepicker({
+            timepicker: true,
+            datepicker: true,
+            format: 'Y-m-d H:i',
+            weeks: true,
+            use24hours: true
+          });
+      });
+
+      $(function () {
+        $('#datetimepicker2').datetimepicker({
+            timepicker: true,
+            datepicker: true,
+            format: 'Y-m-d H:i',
+            weeks: true,
+            use24hours: true
+        });
+      });
+    </script>
+
+    <canvas id="HumidityChart" width="900" height="400"> </canvas>
+
+    <form id="form_humidity">
+      <div class="form-group">
+        <input type='text' class="form-control" placeholder="Start Time" name="start_time" id="datetimepicker3">
+
+        <input type='text' class="form-control" placeholder="End Time" name="end_time" id="datetimepicker4">
+
+        <select class="form-select form-select-lg mb-3" aria-label="Default select example" name="option_humid" id="option_humidity">
+          <option value="seconds" selected="selected">Second</option>
+          <option value="minutes">Minute</option>
+          <option value="hours">Hour</option>
+          <option value="days">Day</option>
+          <option value="months">Month</option>
+          <option value="years">Year</option>
+        </select>
+
+        <button name="btnGetHumData" type="submit" class="btn btn-primary btn-block"> Get Graph Data</button>
+      </div>
+    </form>
+    <script type="text/javascript">
+      $(function () {
+          $('#datetimepicker3').datetimepicker({
+            timepicker: true,
+            datepicker: true,
+            format: 'Y-m-d H:i',
+            weeks: true,
+            use24hours: true
+          });
+      });
+
+      $(function () {
+        $('#datetimepicker4').datetimepicker({
+            timepicker: true,
+            datepicker: true,
+            format: 'Y-m-d H:i',
+            weeks: true,
+            use24hours: true
+        });
+      });
+    </script>
+
+
+    <canvas id="BrightnessChart" width="900" height="400"> </canvas>
+
+    <form id="form_brightness">
+      <div class="form-group">
+        <input type='text' class="form-control" placeholder="Start Time" name="start_time" id="datetimepicker5">
+
+        <input type='text' class="form-control" placeholder="End Time" name="end_time" id="datetimepicker6">
+
+        <select class="form-select form-select-lg mb-3" aria-label="Default select example" name="option_bright" id="option_brightness">
+          <option value="seconds" selected="selected">Second</option>
+          <option value="minutes">Minute</option>
+          <option value="hours">Hour</option>
+          <option value="days">Day</option>
+          <option value="months">Month</option>
+          <option value="years">Year</option>
+        </select>
+
+        <button name="btnGetBrightData" type="submit" class="btn btn-primary btn-block"> Get Graph Data</button>
+      </div>
+    </form>
+    <script type="text/javascript">
+      $(function () {
+          $('#datetimepicker5').datetimepicker({
+            timepicker: true,
+            datepicker: true,
+            format: 'Y-m-d H:i',
+            weeks: true,
+            use24hours: true
+          });
+      });
+
+      $(function () {
+        $('#datetimepicker6').datetimepicker({
+            timepicker: true,
+            datepicker: true,
+            format: 'Y-m-d H:i',
+            weeks: true,
+            use24hours: true
+        });
+      });
+    </script>
+
+
+    <!---->
+  </div>
+  <div id="noti" style="display: none;">
+    <a class="noti" href="/notify"> Cảnh báo!!!
+    </a>
+  </div>
+
   <script>
     function sleep(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     }
-    
-    async function f(){
+
+    async function f() {
       await sleep(2000);
-      var x=document.getElementById("noti");
-      
-      x.style.display="block";
+      var x = document.getElementById("noti");
+
+      x.style.display = "block";
     }
     f()
   </script>
+
+
 </body>
+
 <script>
 
-  var coll = document.getElementsByClassName("collapsible");
-  var i;
-  for (i = 0; i < coll.length; i++) {
-    coll[i].addEventListener("click", function() {
-      this.classList.toggle("active");
-      // var content = this.parentElement.parentElement.nextElementSibling.children[0];
-      var content = this.nextElementSibling;
-      if (content.style.maxHeight){
-        content.style.maxHeight = null;
-      } else {
-        content.style.maxHeight = content.scrollHeight + "px";
-      } 
-      
-    });
-  
-  }
-    </script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    // var content = this.parentElement.parentElement.nextElementSibling.children[0];
+    var content = this.nextElementSibling;
+    if (content.style.maxHeight){
+      content.style.maxHeight = null;
+    } else {
+      content.style.maxHeight = content.scrollHeight + "px";
+    } 
+    
+  });
+
+}
+  </script>
+
+ <script>
+drawTemperatureChart({{ temperature_label | safe }} , {{ temperature_data | safe}});
+
+drawHumidityChart({{ humidity_label | safe }} , {{ humidity_data | safe}});
+
+drawBrightnessChart({{ brightness_label | safe }} , {{ brightness_data | safe}})
+
+  </script>
+
+
 </html>
