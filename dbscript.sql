@@ -214,3 +214,24 @@ SELECT * FROM ENVIRONMENT_LOG ORDER BY CurrentTIme DESC;
 
 SELECT * FROM (device INNER JOIN device_used_in_land ON device.ID = device_used_in_land.DeviceId) inner join person On device.userid = person.id where UserId=1 ;
 SELECT * FROM device INNER JOIN device_used_in_land ON device.ID = device_used_in_land.DeviceId where device_used_in_land.LandId=5;
+INSERT INTO plant_history(LandId,PlantId, StartTime, EndTime, Comment) VALUES 
+	('1', '1', "2020-08-06 12:48:44", "2021-08-06 12:48:44", "Not"),
+	('1', '2', "2020-08-06 12:48:44", "2021-08-06 12:48:44", "Not"),
+	('1', '3', "2020-08-06 12:48:44", "2021-08-06 12:48:44", "Not"),
+	('1', '4', "2019-08-06 12:48:44", "2020-08-06 12:48:44", "Not"),
+	('1', '5', "2019-08-06 12:48:44", "2020-08-06 12:48:44", "Not"),
+	('1', '6', "2019-08-06 12:48:44", "2020-08-06 12:48:44", "Not"),
+	('2', '1', "2020-08-06 12:48:44", "2021-08-06 12:48:44", "Not"),
+	('2', '2', "2020-08-06 12:48:44", "2021-08-06 12:48:44", "Not"),
+	('2', '3', "2020-08-06 12:48:44", "2021-08-06 12:48:44", "Not"),
+	('2', '4', "2019-08-06 12:48:44", "2020-08-06 12:48:44", "Not"),
+	('2', '5', "2019-08-06 12:48:44", "2020-08-06 12:48:44", "Not"),
+	('2', '6', "2019-08-06 12:48:44", "2020-08-06 12:48:44", "Not"),
+	('5', '6', "2019-08-06 12:48:44", "2020-08-06 12:48:44", "Not")
+    
+;
+
+ALTER TABLE device_used_in_land
+ADD COLUMN start_time DATETIME not null AFTER LandId;
+ALTER TABLE device_used_in_land
+ADD COLUMN end_time DATETIME not null AFTER start_time;
