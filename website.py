@@ -395,11 +395,44 @@ def envicondi2():
 
 
 
+
+
+
 @app.route('/wateringhistory')
 def wateringhistory():
     cur.execute("SELECT * FROM LAND WHERE UserID = '"+ str(session['UserData'][0]) + "'")
     data=cur.fetchall()
     return render_template('wateringhistory.html',data=data)
+
+@app.route('/deletedevice<id>', methods=['GET'])
+def deletedevice(id):
+    cur.execute("DELETE FROM DEVICE WHERE Id = '"+ str(id) + "' AND  UserID = '"+ str(session['UserData'][0]) + "'" );
+    conn.commit()
+
+    return redirect(request.referrer)
+
+@app.route('/adddevice<dv_id><deviceType>',methods=['GET'])
+def adddevice(dv_id,deviceType):
+    cur.execute("INSERT INTO device (Id, deviceType,UserId) VALUES ('"+ dv_id + ",'"+ deviceType +"',"+ str(session['UserData'][0]) +" ') ")
+    conn.commit()
+    return redirect(request.referrer)
+
+
+@app.route('/planthistory')
+def devicedata():
+    cur.execute("SELECT plant_history.PlantId,plant_history.LandId, plantName ,StartTime,EndTime,Comment FROM (plant_history join plant on PlantId = plant.Id) join LAND on plant_history.LandId = land.Id where UserId ="+ str(session['UserData'][0]))
+    data=cur.fetchall()
+
+    return render_template('planthistory.html',data=data)
+
+
+@app.route('/devicehistory')
+def devicehistory():
+    cur.execute("SELECT Id,LandId,deviceType,start_time,end_time FROM device_used_in_land join device on device_used_in_land.DeviceId = device.Id where UserId = '"+ str(session['UserData'][0]) + "'")
+    data=cur.fetchall()
+
+    return render_template('devicehistory.html',data=data)
+
 
 
 
