@@ -159,7 +159,7 @@ padding-block: 10px;
   <meta name="description" content="">
   
   
-  <title>Watering history  </title>
+  <title>User history  </title>
   <link rel="stylesheet" href="static/tether/tether.min.css">
   <link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="static/bootstrap/css/bootstrap-grid.min.css">
@@ -205,69 +205,29 @@ padding-block: 10px;
     
   </section>
   <div style="height: 30px;"></div>
-  <h2 style="margin-left: 5%;" > Lịch sử tưới tiêu</h2>
+  <h2 style="margin-left: 5%;" > Lịch sử người dùng</h2>
 
-  
-  {%for dt in data%}
-<p type="button" class="collapsible" style="margin-left: 5%; margin-right: 5%;"> {{dt[1]}}</p>
-<div class="content" >
   <table>
-    <tr>
-      <th>Ngày</th>
-      <th>Khu vực</th>
-      <th>Cây trồng</th>
-      <th>Lượng nước(l)</th>
-      <th>Thời gian xả</th>
-      <th>Thời gian bật đèn</th>
-     
-    </tr>
-    <tr>
-      <td>{{dt.date}}</td>
-      <td>{{dt.locate}}</td>
-      <td>{{dt.plant}}</td>
-      <td>{{dt.water}}</td>
-      <td>{{dt.pumptime}}</td>
-      <td>{{dt.lighttime}}</td>
-      
-    </tr>
+      <tr>
+        <th>Vùng đất</th>
+        <th>Kiểu Log</th>
+        <th>Mô tả </th>
+        <th>Thời gian</th>
+        <th></th>
+      </tr>
+      {% for dt in data %}
+      <tr>
+        <td>{{dt[2]}}</td>
+        <td>{{dt[3]}}</td>
+        <td>{{dt[4]}}</td>
+        <td>{{dt[5]}}</td>
+      </tr>
+    {%endfor%}
   </table>
-  </div>
-{%endfor%}
-
-  <a class="noti" href="/notify"> Cảnh báo!!!
-  </a>
-  <script>
-    function sleep(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    }
-    
-    async function f(){
-      await sleep(2000);
-      var x=document.getElementById("noti");
-      x.style.display="block";
-    }
-    f()
-  </script>
-  
+</div>
 {% endblock %} 
 </body>
-<script>
 
-  var coll = document.getElementsByClassName("collapsible");
-  var i;
-  for (i = 0; i < coll.length; i++) {
-    coll[i].addEventListener("click", function() {
-      this.classList.toggle("active");
-      // var content = this.parentElement.parentElement.nextElementSibling.children[0];
-      var content = this.nextElementSibling;
-      if (content.style.maxHeight){
-        content.style.maxHeight = null;
-      } else {
-        content.style.maxHeight = content.scrollHeight + "px";
-      } 
-      
-    });
-  
-  }
-    </script>
+<td type="button" style="padding: 5px;"><a href= "/homepage">Quay về</a></td>
+
 </html>
