@@ -16,7 +16,8 @@ CREATE TABLE PERSON (
     Password VARCHAR(512) NOT NULL,
     Name VARCHAR(100) NOT NULL,
 	Address VARCHAR(512) NOT NULL,
-    Phone VARCHAR(20) NOT NULL
+    Phone VARCHAR(20) NOT NULL,
+    Role VARCHAR(10)
 );
 
 # Thiết bị và mối quan hệ thiết bị của người dùng nào
@@ -147,7 +148,10 @@ INSERT IGNORE INTO Person(Username, Password, Address, Name, Phone) VALUES
     ('person4', '12345', "", "person4", "0123"),
     ('person5', '12345', "", "person5", "0123")
 ;
+INSERT IGNORE INTO Person(Username, Password, Address, Name, Phone, Role) VALUES 
+	('admin', '12345', "", "admin", "0123","admin")
 
+;
 INSERT IGNORE INTO Device(deviceType, UserId) VALUES 
 	('Light', 1), -- 1 
     ('Pump', 1),-- 2
