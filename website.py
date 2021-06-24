@@ -397,7 +397,6 @@ def envicondi2():
 
 
 
-
 @app.route('/wateringhistory')
 def wateringhistory():
     cur.execute("SELECT * FROM LAND WHERE UserID = '"+ str(session['UserData'][0]) + "'")
@@ -409,12 +408,31 @@ def deletedevice(id):
     cur.execute("DELETE FROM DEVICE WHERE Id = '"+ str(id) + "' AND  UserID = '"+ str(session['UserData'][0]) + "'" );
     conn.commit()
 
+    #Log
+    insert_log = (
+        "INSERT INTO user_log (UserId, LandId, LogType, Descript, CurrentTime)"
+        "VALUES (%s, %s, %s, %s, %s)"
+    )
+    data_log = (int(session['UserData'][0]) , -1 , 'Delete Device to User', 'Device id: ' + str(id), datetime.now())
+    cur.execute(insert_log, data_log)     
+    #
+
     return redirect(request.referrer)
 
 @app.route('/adddevice<dv_id><deviceType>',methods=['GET'])
 def adddevice(dv_id,deviceType):
     cur.execute("INSERT INTO device (Id, deviceType,UserId) VALUES ('"+ dv_id + ",'"+ deviceType +"',"+ str(session['UserData'][0]) +" ') ")
     conn.commit()
+
+    #Log
+    insert_log = (
+        "INSERT INTO user_log (UserId, LandId, LogType, Descript, CurrentTime)"
+        "VALUES (%s, %s, %s, %s, %s)"
+    )
+    data_log = (int(session['UserData'][0]) , -1 , 'Add Device to User', 'Device id: ' + str(dv_id) + ' deviceType: ' + str(deviceType), datetime.now())
+    cur.execute(insert_log, data_log) 
+    #
+
     return redirect(request.referrer)
 
 
@@ -451,10 +469,30 @@ def logout():
 @app.route('/delete<id><type>', methods=['GET'])
 def delete(id,type):
     if type == 'l': #stand for land
+
+        #Log
+        insert_log = (
+            "INSERT INTO user_log (UserId, LandId, LogType, Descript, CurrentTime)"
+            "VALUES (%s, %s, %s, %s, %s)"
+        )
+        data_log = (int(session['UserData'][0]) , int(id) , 'Delete Land', 'Land id: ' + str(type), datetime.now())
+        cur.execute(insert_log, data_log)
+        #
+
         cur.execute("DELETE FROM LAND WHERE ID = '"+ str(id) + "' AND  UserID = '"+ str(session['UserData'][0]) + "'" );
         conn.commit()
         
     else:
+
+        #Log
+        insert_log = (
+            "INSERT INTO user_log (UserId, LandId, LogType, Descript, CurrentTime)"
+            "VALUES (%s, %s, %s, %s, %s)"
+        )
+        data_log = (int(session['UserData'][0]) , int(id) , 'Delete Device from Land', 'Device id: ' + str(id) + ' Land id: ' + str(type), datetime.now())
+        cur.execute(insert_log, data_log)
+        #
+
         cur.execute("DELETE FROM device_used_in_land WHERE deviceid='"+ id +"' and landid='" + type +"'")
         conn.commit()
     return redirect(request.referrer)
@@ -462,6 +500,16 @@ def delete(id,type):
 def add(dv_id,l_id):
     cur.execute("INSERT INTO device_used_in_land (DeviceId, LandId) VALUES ('"+ dv_id +"','" + l_id +"') ")
     conn.commit()
+
+    #Log
+    insert_log = (
+        "INSERT INTO user_log (UserId, LandId, LogType, Descript, CurrentTime)"
+        "VALUES (%s, %s, %s, %s, %s)"
+    )
+    data_log = (int(session['UserData'][0]) , int(l_id) , 'Add Device to Land', 'Device id: ' + str(dv_id) + ' Land id: ' + str(l_id), datetime.now())
+    cur.execute(insert_log, data_log)    
+    #
+
     return redirect(request.referrer)
 @app.route('/edit<id><type>', methods=['GET','POST']) 
 def edit(id,type):
@@ -519,6 +567,18 @@ def edit(id,type):
             "',upperHazardousHumidity='" + uhhumid + 
                 "'WHERE Id='" + str(id) +"'")
             conn.commit()
+
+            #Log
+            insert_log = (
+            "INSERT INTO user_log (UserId, LandId, LogType, Descript, CurrentTime)"
+            "VALUES (%s, %s, %s, %s, %s)"
+            )
+            data_log = (int(session['UserData'][0]) , int(id) , 'Update Land', 'plantid=' + str(data[3]) + ' lowerTemperature='+ltemp +' upperTemperature'+utemp +
+            ' lowerHumidity='+lhumid +' upperHumidity='+uhumid +' lowerHazardousTemperature='+lhtemp +' upperHazardousTemperature='+uhtemp + ' lowerHazardousHumidity='+lhhumid +
+            ' upperHazardousHumidity='+uhhumid, datetime.now())
+            cur.execute(insert_log, data_log)
+            #
+
             return redirect(url_for('plantdata'))        
     elif request.method == 'POST' :
             location = request.form['location']
@@ -527,6 +587,16 @@ def edit(id,type):
             plant=cur.fetchone()
             print(plant)
             cur.execute("INSERT INTO LAND (UserId,landName,PlantID, lowerTemperature,upperTemperature,lowerHumidity,upperHumidity,lowerHazardousTemperature,upperHazardousTemperature,lowerHazardousHumidity,upperHazardousHumidity) VALUES('" + str(session['UserData'][0]) + "','"  + location + "','"+ str(plant[0]) +"','" + str(plant[2]) + "','" + str(plant[3]) + "','" + str(plant[4]) + "','" + str(plant[5]) + "','" + str(plant[6]) +"','" + str(plant[7]) + "','" + str(plant[8])+ "','" + str(plant[9]) +"') ")
+            
+            #Log
+            insert_log = (
+            "INSERT INTO user_log (UserId, LandId, LogType, Descript, CurrentTime)"
+            "VALUES (%s, %s, %s, %s, %s)"
+            )
+            data_log = (int(session['UserData'][0]) , int(id) , 'Add new Land', 'Location: '+location, datetime.now())
+            cur.execute(insert_log, data_log)            
+            #
+            
             conn.commit()        
             return redirect(url_for('plantdata'))
     if data3 is None:
@@ -535,5 +605,11 @@ def edit(id,type):
     cur.execute("SELECT id,plantname from plant")
     data4 =cur.fetchall()
     
+    
     return render_template('edit.html',data=data,data2=data2,data3=data3,data4=data4,data5=data5,title=title)
       
+@app.route('/userhistory')
+def userhistory():
+    cur.execute("SELECT * FROM USER_LOG WHERE UserID = '"+ str(session['UserData'][0]) + "'")
+    data=cur.fetchall()
+    return render_template('userhistory.html',data=data)

@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS user_log;
 DROP TABLE IF EXISTS plant_planted_in_land;
 DROP TABLE IF EXISTS device_acted_in_land;
 DROP TABLE IF EXISTS device_used_in_land;
@@ -235,3 +236,15 @@ ALTER TABLE device_used_in_land
 ADD COLUMN start_time DATETIME not null AFTER LandId;
 ALTER TABLE device_used_in_land
 ADD COLUMN end_time DATETIME not null AFTER start_time;
+
+CREATE TABLE USER_LOG (
+	# Use auto-increment for primary key is always a good choice =))
+	Id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    UserId INT NOT NULL,
+    LandId INT NOT NULL,
+    LogType VARCHAR(250) NOT NULL,
+    Descript VARCHAR(1500) NOT NULL,
+    CurrentTime DATETIME NOT NULL,
+    FOREIGN KEY(LandId) REFERENCES Land(Id),
+    FOREIGN KEY (UserId) REFERENCES Person(Id)
+);
