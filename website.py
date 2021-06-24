@@ -12,32 +12,59 @@ import glob
 import views
 cur = conn.cursor()
 @app.route('/')
-@app.route('/homepage')
+@app.route('/homepage',methods=['GET','POST'])
 def homepage():
-    
+    acclist=None
+    adminaccount=None
+    account=None
+    account != None or adminaccount != None
+    # if request.method=='POST':
+    #     print(request.form['user'])
+    #     cur.execute("SELECT * FROM PERSON WHERE username = '"+ request.form['user'] +"'")
+    #     acc=cur.fetchone()
+    #     session['UserData']=acc
     if 'UserData' in session:
         account=session['UserData']
-    else:
-        account=None
+        print(session['UserData'])
+    if 'Admin' in session:
+        adminaccount=session['Admin']
+        cur.execute("SELECT Id,Username FROM PERSON WHERE role is Null")
+        acclist=cur.fetchall()
+        print(session['Admin'])
     return render_template(
         'homepage.html',
-        notify=notify,
-        account= account
+        account= account,
+        adminaccount=adminaccount,
+        acclist=acclist
         )
+
 @app.route('/login',methods=['GET','POST'])
 def login():
     error = None
     if request.method == 'POST':
-        username = request.form['name']
+        username = request.form['username']
         cur.execute("SELECT * FROM PERSON WHERE Username = '"+ username + "'")
         acc = cur.fetchone()
-        session['UserData']=acc
         if acc is None or acc[2] != request.form['password']:
             error = 'Username hoặc mật khẩu không đúng'
         else:
+            if acc[6] is None:
+                session['UserData']= acc
+            else:
+                session['Admin']=acc    
             return redirect(url_for('homepage'))
     print(error)
     return render_template('logIn.html',error=error)
+
+
+
+@app.route('/manage',methods=['GET','POST'])
+def manage():
+    cur.execute("SELECT * FROM PERSON WHERE username = '"+ request.form['user'] +"'")
+    acc=cur.fetchone()
+    session['UserData']=acc
+    return redirect(request.referrer)
+
 @app.route('/signup',methods=['GET','POST'])
 def signup():
     error = None
@@ -53,7 +80,7 @@ def signup():
             email = request.form['email']
             phonenumber = request.form['phonenumber']
             address= request.form['address']
-            cur.execute("INSERT INTO PERSON ( username, password,name,address,phone) VALUES ('"+username+"','"+password+"','"+name+"','"+address+"','"+phone+"')")
+            cur.execute("INSERT INTO PERSON ( username, password,name,address,phone) VALUES ('"+username+"','"+password+"','"+name+"','"+address+"','"+phonenumber+"')")
             conn.commit();
             cur.execute("SELECT * FROM PERSON WHERE id=(SELECT max(id) FROM PERSON);")
             data= cur.fetchone()
@@ -95,15 +122,13 @@ def wateringhistory():
 
 
 
-
-@app.route('/notify', methods=['GET'])
-def notify():
-    return render_template('notify.html')
-
 #add function
 @app.route('/logout')
 def logout():
-    session.pop('UserData', None)
+    if 'Admin' in session:
+        session.pop('Admin', None)
+    if 'UserData' in session:
+        session.pop('UserData', None)
     return redirect(url_for('homepage'))
 @app.route('/delete<id><type>', methods=['GET'])
 def delete(id,type):

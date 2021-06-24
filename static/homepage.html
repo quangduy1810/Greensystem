@@ -88,7 +88,7 @@ padding-block: 10px;
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true">
-                {%if account != None%}
+                {%if account != None or adminaccount != None%}
                 <li class="nav-item"><a class="nav-link link text-black display-4" href="/logout">Log Out</a></li>
                     
                 {%else%}
@@ -103,18 +103,42 @@ padding-block: 10px;
     </nav>
     
   </section>
+  {%if adminaccount %}
+  <p style="padding-top: 8%; font-size: 40px; text-align: center;"><strong style="background-color: red;">Welcome admin {{adminaccount[3]}}</strong></p>
 
+  <form action ="/manage "style="background-color: white; text-align: center; width: 250px; margin: auto;" method="POST">
+  <label for="user">Đăng nhập với tư cách:
+  {%if account%}
+  {{account[3]}}
+  {%else%}
+  N/A
+  {%endif%} 
+  </label><br>
+    <select name="user" id="user">
+      
+      {%for user in acclist%}
+      <option>{{user[1]}}</option>
+      
+      {%endfor%}
+      <input type="submit" value="Xác nhận">
+      
+    </select>
+  </form>
+  
+  {%elif account%}
+  <p style="padding-top: 8%; font-size: 40px; text-align: center;"><strong style="background-color: wheat;">Welcome {{account[3]}}</strong></p>
+  {%endif%}
+ 
 
  
- {%if account !=None%}
- <p style="padding-top: 8%; font-size: 40px; text-align: center;"><strong style="background-color: wheat;">Welcome {{account[1]}}</strong></p>
+ {%if account%}
  <div style="height:20px"></div>
  <a href="/envicondi" ><button class="button">Tình trạng môi trường</button></a>
  <div style="height:20px"></div>
  <a  href="/wateringhistory"><button class="button">Lịch sử tưới tiêu</button></a>
  <div style="height:20px"></div>
  <a  href="/plantdata"><button class="button">Quản lý đất đai</button></a>
-
+ 
   
                   
 
@@ -123,12 +147,12 @@ padding-block: 10px;
 <a class="noti" href="/notify"> Cảnh báo!!!
 </a>
 </div>
+{%endif%}
 
 
 
 
-
-{%else%}
+{%if account == None and adminaccount == None%}
 <p style="padding-top: 8%; font-size: 40px; text-align: center;"><strong style="background-color: white;">Welcome to Greensystem!!</strong></p>
 
 

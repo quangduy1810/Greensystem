@@ -219,6 +219,10 @@ color: red;
 background-color:white;
 padding-block: 10px;
 }
+.duy{
+background-color: aquamarine;
+height: 200%;
+}
   </style>
   <!-- Site made with Mobirise Website Builder v5.3.5, https://mobirise.com -->
   <meta charset="UTF-8">
@@ -280,7 +284,7 @@ padding-block: 10px;
   <div style="height: 30px;"></div>
   <h2 style="margin-left: 5%;" > Quản lý đất đai</h2>
  <div style="height: 10px"></div>
- 
+ {%if data%}
  {%for dt in data%}
  <p type="button" class="collapsible" style="margin-left: 5%; margin-right: 5%;"> {{dt[2]}}</p>
  <div class="content" style="margin-left: 5%; margin-right: 5%;">
@@ -307,8 +311,9 @@ padding-block: 10px;
       <td  style="padding: 5px; background: red;text-align: center;" ><a href="/delete{{dt[0]}}{{'l'}}" style="color:white;">X</a></td>
       <td style="padding: 5px; background-color: thistle;text-align: center;" ><a href="/edit{{dt[0]}}{{'f'}}" style="color:black;">Sửa </a></td>
     </tr>
+  </table >
   {%if data2%}
-  </table>  
+    
     <table style="background-color: cadetblue; text-align: center;">
         <tr style=" border: 5px solid white;">
           <th>ID</th>
@@ -329,13 +334,18 @@ padding-block: 10px;
         {%endif%}
         {%endfor%}
     </table>
+  
     
   {%endif%}
-   </div>
+  
+ </div>
  {%endfor%}
+
+ {%endif%}
+<section>
  <button style="border-radius: 8px; margin-left: 5%; background-color: #04AA6D; font-size: 20px;"><a href="/edit{{0}}{{'a'}}" style="color: white;"> +</a> </button>  
   <a class="noti" href="/notify"> Cảnh báo</a>
-
+</section>
  
 {% endblock %}
 <script>
