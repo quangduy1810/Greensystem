@@ -149,7 +149,15 @@
   </section>
   <div style="height: 50px;"></div>
   <h2 style="margin-left: 5%;"> Tinh trang moi truong</h2>
-  <p type="button" class="collapsible" style="margin-left: 5%; margin-right: 5%;"> {{land}}</p>
+  <form id="form_land" method="POST" action="/envicondi">
+    <select class="form-select form-select-lg mb-3" aria-labe="Default select example" name="option_land" id="option_land">
+      {%for value in landName%}
+      <option value="{{value}}"> {{value}} </option>
+      {%endfor%}
+    </select>
+    <button name="btnGetLandData" type="submit" class="btn btn-primary btn-block"> Draw Graph for land</button>
+  </form>
+  {%if land%}
   <div class="content" style="margin-left: 5%; margin-right: 5%;">
     <!--Draw chart with chart.js-->
 
@@ -276,7 +284,7 @@
         });
       });
     </script>
-
+  {%endif%}
 
     <!---->
   </div>

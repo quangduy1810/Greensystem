@@ -128,13 +128,31 @@ def notify_api():
         return jsonify(notification)
 
 
-@app.route('/envicondi', methods=['GET'])
+@app.route('/envicondi', methods=['GET','POST'])
 def envicondi():
     if request.method == 'GET':
+        cur.execute("SELECT LandName FROM LAND WHERE USERID = '"+ str(session['UserData'][0]) +"' ")
+        data=cur.fetchall()
+        landName= []
+        land= None
+        for value in data:
+            landName.append(value[0])
+        return render_template('envicondi.html',landName=landName, land=land)
+    else:
+        cur.execute("SELECT LandName FROM LAND WHERE USERID = '"+ str(session['UserData'][0]) +"' ")
+        data=cur.fetchall()
+        landName= []
+        for value in data:
+            landName.append(value[0])
+
+
         cur.execute("SELECT environment_log.id,LandName,measureValue,measureType,CurrentTime,UserID FROM environment_log,land WHERE USERID = '"+ str(session['UserData'][0]) +"' ")
         data=cur.fetchall()
         #data = [(),(),(),...]
-        land = data[1][1]
+        land = None
+        if data:
+            land = request.form.get('option_land')
+
         # print("Land:" + str(land))
         temperature_label = []
         temperature_data = []
@@ -144,18 +162,18 @@ def envicondi():
         brightness_data = []
         current_time = []
         for value in data:
-            #print(value)
-            if str(value[3]) == 'Temperature':
-                temperature_data.append(value[2])
-                temperature_label.append(str(value[4]))
-            if str(value[3]) == 'Humidity':
-                humidity_data.append(value[2])
-                humidity_label.append(str(value[4]))
-            if str(value[3]) == 'Brightness':
-                brightness_data.append(value[2])
-                brightness_label.append(str(value[4]))
-            if str(value[4]) not in current_time:
-                current_time.append(str(value[4]))
+            if value[1] == land:
+                if str(value[3]) == 'Temperature':
+                    temperature_data.append(value[2])
+                    temperature_label.append(str(value[4]))
+                if str(value[3]) == 'Humidity':
+                    humidity_data.append(value[2])
+                    humidity_label.append(str(value[4]))
+                if str(value[3]) == 'Brightness':
+                    brightness_data.append(value[2])
+                    brightness_label.append(str(value[4]))
+                if str(value[4]) not in current_time:
+                    current_time.append(str(value[4]))
         
         # print("Temperature length: "+ str(len(temperature_data)))
         # print("Humidity length: "+ str(len(humidity_data)))
@@ -167,7 +185,7 @@ def envicondi():
         # print("Brightness:"+ str(brightness_data))
         # print("CurrentTime"+ str(current_time))
 
-        return render_template('envicondi.html',land=land, temperature_label=temperature_label , temperature_data=temperature_data, humidity_label=humidity_label , humidity_data=humidity_data, brightness_label=brightness_label , brightness_data=brightness_data, current_time=current_time)
+        return render_template('envicondi.html', landName=landName,land=land, temperature_label=temperature_label , temperature_data=temperature_data, humidity_label=humidity_label , humidity_data=humidity_data, brightness_label=brightness_label , brightness_data=brightness_data, current_time=current_time)
 
 def average_data(label,data,option):
     process_label = []
@@ -532,7 +550,7 @@ def add(dv_id,l_id):
         "VALUES (%s, %s, %s, %s, %s)"
     )
     data_log = (int(session['UserData'][0]) , int(l_id) , 'Add Device to Land', 'Device id: ' + str(dv_id) + ' Land id: ' + str(l_id), datetime.now())
-    cur.execute(insert_log, data_log)    
+    cur.execute(insert_log, data_log)
     #
 
     return redirect(request.referrer)
