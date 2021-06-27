@@ -91,7 +91,7 @@ CREATE TABLE DEVICE_ACTED_IN_LAND (
 	DeviceId INT NOT NULL,
     LandId INT NOT NULL,
     RealTime DATETIME NOT NULL,
-	State VARCHAR(20) NOT NULL,
+	`Data` VARCHAR(20) NOT NULL,
     
     FOREIGN KEY (DeviceId) REFERENCES Device(Id),
     FOREIGN KEY (LandId) REFERENCES Land(Id)
@@ -199,26 +199,26 @@ INSERT IGNORE INTO device_used_in_land(DeviceId, LandId) VALUES
     (1, 5)
 ;
 
-SELECT * FROM DEVICE_ACTED_IN_LAND;
+-- SELECT * FROM DEVICE_ACTED_IN_LAND;
 
-SELECT LandName FROM LAND WHERE UserId = 1;
+-- SELECT LandName FROM LAND WHERE UserId = 1;
 
-SELECT device.deviceType, device.Id ,device.UserId, device_used_in_land.LandId FROM device INNER JOIN device_used_in_land ON device.ID = device_used_in_land.DeviceId WHERE UserId =1 and device_used_in_land.LandId<>5 ;
-SELECT * 
-FROM person 
-	right join device 
-    On device.userid = person.id
-    left join device_used_in_land
-    on device_used_in_land.deviceid = Device.id
-	and device_used_in_land.LandId=5
-    where person.Id =1
-    and device_used_in_land.DeviceId is Null
-     ;
+-- SELECT device.deviceType, device.Id ,device.UserId, device_used_in_land.LandId FROM device INNER JOIN device_used_in_land ON device.ID = device_used_in_land.DeviceId WHERE UserId =1 and device_used_in_land.LandId<>5 ;
+-- SELECT * 
+-- FROM person 
+-- 	right join device 
+--     On device.userid = person.id
+--     left join device_used_in_land
+--     on device_used_in_land.deviceid = Device.id
+-- 	and device_used_in_land.LandId=5
+--     where person.Id =1
+--     and device_used_in_land.DeviceId is Null
+--      ;
 
-SELECT * FROM ENVIRONMENT_LOG ORDER BY CurrentTIme DESC;
+-- SELECT * FROM ENVIRONMENT_LOG ORDER BY CurrentTIme DESC;
 
-SELECT * FROM (device INNER JOIN device_used_in_land ON device.ID = device_used_in_land.DeviceId) inner join person On device.userid = person.id where UserId=1 ;
-SELECT * FROM device INNER JOIN device_used_in_land ON device.ID = device_used_in_land.DeviceId where device_used_in_land.LandId=5;
+-- SELECT * FROM (device INNER JOIN device_used_in_land ON device.ID = device_used_in_land.DeviceId) inner join person On device.userid = person.id where UserId=1 ;
+-- SELECT * FROM device INNER JOIN device_used_in_land ON device.ID = device_used_in_land.DeviceId where device_used_in_land.LandId=5;
 INSERT INTO plant_history(LandId,PlantId, StartTime, EndTime, Comment) VALUES 
 	('1', '1', "2020-08-06 12:48:44", "2021-08-06 12:48:44", "Not"),
 	('1', '2', "2020-08-06 12:48:44", "2021-08-06 12:48:44", "Not"),
@@ -235,11 +235,6 @@ INSERT INTO plant_history(LandId,PlantId, StartTime, EndTime, Comment) VALUES
 	('5', '6', "2019-08-06 12:48:44", "2020-08-06 12:48:44", "Not")
     
 ;
-
-ALTER TABLE device_used_in_land
-ADD COLUMN start_time DATETIME not null AFTER LandId;
-ALTER TABLE device_used_in_land
-ADD COLUMN end_time DATETIME not null AFTER start_time;
 
 CREATE TABLE USER_LOG (
 	# Use auto-increment for primary key is always a good choice =))

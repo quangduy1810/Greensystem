@@ -129,7 +129,13 @@ padding-block: 10px;
       </datalist>
       <br>
       <br>
-      <input type ="submit" value="Xác nhận">  
+      <input type ="submit" value="Xác nhận">
+      {%if error%}
+      <div style=" color: red">
+      <br>
+      <p >Tên vùng đất hoặc tên cây trồng không thể sử dụng.</p>
+      <p>Nếu bạn muốn thêm cây mới, hãy chọn cây trồng bất kỳ và chỉnh sửa lại thông tin của cây trồng đó nhé!</p></div>
+      {%endif%}
     {%else%}
     <input type="text" list="pllist" id="plant" name="plant"  value="{{data[13]}}">
       
@@ -137,7 +143,13 @@ padding-block: 10px;
       {%for value in data4%}
       <option value={{value[1]}}>{{value[1]}}</option>
       {%endfor%}
-      </datalist>  
+      </datalist>
+    {%if error%}
+      <div style=" color: red">
+      <br>
+      <p >Tên vùng đất hoặc tên cây trồng không thể sử dụng.</p>
+      </div>
+    {%endif%}  
     <br>
     <label >Nhiệt độ thích hợp:</label><br>
     <input type="text" id="ltemp" name="ltemp" value={{data[4]}} >
