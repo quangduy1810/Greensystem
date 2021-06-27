@@ -210,9 +210,9 @@ INSERT IGNORE INTO device_used_in_land(DeviceId, LandId) VALUES
     (1, 5)
 ;
 
-SELECT * FROM DEVICE_ACTED_IN_LAND;
+-- SELECT * FROM DEVICE_ACTED_IN_LAND;
 
-SELECT LandName FROM LAND WHERE UserId = 1;
+-- SELECT LandName FROM LAND WHERE UserId = 1;
 
 SELECT device.deviceType, device.Id ,device.UserId, device_used_in_land.LandId FROM device INNER JOIN device_used_in_land ON device.ID = device_used_in_land.DeviceId WHERE UserId =1 and device_used_in_land.LandId<>5 ;
 SELECT * 
