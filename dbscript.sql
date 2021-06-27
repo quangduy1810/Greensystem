@@ -42,7 +42,7 @@ CREATE TABLE PLANT (
     lowerHazardousTemperature FLOAT NOT NULL,  
     upperHazardousTemperature FLOAT NOT NULL,  
 	lowerHazardousHumidity FLOAT NOT NULL, 
-    upperHazardousHumidity FLOAT NOT NULL 
+    upperHazardousHumidity FLOAT NOT NULL
 );
 
 # Bảng này lưu trữ thông tin về 
@@ -64,6 +64,17 @@ CREATE TABLE LAND (
     upperHazardousTemperature FLOAT NOT NULL,  
 	lowerHazardousHumidity FLOAT NOT NULL, 
     upperHazardousHumidity FLOAT NOT NULL, 
+    
+    cooldown INT DEFAULT(120),
+    duration_case_one INT DEFAULT(20),
+    duration_case_two INT DEFAULT(20),
+	duration_case_three INT DEFAULT(20),
+    duration_case_four INT DEFAULT(20),
+    duration_case_five INT DEFAULT(20),
+    duration_case_six INT DEFAULT(20),
+    duration_case_seven INT DEFAULT(20),
+    duration_case_eight INT DEFAULT(20),
+    duration_case_nine iNT DEFAULT(20),
     
     FOREIGN KEY (PlantId) REFERENCES Plant(Id)
 );
@@ -91,7 +102,7 @@ CREATE TABLE DEVICE_ACTED_IN_LAND (
 	DeviceId INT NOT NULL,
     LandId INT NOT NULL,
     RealTime DATETIME NOT NULL,
-	State VARCHAR(20) NOT NULL,
+	`Data` VARCHAR(20) NOT NULL,
     
     FOREIGN KEY (DeviceId) REFERENCES Device(Id),
     FOREIGN KEY (LandId) REFERENCES Land(Id)
@@ -214,11 +225,7 @@ FROM person
     where person.Id =1
     and device_used_in_land.DeviceId is Null
      ;
-
-SELECT * FROM ENVIRONMENT_LOG ORDER BY CurrentTIme DESC;
-
-SELECT * FROM (device INNER JOIN device_used_in_land ON device.ID = device_used_in_land.DeviceId) inner join person On device.userid = person.id where UserId=1 ;
-SELECT * FROM device INNER JOIN device_used_in_land ON device.ID = device_used_in_land.DeviceId where device_used_in_land.LandId=5;
+     
 INSERT INTO plant_history(LandId,PlantId, StartTime, EndTime, Comment) VALUES 
 	('1', '1', "2020-08-06 12:48:44", "2021-08-06 12:48:44", "Not"),
 	('1', '2', "2020-08-06 12:48:44", "2021-08-06 12:48:44", "Not"),
@@ -233,13 +240,7 @@ INSERT INTO plant_history(LandId,PlantId, StartTime, EndTime, Comment) VALUES
 	('2', '5', "2019-08-06 12:48:44", "2020-08-06 12:48:44", "Not"),
 	('2', '6', "2019-08-06 12:48:44", "2020-08-06 12:48:44", "Not"),
 	('5', '6', "2019-08-06 12:48:44", "2020-08-06 12:48:44", "Not")
-    
 ;
-
-ALTER TABLE device_used_in_land
-ADD COLUMN start_time DATETIME not null AFTER LandId;
-ALTER TABLE device_used_in_land
-ADD COLUMN end_time DATETIME not null AFTER start_time;
 
 CREATE TABLE USER_LOG (
 	# Use auto-increment for primary key is always a good choice =))
@@ -252,3 +253,5 @@ CREATE TABLE USER_LOG (
     FOREIGN KEY(LandId) REFERENCES Land(Id),
     FOREIGN KEY (UserId) REFERENCES Person(Id)
 );
+
+SELECT * FROM plant_history;

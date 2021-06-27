@@ -27,7 +27,7 @@ print("success")
 app = Flask(__name__, template_folder= "static")
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '1234'
+app.config['MYSQL_PASSWORD'] = 'enlk8.'
 app.config['MYSQL_DB'] = 'Greensystem'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql=MySQL(app)

@@ -2,7 +2,6 @@ from datetime import datetime
 from flask import render_template, request, redirect, url_for, jsonify, make_response,session
 from flask_mysqldb import MySQL
 from Greensys import app,conn
-from envirstate import *
 
 import os
 #import Process
@@ -10,6 +9,7 @@ import webbrowser
 import json
 import glob
 import views
+import constants
 cur = conn.cursor()
 @app.route('/')
 @app.route('/homepage',methods=['GET','POST'])
@@ -100,32 +100,10 @@ def plantdata():
         device+=cur.fetchall()
         i+=1
     session['Plantdata']=data
+    mode = constants.mode
     print(device)
-    return render_template('plantdata.html',data=data,data2=device)
+    return render_template('plantdata.html',data=data,data2=device, mode = mode)
 
-
-@app.route('/api', methods=['GET','POST'])
-def notify_api(): 
-    
-    res =   "The temperature is : " + notification["temperature"] + "\n" + \
-            "The humidity is : " + notification["humidity"]  + "\n" + \
-            "The brightness is :  " +  notification["brightness"] + "\n" + \
-            str(notification["alert"])
-
-    notification["date"] = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
-
-    if request.method == 'POST':
-        req = request.json
-
-        notification["temperature"] = req["temperature"]
-        notification["humidity"] = req['humidity']
-        notification["brightness"] = req['brightness']
-        notification["alert"] = req['alert']
-
-        return jsonify(res)
-    else :
-
-        return jsonify(notification)
 
 
 @app.route('/envicondi', methods=['GET','POST'])
@@ -439,48 +417,6 @@ def envicondi2():
     return jsonify({'temp_label': temp_label, 'temp_data': temp_data, 'humid_label': humid_label, 'humid_data': humid_data, 'brightness_label': brightness_label, 'brightness_data': brightness_data})
 
 
-
-
-
-@app.route('/wateringhistory')
-def wateringhistory():
-    cur.execute("SELECT * FROM LAND WHERE UserID = '"+ str(session['UserData'][0]) + "'")
-    data=cur.fetchall()
-    return render_template('wateringhistory.html',data=data)
-
-@app.route('/deletedevice<id>', methods=['GET'])
-def deletedevice(id):
-    cur.execute("DELETE FROM DEVICE WHERE Id = '"+ str(id) + "' AND  UserID = '"+ str(session['UserData'][0]) + "'" );
-    conn.commit()
-
-    #Log
-    insert_log = (
-        "INSERT INTO user_log (UserId, LandId, LogType, Descript, CurrentTime)"
-        "VALUES (%s, %s, %s, %s, %s)"
-    )
-    data_log = (int(session['UserData'][0]) , -1 , 'Delete Device to User', 'Device id: ' + str(id), datetime.now())
-    cur.execute(insert_log, data_log)     
-    #
-
-    return redirect(request.referrer)
-
-@app.route('/adddevice<dv_id><deviceType>',methods=['GET'])
-def adddevice(dv_id,deviceType):
-    cur.execute("INSERT INTO device (Id, deviceType,UserId) VALUES ('"+ dv_id + ",'"+ deviceType +"',"+ str(session['UserData'][0]) +" ') ")
-    conn.commit()
-
-    #Log
-    insert_log = (
-        "INSERT INTO user_log (UserId, LandId, LogType, Descript, CurrentTime)"
-        "VALUES (%s, %s, %s, %s, %s)"
-    )
-    data_log = (int(session['UserData'][0]) , -1 , 'Add Device to User', 'Device id: ' + str(dv_id) + ' deviceType: ' + str(deviceType), datetime.now())
-    cur.execute(insert_log, data_log) 
-    #
-
-    return redirect(request.referrer)
-
-
 @app.route('/planthistory')
 def devicedata():
     cur.execute("SELECT plant_history.PlantId,plant_history.LandId, plantName ,StartTime,EndTime,Comment FROM (plant_history join plant on PlantId = plant.Id) join LAND on plant_history.LandId = land.Id where UserId ="+ str(session['UserData'][0]))
@@ -532,13 +468,16 @@ def delete(id,type):
             "INSERT INTO user_log (UserId, LandId, LogType, Descript, CurrentTime)"
             "VALUES (%s, %s, %s, %s, %s)"
         )
-        data_log = (int(session['UserData'][0]) , int(id) , 'Delete Device from Land', 'Device id: ' + str(id) + ' Land id: ' + str(type), datetime.now())
+        data_log = (int(session['UserData'][0]) , int(type) , 'Delete Device from Land', 'Device id: ' + str(id) + ' Land id: ' + str(type), datetime.now())
         cur.execute(insert_log, data_log)
         #
 
         cur.execute("DELETE FROM device_used_in_land WHERE deviceid='"+ id +"' and landid='" + type +"'")
         conn.commit()
+
     return redirect(request.referrer)
+
+
 @app.route('/add<dv_id><l_id>',methods=['GET'])
 def add(dv_id,l_id):
     cur.execute("INSERT INTO device_used_in_land (DeviceId, LandId) VALUES ('"+ dv_id +"','" + l_id +"') ")
@@ -589,6 +528,7 @@ def edit(id,type):
             uhtemp=request.form['uhtemp']
             lhhumid= request.form['lhhumidity']
             uhhumid=request.form['uhhumidity']
+
             if plant is not None:
                 cur.execute("SELECT * FROM PLANT WHERE PlantName = '"+ plant + "'")
                 data2= cur.fetchone()
@@ -597,7 +537,17 @@ def edit(id,type):
                     conn.commit()
                     cur.execute("SELECT * FROM PLANT WHERE PlantName = '"+ plant + "'")
                     data2= cur.fetchone()
-        
+            water= request.form['water']
+            case1= request.form['case1']
+            case2= request.form['case2']
+            case3= request.form['case3']
+            case4= request.form['case4']
+            case5= request.form['case5']
+            case6= request.form['case6']
+            case7= request.form['case7']
+            case8= request.form['case8']
+            case9= request.form['case9']
+
             cur.execute("UPDATE LAND SET landName= '" + location +
             "',plantid='" + str(data[3]) + 
             "',lowerTemperature='" + ltemp + 
@@ -608,6 +558,16 @@ def edit(id,type):
             "',upperHazardousTemperature='" + uhtemp + 
             "',lowerHazardousHumidity='" + lhhumid + 
             "',upperHazardousHumidity='" + uhhumid + 
+            "',cooldown='" + water +
+            "',duration_case_one='" + case1 +
+            "',duration_case_two='" + case2 +
+            "',duration_case_three='" + case3 +
+            "',duration_case_four='" + case4 +
+            "',duration_case_five='" + case5 +
+            "',duration_case_six='" + case6 +
+            "',duration_case_seven='" + case7 +
+            "',duration_case_eight='" + case8 +
+            "',duration_case_nine='" + case9 +
                 "'WHERE Id='" + str(id) +"'")
             conn.commit()
 

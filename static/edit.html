@@ -2,6 +2,29 @@
 <html >
 <head>
   <style>
+
+.collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  
+  
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.active, .collapsible:hover {
+  background-color: #555;
+}
+
+.content {
+  padding: auto;
+  display: none;
+  overflow: hidden;
+  
+}
     td{
   
   border: 5px solid white;
@@ -164,6 +187,89 @@ padding-block: 10px;
     <input type="submit" value="Xóa" href="delete{{data[1]}}{{'l'}}">
     <br>
     <div style="height: 20px;"></div>
+    <button type="button" class="collapsible">Phần mở rộng</button>
+    <div class="content">
+      <label> Thời gian tưới: </label>
+      <button type="button" class="collapsible">?</button>
+        <div class="content" style="color: white; background-color: green;"> Thời gian nghỉ giữa mỗi lần tưới, sau khoảng thời gian này hoạt động tưới cây sẽ được khởi động lại.</div>
+      <br>  
+      <input type="text" id="water" name="water" value={{data[12]}}><br>
+
+      <label> Trường hợp 1: </label>
+      <button type="button" class="collapsible">?</button>
+      <div class="content" style="color: white; background-color: green;">  Thời gian cho mỗi lần tưới, sau khoảng thời gian này hoạt động tưới cây sẽ dừng lại. <br> Dùng cho trường hợp nhiệt độ bé hơn ngưỡng nhiệt độ dưới, độ ẩm lớn hơn ngưỡng độ ẩm trên.</div>
+      <br>  
+      <input type="text" id="case1" name="case1" value={{data[13]}}><br>
+
+      <label> Trường hợp 2: </label>
+      <button type="button" class="collapsible">?</button>
+      <div class="content" style="color: white; background-color: green;"> Thời gian cho mỗi lần tưới, sau khoảng thời gian này hoạt động tưới cây sẽ dừng lại. <br> Dùng cho trường hợp nhiệt độ bé hơn ngưỡng nhiệt độ dưới, độ ẩm bé hơn ngưỡng độ ẩm dưới. </div>
+      <br>  
+      <input type="text" id="case2" name="case2" value={{data[14]}}><br>
+
+      <label> Trường hợp 3: </label>
+      <button type="button" class="collapsible">?</button>
+      <div class="content" style="color: white; background-color: green;"> Thời gian cho mỗi lần tưới, sau khoảng thời gian này hoạt động tưới cây sẽ dừng lại. <br> Dùng cho trường hợp nhiệt độ lớn hơn ngưỡng nhiệt độ trên, độ ẩm lớn hơn ngưỡng độ ẩm trên.</div>
+      <br>  
+      <input type="text" id="case3" name="case3" value={{data[15]}}><br>
+
+      <label> Trường hợp 4: </label>
+      <button type="button" class="collapsible">?</button>
+      <div class="content" style="color: white; background-color: green;"> Thời gian cho mỗi lần tưới, sau khoảng thời gian này hoạt động tưới cây sẽ dừng lại. <br> Dùng cho trường hợp nhiệt độ lớn hơn ngưỡng nhiệt độ dưới, độ ẩm bé hơn ngưỡng độ ẩm dưới.</div>
+      <br>  
+      <input type="text" id="case4" name="case4" value={{data[16]}}><br>
+
+      <label> Trường hợp 5: </label>
+      <button type="button" class="collapsible">?</button>
+      <div class="content" style="color: white; background-color: green;"> Thời gian cho mỗi lần tưới, sau khoảng thời gian này hoạt động tưới cây sẽ dừng lại. <br> Dùng cho trường hợp nhiệt độ lớn hơn ngưỡng nhiệt độ trên, độ ẩm nằm trong ngưỡng độ ẩm phù hợp.</div>
+      <br>  
+      <input type="text" id="case5" name="case5" value={{data[17]}}><br>
+
+      <label> Trường hợp 6: </label>
+      <button type="button" class="collapsible">?</button>
+      <div class="content" style="color: white; background-color: green;"> Thời gian cho mỗi lần tưới, sau khoảng thời gian này hoạt động tưới cây sẽ dừng lại. <br> Dùng cho trường hợp nhiệt độ bé hơn ngưỡng nhiệt độ dưới, độ ẩm nằm trong ngưỡng độ ẩm phù hợp.</div>
+      <br>  
+      <input type="text" id="case6" name="case6" value={{data[18]}}><br>
+
+      <label> Trường hợp 7: </label>
+      <button type="button" class="collapsible">?</button>
+      <div class="content" style="color: white; background-color: green;"> Thời gian cho mỗi lần tưới, sau khoảng thời gian này hoạt động tưới cây sẽ dừng lại. <br> Dùng cho trường hợp nhiệt độ nằm trong ngưỡng nhiệt độ phù hợp, độ ẩm bé hơn ngưỡng độ ẩm dưới.</div>
+      <br>  
+      <input type="text" id="case7" name="case7" value={{data[19]}}><br>
+
+      <label> Trường hợp 8: </label>
+      <button type="button" class="collapsible">?</button>
+      <div class="content" style="color: white; background-color: green;"> Thời gian cho mỗi lần tưới, sau khoảng thời gian này hoạt động tưới cây sẽ dừng lại. <br> Dùng cho trường hợp nhiệt độ nhiệt độ nằm trong ngưỡng nhiệt độ phù hợp, độ ẩm lớn hơn ngưỡng độ ẩm trên.</div>
+      <br>  
+      <input type="text" id="case8" name="case8" value={{data[20]}}><br>
+
+      <label> Trường hợp 9: </label>
+      <button type="button" class="collapsible">?</button>
+      <div class="content" style="color: white; background-color: green;"> Thời gian cho mỗi lần tưới, sau khoảng thời gian này hoạt động tưới cây sẽ dừng lại. <br> Dùng cho trường hợp nhiệt độ và độ ẩm nằm trong ngưỡng độ ẩm phù hợp.</div>
+      <br>  
+      <input type="text" id="case9" name="case9" value={{data[21]}}><br>
+
+
+    </div>
+
+  <script>
+  var coll = document.getElementsByClassName("collapsible");
+  var i;
+
+  for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var content = this.nextElementSibling;
+      if (content.style.display === "block") {
+        content.style.display = "none";
+      } else {
+        content.style.display = "block";
+      }
+    });
+  }
+  
+
+  </script>
     </form>
     {%if data%}
     <div style="background-color: white;">
@@ -237,8 +343,10 @@ padding-block: 10px;
       &nbsp;<>&nbsp;
       <input value={{data5[9]}}><br>
       <br>
+     
     </div>
     </div>
+  
   {%endif%}
   {%endif%}
 

@@ -31,14 +31,48 @@
       display: flex;
       cursor: pointer;
     }
-    .noti
-{position: fixed;
-bottom:20px;
-right:10px;
-font-size: 30px;
-color: red;
-background-color:white;
-padding-block: 10px;
+    .noti{
+	position:fixed;
+	width:100px;
+	height:60px;
+	bottom:40px;
+	right:40px;
+	background-color:#555;
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+	box-shadow: 2px 2px 3px #999;
+  display: flex;
+  justify-content: center;
+}
+
+.mainbox {
+  display: flex;
+  margin: 40px 400px;
+  padding: 50px;
+  background-color: #555;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  justify-self: center;
+  border-radius: 20px;
+  font-size: x-large;
+  color: white;
+}
+
+.back {
+	position:fixed;
+	width:100px;
+	height:60px;
+	bottom:40px;
+	right:40px;
+	background-color:#555;
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+	box-shadow: 2px 2px 3px #999;
+  display: flex;
+  justify-content: center;
 }
   </style>
   <!-- Site made with Mobirise Website Builder v5.3.5, https://mobirise.com -->
@@ -98,17 +132,26 @@ padding-block: 10px;
     </nav>
     
   </section>
-  <div style="height: 30px;"></div>
-  <h2 style="margin-left: 5%;" > Thông báo</h2>
-    <main>
-    <h1>
-        <p id="datetime"></p>
-        <p id="temperature"></p>
-        <p id="humidity"></p>
-        <p id="brightness"></p>
-        <p id="alert"> The Weather Is Okay!</p>
-    </h1>
-    </main>    
+
+
+
+  
+  <div class="mainbox">
+    <div style="align-self: center; align-items: center;" >
+      <div style="text-align: center;"> Thông báo</div>      
+      <div>Current Time : <span id="datetime" ></span></div> 
+      <div>Current Temperature : <span id="temperature" ></span> </div>
+      <div>Current Humidity : <span id="humidity"></span> </div>
+      <div>Current Brightness : <span id="brightness"></span> </div>
+      <div>Message : <span id="alert"> The Weather Is Okay!</span></div>
+    </div>
+  </div>
+
+  <a class="back" href="/plantdata" id="noti"> 
+    <div style="align-self: center;"> <strong>Quay Lại</strong></div>
+  </a>
+
+
 </body>
 {%endblock%}
 
@@ -122,16 +165,16 @@ padding-block: 10px;
             if (this.readyState == 4 && this.status == 200) {
                 var response = JSON.parse(this.responseText);
 
-                document.getElementById("humidity").innerHTML = response.humidity;
-                document.getElementById("temperature").innerHTML = response.temperature;
-                document.getElementById("brightness").innerHTML = response.brightness;
-                document.getElementById("alert").innerHTML = response.alert;
-                document.getElementById("datetime").innerHTML = response.date                    
+                document.getElementById("humidity").innerHTML =  response.humidity;
+                document.getElementById("temperature").innerHTML =  response.temperature;
+                document.getElementById("brightness").innerHTML =  response.brightness;
+                document.getElementById("alert").innerHTML =  response.alert;
+                document.getElementById("datetime").innerHTML =  response.date                    
 
                 /**
                  * Your code goes here.
                 */
-            
+              
             } else {
                 return;
             }

@@ -22,15 +22,14 @@ class Environment(object):
 
         return json.dumps(payload)
 
-
-
 class DeviceAction(object):
     pass
 
 class PumpAction(DeviceAction):
-    def __init__(self, deviceId, status):
+    def __init__(self, deviceId, status, unit):
         self.deviceId = deviceId
         self.status = status
+        self.unit = unit
 
     def serialize(self):
         payload = {
@@ -43,15 +42,16 @@ class PumpAction(DeviceAction):
         return json.dumps(payload)
 
 class LightAction(DeviceAction):
-    def __init__(self, deviceId, value):
+    def __init__(self, deviceId, status, unit):
         self.deviceId = deviceId
-        self.value = value
+        self.status = status
+        self.unit = unit
     
     def serialize(self):
         payload = {
             "id": str(self.deviceId),
-            "name":"RELAY",
-            "data" : str(self.value),
+            "name":"LED",
+            "data" : str(self.status),
             "unit" : ""
             }
 
