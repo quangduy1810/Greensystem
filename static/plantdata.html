@@ -210,14 +210,19 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
-.noti
-{position: fixed;
-bottom:20px;
-right:10px;
-font-size: 30px;
-color: red;
-background-color:white;
-padding-block: 10px;
+.noti{
+	position:fixed;
+	width:100px;
+	height:60px;
+	bottom:40px;
+	right:40px;
+	background-color:blue;
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+	box-shadow: 2px 2px 3px #999;
+  display: flex;
+  justify-content: center;
 }
 .duy{
 background-color: aquamarine;
@@ -392,7 +397,7 @@ height: 200%;
  {%endif%}
 <section>
  <button style="border-radius: 8px; margin-left: 5%; background-color: #04AA6D; font-size: 20px;"><a href="/edit{{0}}{{'a'}}" style="color: white;"> +</a> </button>  
-  <a class="noti" href="/notify"> Cảnh báo</a>
+  <a class="noti" href="/notify" style="align-items: center;" id="noti"><strong>Cảnh báo</strong></a>
 </section>
  
 {% endblock %}
@@ -490,6 +495,35 @@ for (i = 0; i < coll.length; i++) {
     xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhttp.send(JSON.stringify(content));
   }
+</script>
+
+<script>
+    function popUpNotification(){
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function(){
+      if (this.readyState == 4 && this.status == 200){
+          var response = JSON.parse(this.responseText);
+
+          // document.getElementById('noti').style.backgroundColor = 'red';
+
+          if (response["alertCode"] == 1){
+            document.getElementById('noti').style.backgroundColor = 'red';
+          }else {
+            document.getElementById('noti').style.backgroundColor = 'blue';
+          }
+      } else {
+        return;
+      }
+    }
+
+    xhttp.open('GET', '/api', true);
+    xhttp.send();
+
+    setTimeout(popUpNotification, 3000);
+  }
+
+  popUpNotification();
 </script>
 </body>
 </html>

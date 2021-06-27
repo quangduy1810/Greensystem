@@ -16,7 +16,7 @@ import sys
 conn = mysql.connector.connect(
     host="localhost",   #  
     user="root",    # Your Username
-    password="1234",  # Your Password  
+    password="enlk8.",  # Your Password  
     database="Greensystem", # Your Database Name
     auth_plugin='mysql_native_password'
 
